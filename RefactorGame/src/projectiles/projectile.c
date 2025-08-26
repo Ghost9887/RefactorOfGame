@@ -26,7 +26,6 @@ void createProjectile(Projectile *projectileArr, Player *player, float offset){
     projectile.range = player->weapon->range;
     projectile.distanceTraveled = 0.0f + projectile.length;
     projectile.active = true;
-    printf("Created projectile\n");
     addProjectileToArr(projectileArr, &projectile);
 }
 

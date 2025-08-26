@@ -6,17 +6,19 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-//constants
+//game constants
 #define SCREENWIDTH 1200
 #define SCREENHEIGHT 800
 #define TARGETFPS 60
-#define AMOUNTOFWEAPONS 1
 
 //enemy constants
 #define MAXSPAWNENEMIES 40
 
 //projectile constants
 #define MAXPROJECTILES 100
+
+//weapon constants
+#define AMOUNTOFWEAPONS 1
 
 typedef struct{
   Texture2D playerTexture;
@@ -33,6 +35,12 @@ typedef struct{
   int damage;
   float projectileSpeed;
   float range;
+  int maxMagCapacity;
+  int magCapacity;
+  int maxReserveCapacity;
+  float reloadTime;
+  float reloadTimer;
+  int reserveCapacity;
   Texture2D *texture;
   float fireRate;
   float fireRateTimer;

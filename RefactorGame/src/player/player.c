@@ -68,8 +68,8 @@ float getRotationOfPlayer(Player *player, Camera2D *camera){
 void playerShoot(Player *player, Projectile *projectileArr){
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && checkIfWeaponCanShoot(player->weapon)){
     player->weapon->fireRateTimer = player->weapon->fireRate;
+    player->weapon->magCapacity -= 1;
     createProjectile(projectileArr, player, 0);
-    printf("Player shoot\n");
   }
 }
 

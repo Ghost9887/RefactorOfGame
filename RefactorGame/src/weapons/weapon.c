@@ -26,6 +26,27 @@ void drawWeapon(Weapon *weapon, Player *player){
   DrawTexturePro(*weapon->texture, source, dest, pivot, weapon->rotation, WHITE);
 }
 
+void checkReload(Weapon *weapon){
+  if(IsKeyPressed(KEY_R) || weapon->reloadTimer > 0.01f || weapon->magCapacity <= 0){
+    if (weapon->reserveCapacity > 0 && weapon->magCapacity < weapon->maxMagCapacity) {
+      if (weapon->reloadTimer <= 0.01f) {
+        weapon->reloadTimer = weapon->reloadTime;
+        } else {
+          weapon->reloadTimer -= GetFrameTime();
+          if (weapon->reloadTimer <= 0.0f) {
+            int ammoToLoad = weapon->maxMagCapacity - weapon->magCapacity;
+          if (weapon->reserveCapacity < ammoToLoad) {
+            ammoToLoad = weapon->reserveCapacity;
+          }
+          weapon->magCapacity += ammoToLoad;
+          weapon->reserveCapacity -= ammoToLoad;
+          weapon->reloadTimer = 0.0f;
+        }
+      }
+    }
+  }
+}
+
 void weaponCooldown(Weapon *weapon){
   if(weapon->fireRateTimer <= 0.1f){
     weapon->fireRateTimer = 0.0f;
@@ -36,7 +57,7 @@ void weaponCooldown(Weapon *weapon){
 }
 
 bool checkIfWeaponCanShoot(Weapon *weapon){
-  if(weapon->fireRateTimer < 0.01f){
+  if(weapon->fireRateTimer < 0.01f && weapon->magCapacity > 0){
     return true;
   }
   return false;
@@ -46,4 +67,5 @@ bool checkIfWeaponCanShoot(Weapon *weapon){
 void updateWeapons(Player *player){
   drawWeapon(player->weapon, player);
   weaponCooldown(player->weapon);
+  checkReload(player->weapon);
 }
