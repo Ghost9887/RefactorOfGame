@@ -1,8 +1,8 @@
 #include "basic_enemy.h"
 
-Enemy createBasicEnemy(TextureManager *textureManager){
+Enemy createBasicEnemy(TextureManager *textureManager, float x, float y){
   Enemy enemy;
-  enemy.pos = (Vector2){ 400, 400 };
+  enemy.pos = (Vector2){ x, y };
   enemy.width = 64;
   enemy.height = 64;
   enemy.speed = 100.0f;

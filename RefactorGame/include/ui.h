@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void drawUI(Player *player);
+  void drawUI(Player *player, RoundManager *roundManager);
 
 #endif

@@ -6,8 +6,15 @@
 #include "enemy.h"
 #include "weapon.h"
 #include "projectile.h"
+#include "roundManager.h"
 
-void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, Projectile *projectileArr);
+//GLOBAL VARIABLES
+//ENEMY
+int ENEMYCOUNT = 0;
+int ALIVEENEMIES = 0;
+
+void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
+                     Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager);
 
 int main(){
   
@@ -17,36 +24,41 @@ int main(){
 
   Camera2D camera;
   initCamera(&camera);
-  
-  //Texture Manager
+
+
+  //GAME OBJECTS
+  //****************************************************************************
   TextureManager textureManager;
   loadAllTextures(&textureManager);
 
   Enemy enemyArr[MAXSPAWNENEMIES];
   initEnemyArr(enemyArr);
-  spawnEnemies(enemyArr, &textureManager);
 
   Weapon weaponArr[AMOUNTOFWEAPONS];
   initWeaponArr(weaponArr, &textureManager);
 
   Projectile projectileArr[MAXPROJECTILES];
   initProjectileArr(projectileArr);
+
+  RoundManager roundManager = createRoundManager();
   
   Player player = createPlayer(&textureManager);
   player.weapon = &weaponArr[0];
+  //****************************************************************************
+  
     
   while(!WindowShouldClose()){
     BeginDrawing();
 
       ClearBackground(WHITE);
       
-      drawUI(&player);
+      drawUI(&player, &roundManager);
     
       BeginMode2D(camera);
         
         DrawRectangle(500, 500, 50, 50, RED);
 
-        updateGameState(&player, &camera, enemyArr, projectileArr);
+        updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager, &textureManager);
 
       EndMode2D();
 
@@ -58,11 +70,14 @@ int main(){
   return 0;
 }
 
-void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, Projectile *projectileArr){
+void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
+                     Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager){
   
-  //in order of drawing
-  updateEnemies(enemyArr, player);
+  //in order of drawing / operations
+  updateEnemies(enemyArr, player, roundManager, textureManager);
 
+  updateRoundManager(roundManager);
+  
   updatePlayer(player, camera, projectileArr, enemyArr);
 
   updateCamera(camera, player);

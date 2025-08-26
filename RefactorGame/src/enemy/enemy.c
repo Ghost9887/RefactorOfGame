@@ -1,5 +1,8 @@
 #include "enemy.h"
 
+extern int ENEMYCOUNT;
+extern int ALIVEENEMIES;
+
 bool checkIfEnemyCanAttack(Enemy *enemy);
 
 Enemy createEmptyEnemy(){
@@ -20,9 +23,21 @@ void initEnemyArr(Enemy *enemyArr){
   }
 }
 
-void spawnEnemies(Enemy *enemyArr, TextureManager *textureManager){
-  //manually for now
-  enemyArr[0] = createBasicEnemy(textureManager);
+void spawnEnemies(Enemy *enemyArr, TextureManager *textureManager, RoundManager *roundManager){
+  if(!roundManager->inBreak && !roundManager->allEnemiesSpawned){
+    //create one at a time
+    for(int i = 0; i < MAXSPAWNENEMIES; i++){
+      if(!enemyArr[i].active){
+        //will change to spawn points later
+        float x = (float)GetRandomValue(0, SCREENWIDTH);
+        float y = (float)GetRandomValue(0, SCREENHEIGHT);
+        enemyArr[i] = createBasicEnemy(textureManager, x, y);
+        ENEMYCOUNT++;
+        ALIVEENEMIES++;
+        break;
+      }
+    }
+  }
 }
 
 void drawEnemy(Enemy *enemy){
@@ -79,13 +94,14 @@ bool checkIfEnemyCanAttack(Enemy *enemy){
 void destroyEnemy(Enemy *enemy){
   enemy->active = false;
   enemy->speed = 0.0f;
+  ALIVEENEMIES--;
 }
 
 void checkIfEnemyIsDead(Enemy *enemy){
   if(enemy->health <= 0) destroyEnemy(enemy);
 }
 
-void updateEnemies(Enemy *enemyArr, Player *player){
+void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager){
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(enemyArr[i].active){
       checkIfEnemyIsDead(&enemyArr[i]);
@@ -96,4 +112,5 @@ void updateEnemies(Enemy *enemyArr, Player *player){
       attackCooldown(&enemyArr[i]);
     }
   }
+  spawnEnemies(enemyArr, textureManager, roundManager);
 }

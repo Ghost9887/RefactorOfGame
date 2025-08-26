@@ -95,4 +95,13 @@ typedef struct{
   bool active;
 }Projectile;
 
+typedef struct{
+  int roundNumber;
+  int enemyCount;
+  float breakTime;
+  float breakTimer;
+  bool inBreak;
+  bool allEnemiesSpawned;
+}RoundManager;
+
 #endif

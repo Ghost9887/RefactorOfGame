@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-  Enemy createBasicEnemy(TextureManager *textureManager);
+  Enemy createBasicEnemy(TextureManager *textureManager, float x, float y);
 
 #endif
