@@ -4,6 +4,6 @@
 #include "common.h"
 #include "camera.h"
 
-  void updateMapEditor(Camera2D *camera);
+  void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr);
 
 #endif
