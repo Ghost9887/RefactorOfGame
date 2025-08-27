@@ -3,13 +3,23 @@
 void drawGrid(){
   for(int y = 0; y < ROWCOUNT; y++){
     for(int x = 0; x < ROWCOUNT; x++){
-      DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE + CELLSIZE, y * CELLSIZE, BLACK);
+      //prevents form overdrawing a line
+      if(x + 1 != ROWCOUNT){
+        DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE + CELLSIZE, y * CELLSIZE, BLACK);
+      }else{
+        DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE, y * CELLSIZE, BLACK);
+      }
     }
   }
 
   for(int x = 0; x < COLUMNCOUNT; x++){
     for(int y = 0; y < COLUMNCOUNT; y++){
-      DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE, y * CELLSIZE + CELLSIZE, BLACK);
+      //prevents overdrawing a line
+      if(y + 1 != ROWCOUNT){
+        DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE, y * CELLSIZE + CELLSIZE, BLACK);
+      }else{
+        DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE, y * CELLSIZE, BLACK);
+      }
     }
   }
 }
@@ -20,7 +30,7 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
     //we use the mouse position to determine the tile position
     //bit of a genius
     for(int i = 0; i < MAXTILES; i++){
-      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE){
+      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE){
         tileArr[i].pos.x = (int)mousePos.x / CELLSIZE * CELLSIZE;
         tileArr[i].pos.y = (int)mousePos.y / CELLSIZE * CELLSIZE;
         tileArr[i].texture = user->selectedTexture;
