@@ -11,6 +11,15 @@ void selectTexture(User *user, Rectangle *textureRec, int id, Texture2D *tileTex
   }
 }
 
+void drawUserMode(User *user){
+  if(user->mode == PAINT){
+    DrawText("Paint", SCREENWIDTH - 150, 30, 40, BLUE);
+  }
+  else if(user->mode == SOLID){
+    DrawText("Solid", SCREENWIDTH - 150, 30, 40, BLUE);
+  }
+}
+
 void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
   int height = 200;
   DrawRectangle(0, SCREENHEIGHT - height, SCREENWIDTH, SCREENHEIGHT, BLACK);
@@ -43,6 +52,18 @@ void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
   */
 }
 
+//fixes the bug where when selecting a texture it would instantly paint it under the rectangle 
+void userInteractingWithUI(User *user){
+  Vector2 mousePos = GetMousePosition();
+  if(mousePos.y >= 600){
+    user->interactingWithUI = true;
+  }else{
+    user->interactingWithUI = false;
+  }
+}
+
 void updateUI(Texture2D *tileTextureArr, User *user){
   drawTexturesToSelect(tileTextureArr, user);
+  drawUserMode(user);
+  userInteractingWithUI(user);
 }

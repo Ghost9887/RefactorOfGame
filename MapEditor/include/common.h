@@ -20,8 +20,14 @@
 #define AMOUNTOFTILETEXTURES 4
 #define MAXTILES 10000
 
+//PLAYER CONSTANTS/ENUM
+#define PAINT 0 // tile can be walked through
+#define SOLID 1 // tile cannot be walked through
+
 typedef struct{
   Texture2D *selectedTexture;
+  bool interactingWithUI;
+  int mode; //determine what type of tile to place
 }User;
 
 typedef struct{
@@ -29,6 +35,7 @@ typedef struct{
   Vector2 pos;
   Texture2D *texture;
   bool active;
+  bool solid; //cant walk through
 }Tile;
 
 typedef struct{

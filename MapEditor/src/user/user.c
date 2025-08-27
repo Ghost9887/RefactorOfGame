@@ -1,8 +1,15 @@
 #include "user.h"
 
-
 User createUser(Texture2D *tileTextureArr){
   User user;
   user.selectedTexture = &tileTextureArr[0];
+  user.interactingWithUI = false;
+  user.mode = PAINT;
   return user;
 }
+
+void switchMode(User *user){
+  if(IsKeyPressed(KEY_ONE)) user->mode = PAINT;
+  else if(IsKeyPressed(KEY_TWO)) user->mode = SOLID;
+}
+

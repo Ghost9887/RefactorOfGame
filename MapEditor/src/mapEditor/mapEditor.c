@@ -30,11 +30,20 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
     //we use the mouse position to determine the tile position
     //bit of a genius
     for(int i = 0; i < MAXTILES; i++){
-      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE){
+      //getting a bit long maybe rethink my life
+      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI){
         tileArr[i].pos.x = (int)mousePos.x / CELLSIZE * CELLSIZE;
         tileArr[i].pos.y = (int)mousePos.y / CELLSIZE * CELLSIZE;
         tileArr[i].texture = user->selectedTexture;
         tileArr[i].active = true;
+
+        //determine the player mode and set the appropriate properties
+        if(user->mode == SOLID){
+          tileArr[i].solid = true;
+        }else{
+          tileArr[i].solid = false;
+        }
+
         break;
       }
     }
@@ -60,6 +69,10 @@ void drawTile(Tile *tileArr){
   for(int i = 0; i < MAXTILES; i++){
     if(tileArr[i].active){
       DrawTexture(*tileArr[i].texture, tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+      if(tileArr[i].solid){
+        //outline solid tiles
+        DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
+      }
     }
   }
 }
@@ -70,6 +83,7 @@ void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr,
   placeTile(tileArr, tileTextureArr, camera, user);
   deleteTile(tileArr, camera);
   drawTile(tileArr);
+  switchMode(user);
 }
 
 
