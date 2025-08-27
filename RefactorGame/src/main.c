@@ -7,6 +7,8 @@
 #include "weapon.h"
 #include "projectile.h"
 #include "roundManager.h"
+#include "tile.h"
+#include "map.h"
 
 //GLOBAL VARIABLES
 //ENEMY
@@ -14,7 +16,8 @@ int ENEMYCOUNT = 0;
 int ALIVEENEMIES = 0;
 
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
-                     Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager);
+                     Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
+                     Tile *tileArr);
 
 int main(){
   
@@ -41,26 +44,32 @@ int main(){
   initProjectileArr(projectileArr);
 
   RoundManager roundManager = createRoundManager();
+
+  Tile tileArr[MAXTILES];
+  Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
+  initTileArr(tileArr);
+  initTileTextureArr(tileTextureArr, &textureManager);
   
   Player player = createPlayer(&textureManager);
   player.weapon = &weaponArr[0];
   //****************************************************************************
-  
+
+  //LOAD MAP******************************
+  importMap(tileArr, tileTextureArr);
+  //        ******************************
     
   while(!WindowShouldClose()){
     BeginDrawing();
 
       ClearBackground(WHITE);
-      
-      drawUI(&player, &roundManager);
-    
+   
       BeginMode2D(camera);
         
-        DrawRectangle(500, 500, 50, 50, RED);
-
-        updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager, &textureManager);
+        updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager, &textureManager, tileArr);
 
       EndMode2D();
+          
+      drawUI(&player, &roundManager);
 
     EndDrawing();
   }
@@ -71,9 +80,12 @@ int main(){
 }
 
 void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
-                     Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager){
+                     Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
+                     Tile *tileArr){
   
   //in order of drawing / operations
+  updateMap(tileArr);
+
   updateEnemies(enemyArr, player, roundManager, textureManager);
 
   updateRoundManager(roundManager);

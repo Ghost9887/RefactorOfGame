@@ -20,10 +20,19 @@
 //weapon constants
 #define AMOUNTOFWEAPONS 1
 
+//tile constants
+#define MAXTILES 10000
+#define AMOUNTOFTILETEXTURES 4
+#define CELLSIZE 32 // size of a tile 
+
 typedef struct{
   Texture2D playerTexture;
   Texture2D basicEnemyTexture;
   Texture2D pistolTexture;
+  Texture2D tile1;
+  Texture2D tile2;
+  Texture2D tile3;
+  Texture2D tile4;
 }TextureManager;
 
 typedef struct{
@@ -103,5 +112,13 @@ typedef struct{
   bool inBreak;
   bool allEnemiesSpawned;
 }RoundManager;
+
+typedef struct{
+  int id;
+  Vector2 pos;
+  Texture2D *texture;
+  bool active;
+  bool solid;
+}Tile;
 
 #endif
