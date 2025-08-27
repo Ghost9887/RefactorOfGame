@@ -20,7 +20,7 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera){
     //we use the mouse position to determine the tile position
     //bit of a genius
     for(int i = 0; i < MAXTILES; i++){
-      if(!tileArr[i].active){
+      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE){
         tileArr[i].pos.x = (int)mousePos.x / CELLSIZE * CELLSIZE;
         tileArr[i].pos.y = (int)mousePos.y / CELLSIZE * CELLSIZE;
         tileArr[i].texture = &tileTextureArr[0];
