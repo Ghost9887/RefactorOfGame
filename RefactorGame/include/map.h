@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-  void importMap(Tile *tileArr, Texture2D *tileTextureArr);
-  void updateMap(Tile *tileArr);
+  void importMap(Tile *tileArr);
+  void updateMap(Tile *tileArr, Texture2D *tileTextureArr);
 
 #endif

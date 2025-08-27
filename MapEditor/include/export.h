@@ -4,6 +4,6 @@
 #include "common.h"
 
   void exportMap(Tile *tileArr);
-  void importMap(Tile *tlieArr, Texture2D *tileTextureArr);
+  void importMap(Tile *tlieArr);
 
 #endif

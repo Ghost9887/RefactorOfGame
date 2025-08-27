@@ -26,7 +26,7 @@ void exportMap(Tile *tileArr){
   CloseWindow();
 }
 
-void importMap(Tile *tileArr, Texture2D *tileTextureArr){
+void importMap(Tile *tileArr){
   FILE *file = fopen("../RefactorGame/assets/map1.map", "r");
   if(file == NULL){
     printf("Failed to open map file");
@@ -45,7 +45,6 @@ void importMap(Tile *tileArr, Texture2D *tileTextureArr){
     int id, posX, posY, active, solid;
     sscanf(token, "%d{{%d,%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid);
     tileArr[index].id = id;
-    tileArr[index].texture = &tileTextureArr[tileArr[index].id];
     tileArr[index].pos.x = posX;
     tileArr[index].pos.y = posY;
     tileArr[index].active = active;

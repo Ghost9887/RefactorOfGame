@@ -29,7 +29,7 @@ int main(){
   //****************************************************************
   
   //IMPORT THE MAP
-  importMap(tileArr, tileTextureArr);
+  importMap(tileArr);
 
   while(!WindowShouldClose()){
     BeginDrawing();

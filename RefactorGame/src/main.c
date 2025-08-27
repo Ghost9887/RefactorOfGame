@@ -17,7 +17,7 @@ int ALIVEENEMIES = 0;
 
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
-                     Tile *tileArr);
+                     Tile *tileArr, Texture2D *tileTextureArr);
 
 int main(){
   
@@ -55,7 +55,7 @@ int main(){
   //****************************************************************************
 
   //LOAD MAP******************************
-  importMap(tileArr, tileTextureArr);
+  importMap(tileArr);
   //        ******************************
     
   while(!WindowShouldClose()){
@@ -65,7 +65,7 @@ int main(){
    
       BeginMode2D(camera);
         
-        updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager, &textureManager, tileArr);
+        updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager, &textureManager, tileArr, tileTextureArr);
 
       EndMode2D();
           
@@ -81,10 +81,10 @@ int main(){
 
 void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
-                     Tile *tileArr){
+                     Tile *tileArr, Texture2D *tileTextureArr){
   
   //in order of drawing / operations
-  updateMap(tileArr);
+  updateMap(tileArr, tileTextureArr);
 
   updateEnemies(enemyArr, player, roundManager, textureManager);
 
@@ -92,9 +92,9 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
   
   updatePlayer(player, camera, projectileArr, enemyArr);
 
-  updateCamera(camera, player);
-
   updateWeapons(player);
+
+  updateCamera(camera, player);
 
   updateProjectile(projectileArr, enemyArr);
 

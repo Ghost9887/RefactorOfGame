@@ -34,7 +34,6 @@ typedef struct{
 typedef struct{
   int id; 
   Vector2 pos;
-  Texture2D *texture;
   bool active;
   bool solid; //cant walk through
 }Tile;

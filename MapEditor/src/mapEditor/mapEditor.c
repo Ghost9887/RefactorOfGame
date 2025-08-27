@@ -45,7 +45,6 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
       if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && 
         mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI && tileExists(posX, posY, tileArr) == -1){
         tileArr[i].id = user->textureId;
-        tileArr[i].texture = user->selectedTexture;
         tileArr[i].pos.x = posX; 
         tileArr[i].pos.y = posY;
         tileArr[i].active = true;
@@ -70,10 +69,10 @@ void deleteTile(Tile *tileArr, Camera2D *camera){
   }
 }
 
-void drawTile(Tile *tileArr){
+void drawTile(Tile *tileArr, Texture2D *tileTextureArr){
   for(int i = 0; i < MAXTILES; i++){
     if(tileArr[i].active){
-      DrawTexture(*tileArr[i].texture, tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+      DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
       if(tileArr[i].solid){
         //outline solid tiles
         DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
@@ -88,7 +87,7 @@ void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr,
   drawGrid();
   placeTile(tileArr, tileTextureArr, camera, user);
   deleteTile(tileArr, camera);
-  drawTile(tileArr);
+  drawTile(tileArr, tileTextureArr);
   switchMode(user);
 }
 

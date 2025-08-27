@@ -4,7 +4,6 @@ void initTileArr(Tile *tileArr){
   for(int i = 0; i < MAXTILES; i++){
     tileArr[i].id = -1;
     tileArr[i].pos = (Vector2){ 0, 0 };
-    tileArr[i].texture;
     tileArr[i].active = false;
     tileArr[i].solid = false;
   }
