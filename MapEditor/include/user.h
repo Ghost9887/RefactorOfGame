@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-  User createUser();
+  User createUser(Texture2D *tileTextureArr);
 
 #endif

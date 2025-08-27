@@ -3,18 +3,18 @@
 void drawGrid(){
   for(int y = 0; y < ROWCOUNT; y++){
     for(int x = 0; x < ROWCOUNT; x++){
-      DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE + CELLSIZE, y * CELLSIZE,WHITE);
+      DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE + CELLSIZE, y * CELLSIZE, BLACK);
     }
   }
 
   for(int x = 0; x < COLUMNCOUNT; x++){
     for(int y = 0; y < COLUMNCOUNT; y++){
-      DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE, y * CELLSIZE + CELLSIZE, WHITE);
+      DrawLine(x * CELLSIZE, y * CELLSIZE, x * CELLSIZE, y * CELLSIZE + CELLSIZE, BLACK);
     }
   }
 }
 
-void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera){
+void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User *user){
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_LEFT_SHIFT)){
     Vector2 mousePos =  GetScreenToWorld2D(GetMousePosition(), *camera);
     //we use the mouse position to determine the tile position
@@ -23,9 +23,24 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera){
       if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE){
         tileArr[i].pos.x = (int)mousePos.x / CELLSIZE * CELLSIZE;
         tileArr[i].pos.y = (int)mousePos.y / CELLSIZE * CELLSIZE;
-        tileArr[i].texture = &tileTextureArr[0];
+        tileArr[i].texture = user->selectedTexture;
         tileArr[i].active = true;
         break;
+      }
+    }
+  }
+}
+
+void deleteTile(Tile *tileArr, Camera2D *camera){
+  if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)){
+    Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
+    int posX = (int)mousePos.x / CELLSIZE * CELLSIZE;
+    int posY = (int)mousePos.y / CELLSIZE * CELLSIZE;
+    for(int i = 0; i < MAXTILES; i++){
+      if(tileArr[i].active && tileArr[i].pos.x == posX && tileArr[i].pos.y == posY){
+        tileArr[i].pos.x = 0;
+        tileArr[i].pos.y = 0;
+        tileArr[i].active = false;
       }
     }
   }
@@ -39,10 +54,11 @@ void drawTile(Tile *tileArr){
   }
 }
 
-void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr){
+void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr, User *user){
   cameraMovement(camera);
   drawGrid();
-  placeTile(tileArr, tileTextureArr, camera);
+  placeTile(tileArr, tileTextureArr, camera, user);
+  deleteTile(tileArr, camera);
   drawTile(tileArr);
 }
 

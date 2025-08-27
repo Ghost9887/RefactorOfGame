@@ -1,8 +1,8 @@
 #include "user.h"
 
 
-User createUser(){
+User createUser(Texture2D *tileTextureArr){
   User user;
-  user.selectedTexture;
+  user.selectedTexture = &tileTextureArr[0];
   return user;
 }

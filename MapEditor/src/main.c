@@ -3,6 +3,7 @@
 #include "textureManager.h"
 #include "user.h"
 #include "tile.h"
+#include "ui.h"
 
 int main(){
   
@@ -16,14 +17,14 @@ int main(){
 
     TextureManager textureManager;
     loadAllTextures(&textureManager);
-    
-    User user;
-    user = createUser();
 
     Tile tileArr[MAXTILES];
     Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
     initTileArr(tileArr);
     initTileTextureArr(tileTextureArr, &textureManager);
+  
+    User user;
+    user = createUser(tileTextureArr);
   //****************************************************************
 
   while(!WindowShouldClose()){
@@ -31,13 +32,13 @@ int main(){
 
       BeginMode2D(camera);
 
-      ClearBackground(BLACK);
+      ClearBackground(WHITE);
 
-      updateMapEditor(&camera, tileArr, tileTextureArr);
+      updateMapEditor(&camera, tileArr, tileTextureArr, &user);
 
-      DrawText("Test", 300, 300, 50, WHITE);
-     
       EndMode2D();
+
+    updateUI(tileTextureArr, &user);
     
     EndDrawing();
   }
