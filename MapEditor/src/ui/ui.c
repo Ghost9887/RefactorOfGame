@@ -8,6 +8,7 @@ void selectTexture(User *user, Rectangle *textureRec, int id, Texture2D *tileTex
   Rectangle userClick = { posX, posY, CELLSIZE , CELLSIZE };
   if(CheckCollisionRecs(userClick, *textureRec)){
     user->selectedTexture = &tileTextureArr[id];
+    user->textureId = id;
   }
 }
 
@@ -17,6 +18,21 @@ void drawUserMode(User *user){
   }
   else if(user->mode == SOLID){
     DrawText("Solid", SCREENWIDTH - 150, 30, 40, BLUE);
+  }
+}
+
+void drawExportButton(Tile *tileArr){
+  Rectangle rec = { 10, 10, 80, 40 };
+  DrawRectangleRec(rec, BLACK);
+  DrawText("Export", rec.x + 5, rec.y + 7, 20, BLUE);
+
+  //check input
+  if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+    Vector2 mousePos = GetMousePosition();
+    Rectangle mouseClick = { mousePos.x, mousePos.y, 30, 30 };
+    if(CheckCollisionRecs(rec, mouseClick)){
+      exportMap(tileArr);
+    }
   }
 }
 
@@ -55,15 +71,22 @@ void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
 //fixes the bug where when selecting a texture it would instantly paint it under the rectangle 
 void userInteractingWithUI(User *user){
   Vector2 mousePos = GetMousePosition();
+  //bottom bar location
   if(mousePos.y >= 600){
     user->interactingWithUI = true;
-  }else{
+    }
+  //save button location fine for now just looks ugly
+  else if(mousePos.y >= 10 && mousePos.y <= 40 && mousePos.x >= 10 && mousePos.x <= 80){
+    user->interactingWithUI = true;
+  }
+  else{
     user->interactingWithUI = false;
   }
 }
 
-void updateUI(Texture2D *tileTextureArr, User *user){
+void updateUI(Texture2D *tileTextureArr, User *user, Tile *tileArr){
   drawTexturesToSelect(tileTextureArr, user);
   drawUserMode(user);
   userInteractingWithUI(user);
+  drawExportButton(tileArr);
 }

@@ -26,6 +26,7 @@
 
 typedef struct{
   Texture2D *selectedTexture;
+  int textureId;
   bool interactingWithUI;
   int mode; //determine what type of tile to place
 }User;

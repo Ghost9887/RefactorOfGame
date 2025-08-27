@@ -4,6 +4,7 @@
 #include "user.h"
 #include "tile.h"
 #include "ui.h"
+#include "export.h"
 
 int main(){
   
@@ -26,6 +27,9 @@ int main(){
     User user;
     user = createUser(tileTextureArr);
   //****************************************************************
+  
+  //IMPORT THE MAP
+  importMap(tileArr, tileTextureArr);
 
   while(!WindowShouldClose()){
     BeginDrawing();
@@ -38,7 +42,7 @@ int main(){
 
       EndMode2D();
 
-    updateUI(tileTextureArr, &user);
+    updateUI(tileTextureArr, &user, tileArr);
     
     EndDrawing();
   }

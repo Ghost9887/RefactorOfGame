@@ -7,3 +7,4 @@ void loadAllTextures(TextureManager *textureManager){
   textureManager->tile3 = LoadTexture("../RefactorGame/assets/tiles/tile3.png");
   textureManager->tile4 = LoadTexture("../RefactorGame/assets/tiles/tile4.png");
 }
+

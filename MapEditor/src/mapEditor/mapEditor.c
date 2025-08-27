@@ -24,27 +24,33 @@ void drawGrid(){
   }
 }
 
+int tileExists(int x, int y, Tile *tileArr){
+  for(int i = 0; i < MAXTILES; i++){
+    if(tileArr[i].active && tileArr[i].pos.x == x && tileArr[i].pos.y == y){
+      return i;
+    }
+  }
+  return -1;
+}
+
 void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User *user){
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_LEFT_SHIFT)){
     Vector2 mousePos =  GetScreenToWorld2D(GetMousePosition(), *camera);
     //we use the mouse position to determine the tile position
     //bit of a genius
+    int posX = ((int)mousePos.x / CELLSIZE) * CELLSIZE;
+    int posY = ((int)mousePos.y / CELLSIZE) * CELLSIZE;
     for(int i = 0; i < MAXTILES; i++){
       //getting a bit long maybe rethink my life
-      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI){
-        tileArr[i].pos.x = (int)mousePos.x / CELLSIZE * CELLSIZE;
-        tileArr[i].pos.y = (int)mousePos.y / CELLSIZE * CELLSIZE;
+      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && 
+        mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI && tileExists(posX, posY, tileArr) == -1){
+        tileArr[i].id = user->textureId;
         tileArr[i].texture = user->selectedTexture;
+        tileArr[i].pos.x = posX; 
+        tileArr[i].pos.y = posY;
         tileArr[i].active = true;
-
-        //determine the player mode and set the appropriate properties
-        if(user->mode == SOLID){
-          tileArr[i].solid = true;
-        }else{
-          tileArr[i].solid = false;
-        }
-
-        break;
+        tileArr[i].solid = (user->mode == SOLID);
+      break;      
       }
     }
   }
@@ -53,14 +59,13 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
 void deleteTile(Tile *tileArr, Camera2D *camera){
   if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)){
     Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
-    int posX = (int)mousePos.x / CELLSIZE * CELLSIZE;
-    int posY = (int)mousePos.y / CELLSIZE * CELLSIZE;
-    for(int i = 0; i < MAXTILES; i++){
-      if(tileArr[i].active && tileArr[i].pos.x == posX && tileArr[i].pos.y == posY){
-        tileArr[i].pos.x = 0;
-        tileArr[i].pos.y = 0;
-        tileArr[i].active = false;
-      }
+    int posX = ((int)mousePos.x / CELLSIZE) * CELLSIZE;
+    int posY = ((int)mousePos.y / CELLSIZE) * CELLSIZE;
+    int index = tileExists(posX, posY, tileArr);
+    if(index != -1){
+      tileArr[index].pos.x = 0;
+      tileArr[index].pos.y = 0;
+      tileArr[index].active = false;
     }
   }
 }
@@ -73,6 +78,7 @@ void drawTile(Tile *tileArr){
         //outline solid tiles
         DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
       }
+      DrawText(TextFormat("%d", tileArr[i].id), tileArr[i].pos.x + CELLSIZE / 2, tileArr[i].pos.y + CELLSIZE / 2, 5, BLUE);
     }
   }
 }

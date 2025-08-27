@@ -3,6 +3,7 @@
 User createUser(Texture2D *tileTextureArr){
   User user;
   user.selectedTexture = &tileTextureArr[0];
+  user.textureId = 0;
   user.interactingWithUI = false;
   user.mode = PAINT;
   return user;
