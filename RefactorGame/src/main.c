@@ -15,6 +15,9 @@
 int ENEMYCOUNT = 0;
 int ALIVEENEMIES = 0;
 
+//TILES
+int AMOUNTOFTILES = 0;
+
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr);
@@ -45,7 +48,10 @@ int main(){
 
   RoundManager roundManager = createRoundManager();
 
-  Tile tileArr[MAXTILES];
+  //Tile tileArr[MAXTILES];
+  //malloc this because tile array big big
+  AMOUNTOFTILES = getAmountOfTiles();
+  Tile *tileArr = (Tile*)malloc(sizeof(Tile) * AMOUNTOFTILES);
   Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
   initTileArr(tileArr);
   initTileTextureArr(tileTextureArr, &textureManager);

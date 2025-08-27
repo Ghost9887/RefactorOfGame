@@ -5,6 +5,7 @@
 #include "raymath.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 //game constants
 #define SCREENWIDTH 1200

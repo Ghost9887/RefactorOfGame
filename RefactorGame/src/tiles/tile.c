@@ -1,5 +1,7 @@
 #include "tile.h"
 
+extern int AMOUNTOFTILES;
+
 Tile createEmptyTile(){
   Tile tile;
   tile.pos = (Vector2){ 0, 0 };
@@ -8,7 +10,7 @@ Tile createEmptyTile(){
 }
 
 void initTileArr(Tile *tileArr){
-  for(int i = 0; i < MAXTILES; i++){
+  for(int i = 0; i < AMOUNTOFTILES; i++){
     tileArr[i] = createEmptyTile();
   }
 }

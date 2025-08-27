@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+  int getAmountOfTiles();
   void importMap(Tile *tileArr);
   void updateMap(Tile *tileArr, Texture2D *tileTextureArr);
 
