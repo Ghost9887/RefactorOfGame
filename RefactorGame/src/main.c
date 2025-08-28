@@ -103,7 +103,7 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
   
   //in order of drawing / operations
   
-  updateMap(tileArr, tileTextureArr, player, enemyArr);
+  updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr);
 
   updateEnemies(enemyArr, player, roundManager, textureManager);
 

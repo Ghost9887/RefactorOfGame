@@ -63,7 +63,7 @@ void importMap(Tile *tileArr){
   printf("Imported Map successfully");
 }
 
-void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr){
+void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr){
 for(int i = 0; i < AMOUNTOFTILES; i++){
     if(tileArr[i].active){
       DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
@@ -71,11 +71,12 @@ for(int i = 0; i < AMOUNTOFTILES; i++){
       if(tileArr[i].solid){
         checkPlayerCollisionWithTile(player, &tileArr[i]);
         checkEnemyCollisionWithTile(enemyArr, &tileArr[i]);
+        checkProjectileCollisionWithTile(projectileArr, &tileArr[i]);
       }
     }
   }
 }
 
-void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr){
-  drawTiles(tileArr, tileTextureArr, player, enemyArr);
+void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr){
+  drawTiles(tileArr, tileTextureArr, player, enemyArr, projectileArr);
 }

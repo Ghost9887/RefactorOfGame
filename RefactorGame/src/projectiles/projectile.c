@@ -76,6 +76,17 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr){
   }
 }
 
+void checkProjectileCollisionWithTile(Projectile *projectileArr, Tile *tile){
+  Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
+  for(int i = 0; i < MAXPROJECTILES; i++){
+    if(projectileArr[i].active){
+      if(CheckCollisionPointRec(projectileArr[i].pos, tileRec)){
+        destroyProjectile(&projectileArr[i]);
+      }
+    }
+  }
+}
+
 void updateProjectile(Projectile *projectileArr, Enemy *enemyArr){
   for(int i = 0; i < MAXPROJECTILES; i++){
     if(projectileArr[i].active){
