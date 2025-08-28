@@ -67,10 +67,6 @@ void drawTiles(Tile *tileArr, Texture2D *tileTextureArr){
 for(int i = 0; i < AMOUNTOFTILES; i++){
     if(tileArr[i].active){
       DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
-      if(tileArr[i].solid){
-        //outline solid tiles
-        DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
-      }
     }
   }
 }

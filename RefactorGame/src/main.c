@@ -9,6 +9,7 @@
 #include "roundManager.h"
 #include "tile.h"
 #include "map.h"
+#include "debugMode.h"
 
 //GLOBAL VARIABLES
 //ENEMY
@@ -17,6 +18,12 @@ int ALIVEENEMIES = 0;
 
 //TILES
 int AMOUNTOFTILES = 0;
+
+//debug mode
+bool DEBUGMODE = false;
+bool ENABLEPLAYERHITBOX = false;
+bool ENABLEENEMYHITBOX = false;
+bool ENABLESOLIDTILEHITBOX = false;
 
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
@@ -64,6 +71,7 @@ int main(){
   //        ******************************
     
   while(!WindowShouldClose()){
+
     BeginDrawing();
 
       ClearBackground(WHITE);
@@ -71,10 +79,14 @@ int main(){
       BeginMode2D(camera);
         
         updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager, &textureManager, tileArr, tileTextureArr);
+      
+        updateDebugMode(&player, enemyArr, tileArr);
 
       EndMode2D();
           
       drawUI(&player, &roundManager);
+      
+      drawUIForDebugMode();
 
     EndDrawing();
   }

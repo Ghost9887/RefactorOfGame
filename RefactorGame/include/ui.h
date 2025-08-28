@@ -4,5 +4,6 @@
 #include "common.h"
 
   void drawUI(Player *player, RoundManager *roundManager);
-
+  void drawUIForDebugMode();
+  
 #endif
