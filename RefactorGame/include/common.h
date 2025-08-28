@@ -10,7 +10,7 @@
 //game constants
 #define SCREENWIDTH 1200
 #define SCREENHEIGHT 800
-#define TARGETFPS 60
+#define TARGETFPS 0
 
 //enemy constants
 #define MAXSPAWNENEMIES 40

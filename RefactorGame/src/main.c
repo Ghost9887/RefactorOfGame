@@ -109,7 +109,7 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
 
   updateRoundManager(roundManager);
   
-  updatePlayer(player, camera, projectileArr, enemyArr);
+  updatePlayer(player, camera, projectileArr, enemyArr, tileArr);
 
   updateWeapons(player);
 

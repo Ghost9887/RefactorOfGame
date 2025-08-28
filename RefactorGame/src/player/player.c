@@ -7,8 +7,8 @@ float getRotationOfPlayer(Player *player, Camera2D *camera);
 Player createPlayer(TextureManager *textureManager){
   Player player;
   player.pos = (Vector2){ 500, 500 };
-  player.width = 64.0f;
-  player.height = 64.0f;
+  player.width = 50.0f; // make it smaller for the hitbox so its more forgiving
+  player.height = 50.0f;
   player.rotation = 0.0f;
   player.speed = 150.0f;
   player.velocity = (Vector2){ 0, 0 };
@@ -87,7 +87,7 @@ void playerShoot(Player *player, Projectile *projectileArr){
   }
 }
 
-void playerADS(Player *player, Enemy *enemyArr){
+void playerADS(Player *player, Enemy *enemyArr, Tile *tileArr){
   if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
     if (!player->ads) {
         player->speed -= 80;
@@ -113,6 +113,17 @@ void playerADS(Player *player, Enemy *enemyArr){
         origin.x + direction.x * t,
         origin.y + direction.y * t
       };
+      for (int j = 0; j < MAXTILES; j++) {
+        if (tileArr[j].solid) {
+          Rectangle tileHitbox = { tileArr[j].pos.x, tileArr[j].pos.y, CELLSIZE, CELLSIZE };
+          if (CheckCollisionPointRec(point, tileHitbox)) {
+            hitPoint = point;
+            t = range;
+            DrawCircle(hitPoint.x, hitPoint.y, 3, RED);
+            break;
+          }
+        }
+      }
       for (int i = 0; i < MAXSPAWNENEMIES; i++) {
         if (enemyArr[i].active) {
           Rectangle enemyHitbox = {
@@ -161,11 +172,11 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tile){
 
 
 
-void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr){
+void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){
   drawPlayer(player, camera);
   updatePlayerAnimation(player);
   playerMovement(player);
   playerShoot(player, projectileArr);
-  playerADS(player, enemyArr);
+  playerADS(player, enemyArr, tileArr);
 }
 
