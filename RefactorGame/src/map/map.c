@@ -22,19 +22,19 @@ int getAmountOfTiles(){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < MAXTILES){
-    int id, posX, posY, active, solid;
-    sscanf(token, "%d{{%d,%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid);
+    int id, posX, posY, active, solid, playerSpawn;
+    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn);
     if(active == true){
       index++;
     }
     token = strtok(NULL, ";");
   }
-  printf("%d", index);
+  printf("\n%d\n", index);
   return index;
 }
 
 void importMap(Tile *tileArr){
- FILE *file = fopen("../RefactorGame/assets/map1.map", "r");
+ FILE *file = fopen("assets/map1.map", "r");
   if(file == NULL){
     printf("Failed to open map file");
     return;
@@ -50,17 +50,27 @@ void importMap(Tile *tileArr){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < AMOUNTOFTILES){
-    int id, posX, posY, active, solid;
-    sscanf(token, "%d{{%d,%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid);
+    int id, posX, posY, active, solid, playerSpawn;
+    sscanf(token, "%d{{%d,%d},{%d},{%d}, {%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn);
     tileArr[index].id = id;
     tileArr[index].pos.x = posX;
     tileArr[index].pos.y = posY;
     tileArr[index].active = active;
     tileArr[index].solid = solid;
+    tileArr[index].playerSpawn = playerSpawn;
     token = strtok(NULL, ";");
     index++;
   }
   printf("Imported Map successfully");
+}
+
+//spawning stuff 
+void spawnObjects(Tile *tileArr, Player *player){
+  for(int i = 0; i < AMOUNTOFTILES; i++){
+    if(tileArr[i].playerSpawn){
+      player->pos = tileArr[i].pos;
+    }
+  } 
 }
 
 void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr){

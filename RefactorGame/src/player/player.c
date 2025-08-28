@@ -2,11 +2,13 @@
 #include "weapon.h"
 #include "enemy.h"
 
+extern int AMOUNTOFTILES;
+
 float getRotationOfPlayer(Player *player, Camera2D *camera);
 
 Player createPlayer(TextureManager *textureManager){
   Player player;
-  player.pos = (Vector2){ 500, 500 };
+  player.pos = (Vector2){ 0, 0 };
   player.width = 50.0f; // make it smaller for the hitbox so its more forgiving
   player.height = 50.0f;
   player.rotation = 0.0f;
@@ -87,6 +89,7 @@ void playerShoot(Player *player, Projectile *projectileArr){
   }
 }
 
+//TODO: optimize this halves the FPS
 void playerADS(Player *player, Enemy *enemyArr, Tile *tileArr){
   if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
     if (!player->ads) {
@@ -113,7 +116,7 @@ void playerADS(Player *player, Enemy *enemyArr, Tile *tileArr){
         origin.x + direction.x * t,
         origin.y + direction.y * t
       };
-      for (int j = 0; j < MAXTILES; j++) {
+      for (int j = 0; j < AMOUNTOFTILES; j++) {
         if (tileArr[j].solid) {
           Rectangle tileHitbox = { tileArr[j].pos.x, tileArr[j].pos.y, CELLSIZE, CELLSIZE };
           if (CheckCollisionPointRec(point, tileHitbox)) {
@@ -170,8 +173,6 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tile){
     if (CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
 }
 
-
-
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){
   drawPlayer(player, camera);
   updatePlayerAnimation(player);
@@ -179,4 +180,3 @@ void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, E
   playerShoot(player, projectileArr);
   playerADS(player, enemyArr, tileArr);
 }
-

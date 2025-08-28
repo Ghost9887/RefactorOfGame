@@ -33,7 +33,7 @@ void checkReload(Weapon *weapon){
         weapon->reloadTimer = weapon->reloadTime;
         } else {
           weapon->reloadTimer -= GetFrameTime();
-          if (weapon->reloadTimer <= 0.0f) {
+          if (weapon->reloadTimer <= 0.01f) {
             int ammoToLoad = weapon->maxMagCapacity - weapon->magCapacity;
           if (weapon->reserveCapacity < ammoToLoad) {
             ammoToLoad = weapon->reserveCapacity;

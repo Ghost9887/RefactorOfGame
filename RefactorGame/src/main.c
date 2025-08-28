@@ -56,7 +56,6 @@ int main(){
 
   RoundManager roundManager = createRoundManager();
 
-
   AMOUNTOFTILES = getAmountOfTiles();
   Tile *tileArr = (Tile*)malloc(sizeof(Tile) * AMOUNTOFTILES);
   Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
@@ -69,7 +68,11 @@ int main(){
 
   //LOAD MAP******************************
   importMap(tileArr);
-  //        ******************************
+  //**************************************
+  
+  //SPAWN OBJECTS*************************
+  spawnObjects(tileArr, &player);
+  //**************************************
     
   while(!WindowShouldClose()){
 
@@ -102,7 +105,6 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
                      Tile *tileArr, Texture2D *tileTextureArr){
   
   //in order of drawing / operations
-  
   updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr);
 
   updateEnemies(enemyArr, player, roundManager, textureManager);

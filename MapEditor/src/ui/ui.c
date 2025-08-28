@@ -19,6 +19,9 @@ void drawUserMode(User *user){
   else if(user->mode == SOLID){
     DrawText("Solid", SCREENWIDTH - 150, 30, 40, BLUE);
   }
+  else if(user->mode == PLAYERSPAWN){
+    DrawText("PlayerSpawn", SCREENWIDTH - 300, 30, 40, BLUE);
+  }
 }
 
 void drawExportButton(Tile *tileArr){
@@ -43,7 +46,7 @@ void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
   
   int offset = SCREENHEIGHT - height;
 
-  for(int i = 0; i < AMOUNTOFTILETEXTURES; i++){
+  for(int i = 0; i < AMOUNTOFTILETEXTURES - 1; i++){
     Rectangle source = { 0, 0, CELLSIZE, CELLSIZE };
     Vector2 pos = { i * CELLSIZE, offset };
     DrawTextureRec(tileTextureArr[i], source, pos, WHITE);

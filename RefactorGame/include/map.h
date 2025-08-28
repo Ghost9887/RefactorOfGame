@@ -8,5 +8,6 @@
   int getAmountOfTiles();
   void importMap(Tile *tileArr);
   void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr);
+  void spawnObjects(Tile *tileArr, Player *player);
 
 #endif

@@ -40,16 +40,32 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
     //bit of a genius
     int posX = ((int)mousePos.x / CELLSIZE) * CELLSIZE;
     int posY = ((int)mousePos.y / CELLSIZE) * CELLSIZE;
+    if(user->mode == PAINT || user->mode == SOLID){
     for(int i = 0; i < MAXTILES; i++){
-      //getting a bit long maybe rethink my life
-      if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && 
-        mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI && tileExists(posX, posY, tileArr) == -1){
-        tileArr[i].id = user->textureId;
-        tileArr[i].pos.x = posX; 
-        tileArr[i].pos.y = posY;
-        tileArr[i].active = true;
-        tileArr[i].solid = (user->mode == SOLID);
-      break;      
+        //getting a bit long maybe rethink my life
+        if(!tileArr[i].active && mousePos.x >= 0 && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && 
+          mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI && tileExists(posX, posY, tileArr) == -1){
+          tileArr[i].id = user->textureId;
+          tileArr[i].pos.x = posX; 
+          tileArr[i].pos.y = posY;
+          tileArr[i].active = true;
+          tileArr[i].solid = (user->mode == SOLID);
+          tileArr[i].playerSpawn = false;
+        break;      
+        }
+      }
+    }
+    else if(user->mode == PLAYERSPAWN && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI){
+      int indexOfTile = tileExists(posX, posY, tileArr);
+      printf("%d", indexOfTile);
+      if(indexOfTile != -1){
+        if(!tileArr[indexOfTile].solid){
+          tileArr[indexOfTile].playerSpawn = true;
+        }
+        else{
+          //flash to warn that you cant place a palyer spawn there
+          DrawRectangle(tileArr[indexOfTile].pos.x, tileArr[indexOfTile].pos.y, CELLSIZE, CELLSIZE, RED);
+        }
       }
     }
   }
@@ -76,6 +92,9 @@ void drawTile(Tile *tileArr, Texture2D *tileTextureArr){
       if(tileArr[i].solid){
         //outline solid tiles
         DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
+      }
+      if(tileArr[i].playerSpawn){
+        DrawTexture(tileTextureArr[4], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
       }
       DrawText(TextFormat("%d", tileArr[i].id), tileArr[i].pos.x + CELLSIZE / 2, tileArr[i].pos.y + CELLSIZE / 2, 5, BLUE);
     }

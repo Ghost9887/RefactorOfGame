@@ -121,6 +121,7 @@ typedef struct{
   Vector2 pos;
   bool active;
   bool solid;
+  bool playerSpawn;
 }Tile;
 
 #endif

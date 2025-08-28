@@ -17,12 +17,13 @@
 #define ROWCOUNT 100
 
 //TILE CONSTANTS
-#define AMOUNTOFTILETEXTURES 4
+#define AMOUNTOFTILETEXTURES 5
 #define MAXTILES 10000
 
 //PLAYER CONSTANTS/ENUM
 #define PAINT 0 // tile can be walked through
 #define SOLID 1 // tile cannot be walked through
+#define PLAYERSPAWN 2
 
 typedef struct{
   Texture2D *selectedTexture;
@@ -36,6 +37,10 @@ typedef struct{
   Vector2 pos;
   bool active;
   bool solid; //cant walk through
+  //
+  //playerspawn attributes
+  bool playerSpawn;
+
 }Tile;
 
 typedef struct{
@@ -43,6 +48,7 @@ typedef struct{
   Texture2D tile2;
   Texture2D tile3;
   Texture2D tile4;
+  Texture2D player;
 }TextureManager;
 
 #endif

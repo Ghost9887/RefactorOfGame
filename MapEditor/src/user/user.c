@@ -12,5 +12,6 @@ User createUser(Texture2D *tileTextureArr){
 void switchMode(User *user){
   if(IsKeyPressed(KEY_ONE)) user->mode = PAINT;
   else if(IsKeyPressed(KEY_TWO)) user->mode = SOLID;
+  else if(IsKeyPressed(KEY_THREE)) user->mode = PLAYERSPAWN;
 }
 

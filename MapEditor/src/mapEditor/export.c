@@ -11,12 +11,13 @@ void exportMap(Tile *tileArr){
     return;
   }
   for(int i = 0; i < MAXTILES; i++){
-    fprintf(file, "%d{{%d, %d},{%d},{%d}}",
+    fprintf(file, "%d{{%d,%d},{%d},{%d},{%d}}",
     tileArr[i].id,
     (int)tileArr[i].pos.x,
     (int)tileArr[i].pos.y,
     tileArr[i].active,
-    tileArr[i].solid
+    tileArr[i].solid,
+    tileArr[i].playerSpawn
     );
     if(i < MAXTILES - 1){
       fprintf(file, ";");
@@ -42,13 +43,14 @@ void importMap(Tile *tileArr){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < MAXTILES){
-    int id, posX, posY, active, solid;
-    sscanf(token, "%d{{%d,%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid);
+    int id, posX, posY, active, solid, playerSpawn;
+    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn);
     tileArr[index].id = id;
     tileArr[index].pos.x = posX;
     tileArr[index].pos.y = posY;
     tileArr[index].active = active;
     tileArr[index].solid = solid;
+    tileArr[index].playerSpawn = playerSpawn;
     token = strtok(NULL, ";");
     index++;
   }

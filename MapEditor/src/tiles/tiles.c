@@ -6,6 +6,7 @@ void initTileArr(Tile *tileArr){
     tileArr[i].pos = (Vector2){ 0, 0 };
     tileArr[i].active = false;
     tileArr[i].solid = false;
+    tileArr[i].playerSpawn = false;
   }
 }
 
@@ -14,4 +15,5 @@ void initTileTextureArr(Texture2D *tileTextureArr, TextureManager *textureManage
   tileTextureArr[1] = textureManager->tile2;
   tileTextureArr[2] = textureManager->tile3;
   tileTextureArr[3] = textureManager->tile4;
+  tileTextureArr[4] = textureManager->player;
 }
