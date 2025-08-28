@@ -63,14 +63,19 @@ void importMap(Tile *tileArr){
   printf("Imported Map successfully");
 }
 
-void drawTiles(Tile *tileArr, Texture2D *tileTextureArr){
+void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr){
 for(int i = 0; i < AMOUNTOFTILES; i++){
     if(tileArr[i].active){
       DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+      //check for collision so here so we dont have to iterate through another loop
+      if(tileArr[i].solid){
+        checkPlayerCollisionWithTile(player, &tileArr[i]);
+        checkEnemyCollisionWithTile(enemyArr, &tileArr[i]);
+      }
     }
   }
 }
 
-void updateMap(Tile *tileArr, Texture2D *tileTextureArr){
-  drawTiles(tileArr, tileTextureArr);
+void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr){
+  drawTiles(tileArr, tileTextureArr, player, enemyArr);
 }

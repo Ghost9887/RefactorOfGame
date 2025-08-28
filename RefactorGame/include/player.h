@@ -4,7 +4,8 @@
 #include "common.h"
 #include "projectile.h"
 
-Player createPlayer(TextureManager *textureManager); 
-void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr);
-
+  Player createPlayer(TextureManager *textureManager); 
+  void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr);
+  void checkPlayerCollisionWithTile(Player *player, Tile *tile);
+  
 #endif

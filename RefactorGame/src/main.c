@@ -25,6 +25,7 @@ bool ENABLEPLAYERHITBOX = false;
 bool ENABLEENEMYHITBOX = false;
 bool ENABLESOLIDTILEHITBOX = false;
 
+
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr);
@@ -101,7 +102,8 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
                      Tile *tileArr, Texture2D *tileTextureArr){
   
   //in order of drawing / operations
-  updateMap(tileArr, tileTextureArr);
+  
+  updateMap(tileArr, tileTextureArr, player, enemyArr);
 
   updateEnemies(enemyArr, player, roundManager, textureManager);
 

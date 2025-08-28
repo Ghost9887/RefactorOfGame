@@ -63,6 +63,7 @@ typedef struct{
   float height;
   float rotation;
   float speed;
+  Vector2 velocity;
   int health;
   Texture2D *texture;
   Weapon *weapon;
@@ -79,6 +80,7 @@ typedef struct{
   float width;
   float height;
   float speed;
+  Vector2 velocity;
   int damage;
   int health;
   Texture2D *texture;

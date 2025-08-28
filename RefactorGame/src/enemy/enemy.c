@@ -8,6 +8,7 @@ bool checkIfEnemyCanAttack(Enemy *enemy);
 Enemy createEmptyEnemy(){
   Enemy enemy;
   enemy.pos = (Vector2){ 0, 0 };
+  enemy.velocity = (Vector2){ 0, 0 };
   enemy.width = 0;
   enemy.height = 0;
   enemy.speed = 0.0f;
@@ -59,11 +60,19 @@ void enemyMovement(Enemy *enemy, Player *player){
   float dx = player->pos.x - enemy->pos.x;
   float dy = player->pos.y - enemy->pos.y;
   float length = sqrtf(dx * dx + dy * dy);
+
   if (length < 0.1f) return;
+
   float dirX = dx / length;
   float dirY = dy / length;
-  enemy->pos.x += dirX * enemy->speed * deltaTime;
-  enemy->pos.y += dirY * enemy->speed * deltaTime;
+
+  //not sure how this works but it does took me 3 hours of trying so im leaving it for now 
+  enemy->pos.y += fabs(dirY) * enemy->velocity.y;
+  enemy->pos.x += fabs(dirX) * enemy->velocity.x;
+  if(dirX > 0) enemy->velocity.x = enemy->speed * deltaTime;
+  if(dirX < 0) enemy->velocity.x = -enemy->speed * deltaTime;
+  if(dirY > 0) enemy->velocity.y = enemy->speed * deltaTime;
+  if(dirY < 0) enemy->velocity.y = -enemy->speed * deltaTime;
 }
 
 void checkCollisionWithPlayer(Enemy *enemy, Player *player){
@@ -99,6 +108,33 @@ void destroyEnemy(Enemy *enemy){
 
 void checkIfEnemyIsDead(Enemy *enemy){
   if(enemy->health <= 0) destroyEnemy(enemy);
+}
+
+void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile){
+  Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
+  for(int i = 0; i < MAXSPAWNENEMIES; i++){
+    if(enemyArr[i].active){
+      Rectangle futureEnemyXRec = {
+        enemyArr[i].pos.x + enemyArr[i].velocity.x,
+        enemyArr[i].pos.y,
+        enemyArr[i].width,
+        enemyArr[i].height
+      };
+      if (CheckCollisionRecs(futureEnemyXRec, tileRec)){ 
+        enemyArr[i].velocity.x = 0.0f;
+      }
+      Rectangle futureEnemyYRec = {
+        enemyArr[i].pos.x,
+        enemyArr[i].pos.y + enemyArr[i].velocity.y,
+        enemyArr[i].width,
+        enemyArr[i].height
+      };
+      if (CheckCollisionRecs(futureEnemyYRec, tileRec)){ 
+        enemyArr[i].velocity.y = 0.0f;
+      }
+
+    }
+  }
 }
 
 void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager){

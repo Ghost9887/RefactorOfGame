@@ -11,6 +11,7 @@ Player createPlayer(TextureManager *textureManager){
   player.height = 64.0f;
   player.rotation = 0.0f;
   player.speed = 150.0f;
+  player.velocity = (Vector2){ 0, 0 };
   player.health = 100;
   player.texture = &textureManager->playerTexture;
   player.weapon;
@@ -35,11 +36,24 @@ void updatePlayerAnimation(Player *player){
 }
 
 void playerMovement(Player *player){
-  float deltaTime = GetFrameTime();
-  if (IsKeyDown(KEY_A)) player->pos.x -= player->speed * deltaTime;
-  if (IsKeyDown(KEY_D)) player->pos.x += player->speed * deltaTime;
-  if (IsKeyDown(KEY_W)) player->pos.y -= player->speed * deltaTime;
-  if (IsKeyDown(KEY_S)) player->pos.y += player->speed * deltaTime;
+    float deltaTime = GetFrameTime();
+
+    if (IsKeyDown(KEY_A)){
+      player->pos.x += player->velocity.x;
+      player->velocity.x = -player->speed * deltaTime;
+    }
+    if (IsKeyDown(KEY_D)){ 
+      player->pos.x += player->velocity.x;
+      player->velocity.x = player->speed *deltaTime;
+    }
+    if (IsKeyDown(KEY_W)){ 
+      player->pos.y += player->velocity.y;
+      player->velocity.y = -player->speed * deltaTime;
+    }
+    if (IsKeyDown(KEY_S)){ 
+      player->pos.y += player->velocity.y;
+      player->velocity.y = player->speed * deltaTime;
+    }
 }
 
 void drawPlayer(Player *player, Camera2D *camera){
@@ -126,6 +140,26 @@ void playerADS(Player *player, Enemy *enemyArr){
     }
   }
 }
+
+void checkPlayerCollisionWithTile(Player *player, Tile *tile){
+    Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
+    Rectangle futurePlayerXRec = {
+      player->pos.x + player->velocity.x,
+      player->pos.y,
+      player->width,
+      player->height
+    };
+    if (CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
+    Rectangle futurePlayerYRec = {
+      player->pos.x,
+      player->pos.y + player->velocity.y,
+      player->width,
+      player->height
+    };
+    if (CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
+}
+
+
 
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr){
   drawPlayer(player, camera);

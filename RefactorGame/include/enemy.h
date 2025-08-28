@@ -7,5 +7,6 @@
   void initEnemyArr(Enemy *enemyArr);
   void spawnEnemies(Enemy *enemyArr, TextureManager *textureManager, RoundManager *roundManager);
   void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager);
+  void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile);
 
 #endif
