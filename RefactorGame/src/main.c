@@ -48,8 +48,7 @@ int main(){
 
   RoundManager roundManager = createRoundManager();
 
-  //Tile tileArr[MAXTILES];
-  //malloc this because tile array big big
+
   AMOUNTOFTILES = getAmountOfTiles();
   Tile *tileArr = (Tile*)malloc(sizeof(Tile) * AMOUNTOFTILES);
   Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
@@ -81,7 +80,7 @@ int main(){
   }
   
   CloseWindow();
-
+  free(tileArr);
   return 0;
 }
 
