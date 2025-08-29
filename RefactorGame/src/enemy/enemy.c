@@ -100,14 +100,15 @@ bool checkIfEnemyCanAttack(Enemy *enemy){
   return false;
 }
 
-void destroyEnemy(Enemy *enemy){
+void destroyEnemy(Enemy *enemy, Player *player){
   enemy->active = false;
   enemy->speed = 0.0f;
+  player->money += 80;
   ALIVEENEMIES--;
 }
 
-void checkIfEnemyIsDead(Enemy *enemy){
-  if(enemy->health <= 0) destroyEnemy(enemy);
+void checkIfEnemyIsDead(Enemy *enemy, Player *player){
+  if(enemy->health <= 0) destroyEnemy(enemy, player);
 }
 
 void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile){
@@ -140,7 +141,7 @@ void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile){
 void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager){
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(enemyArr[i].active){
-      checkIfEnemyIsDead(&enemyArr[i]);
+      checkIfEnemyIsDead(&enemyArr[i], player);
       enemyMovement(&enemyArr[i], player);
       drawEnemy(&enemyArr[i]);
       updateAnimation(&enemyArr[i]);

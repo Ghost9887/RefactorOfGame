@@ -61,7 +61,7 @@ int main(){
   Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
   initTileArr(tileArr);
   initTileTextureArr(tileTextureArr, &textureManager);
-  
+
   Player player = createPlayer(&textureManager);
   player.weapon = &weaponArr[0];
   //****************************************************************************
@@ -73,6 +73,9 @@ int main(){
   //SPAWN OBJECTS*************************
   spawnObjects(tileArr, &player);
   //**************************************
+  
+  //Toggle Full Screen
+  ToggleFullscreen();
     
   while(!WindowShouldClose()){
 
@@ -117,7 +120,7 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
 
   updateCamera(camera, player);
 
-  updateProjectile(projectileArr, enemyArr);
+  updateProjectile(projectileArr, enemyArr, player);
 
 }
 

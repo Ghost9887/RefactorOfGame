@@ -19,6 +19,6 @@ Weapon createPistol(TextureManager *textureManager){
   pistol.texture = &textureManager->pistolTexture;
   pistol.fireRate = 0.2f;
   pistol.fireRateTimer = 0.0f;
-  pistol.frameRec = (Rectangle){ 0, 0, 32, 32 };
+  pistol.frameRec = (Rectangle){ 0, 0, pistol.width, pistol.height };
   return pistol;
 }

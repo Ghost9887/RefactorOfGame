@@ -14,6 +14,9 @@ void drawUI(Player *player, RoundManager *roundManager){
   //Draw Player Health
   DrawText(TextFormat("%d", player->health), 30, 30, 40, RED);
 
+  //Draw Player Money
+  DrawText(TextFormat("%d$", player->money), 30, 80, 30, BLACK);
+
   //Draw Ammo
   DrawText(TextFormat("%d / %d", player->weapon->magCapacity, player->weapon->reserveCapacity), 30, SCREENHEIGHT - 50, 30, BLACK);
 
@@ -25,9 +28,9 @@ void drawUI(Player *player, RoundManager *roundManager){
 
 
   //DEBUGGING
-  DrawText(TextFormat("Enemy count: %d", ENEMYCOUNT), 30, 80, 40, BLACK);
-  DrawText(TextFormat("Alive enemies: %d", ALIVEENEMIES), 30, 130, 40, BLACK);
-  DrawText(TextFormat("%d", roundManager->inBreak), 30, 180, 40, BLACK);
+  DrawText(TextFormat("Enemy count: %d", ENEMYCOUNT), 30, 130, 40, BLACK);
+  DrawText(TextFormat("Alive enemies: %d", ALIVEENEMIES), 30, 180, 40, BLACK);
+  DrawText(TextFormat("%d", roundManager->inBreak), 30, 230, 40, BLACK);
 }
 
 //copilot was here

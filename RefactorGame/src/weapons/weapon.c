@@ -63,6 +63,10 @@ bool checkIfWeaponCanShoot(Weapon *weapon){
   return false;
 }
 
+void switchWeapons(){
+  
+}
+
 //only take one because only one will always be active in the players hands
 void updateWeapons(Player *player){
   drawWeapon(player->weapon, player);

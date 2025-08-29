@@ -63,13 +63,15 @@ void destroyProjectile(Projectile *projectile){
   projectile->speed = 0.0f;
 }
 
-void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr){
+void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *player){
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(enemyArr[i].active){
       Rectangle enemyRect = { enemyArr[i].pos.x, enemyArr[i].pos.y, enemyArr[i].width, enemyArr[i].height };
       if(CheckCollisionPointRec(projectile->pos, enemyRect)){
         enemyArr[i].health -= projectile->damage;
         destroyProjectile(projectile);
+        //10 money for hit
+        player->money += 10;
         break;
       }
     }
@@ -87,7 +89,7 @@ void checkProjectileCollisionWithTile(Projectile *projectileArr, Tile *tile){
   }
 }
 
-void updateProjectile(Projectile *projectileArr, Enemy *enemyArr){
+void updateProjectile(Projectile *projectileArr, Enemy *enemyArr, Player *player){
   for(int i = 0; i < MAXPROJECTILES; i++){
     if(projectileArr[i].active){
       if(projectileArr[i].distanceTraveled >= projectileArr[i].range){
@@ -95,7 +97,7 @@ void updateProjectile(Projectile *projectileArr, Enemy *enemyArr){
       }
       drawProjectile(&projectileArr[i]);
       moveProjectile(&projectileArr[i]);
-      checkCollisionWithEnemy(&projectileArr[i], enemyArr);
+      checkCollisionWithEnemy(&projectileArr[i], enemyArr, player);
     }
   }
 }

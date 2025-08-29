@@ -8,8 +8,8 @@
 #include <stdlib.h>
 
 //game constants
-#define SCREENWIDTH 1200
-#define SCREENHEIGHT 800
+#define SCREENWIDTH (GetScreenWidth())
+#define SCREENHEIGHT (GetScreenHeight())
 #define TARGETFPS 0
 
 //enemy constants
@@ -30,11 +30,16 @@ typedef struct{
   Texture2D playerTexture;
   Texture2D basicEnemyTexture;
   Texture2D pistolTexture;
+  Texture2D arTexture;
   Texture2D tile1;
   Texture2D tile2;
   Texture2D tile3;
   Texture2D tile4;
 }TextureManager;
+
+typedef struct{
+  int playerMoney;
+}MoneyManager;
 
 typedef struct{
   Vector2 pos;
@@ -61,6 +66,7 @@ typedef struct{
   Vector2 pos;
   float width;
   float height;
+  int money;
   float rotation;
   float speed;
   Vector2 velocity;

@@ -31,6 +31,9 @@ int main(){
   //IMPORT THE MAP
   importMap(tileArr);
 
+  //Toggle Full Screen
+  ToggleFullscreen();
+
   while(!WindowShouldClose()){
     BeginDrawing();
 

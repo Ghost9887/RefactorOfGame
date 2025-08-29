@@ -11,6 +11,7 @@ Player createPlayer(TextureManager *textureManager){
   player.pos = (Vector2){ 0, 0 };
   player.width = 50.0f; // make it smaller for the hitbox so its more forgiving
   player.height = 50.0f;
+  player.money = 0;
   player.rotation = 0.0f;
   player.speed = 150.0f;
   player.velocity = (Vector2){ 0, 0 };

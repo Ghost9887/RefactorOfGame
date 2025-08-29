@@ -7,8 +7,8 @@
 #include <stdbool.h>
 
 //GLOBAL CONSTANTS
-#define SCREENWIDTH 1200
-#define SCREENHEIGHT 800
+#define SCREENWIDTH (GetScreenWidth())
+#define SCREENHEIGHT (GetScreenHeight())
 #define TARGETFPS 60
 
 //MAP CONSTANTS
