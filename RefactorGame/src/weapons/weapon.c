@@ -1,5 +1,27 @@
 #include "weapon.h"
 
+Weapon createEmptyWeapon(){
+  Weapon weapon;
+  weapon.id = -1;
+  weapon.pos = (Vector2){ 0, 0 };
+  weapon.width = 0.0f;
+  weapon.height = 0.0f;
+  weapon.damage = 0;
+  weapon.scale = 0.0f;
+  weapon.weaponCost = 0;
+  weapon.ammoCost = 0;
+  weapon.range = 0;
+  weapon.spread = 0.0f;
+  weapon.maxMagCapacity = 0;
+  weapon.maxReserveCapacity = 0;
+  weapon.magCapacity = 0;
+  weapon.reserveCapacity = 0;
+  weapon.reloadTime = 0.0f;
+  weapon.reloadTimer = 0.0f;
+  weapon.name = "";
+  return weapon;
+}
+
 void initWeaponArr(Weapon *weaponArr, TextureManager *textureManager){
   weaponArr[0] = createPistol(textureManager);
   weaponArr[1] = createAR(textureManager);
@@ -7,7 +29,8 @@ void initWeaponArr(Weapon *weaponArr, TextureManager *textureManager){
 
 void initWeaponHolster(Weapon *weaponHolster, Weapon *weaponArr){
   weaponHolster[0] = weaponArr[0];
-  weaponHolster[1] = weaponArr[1];
+  weaponHolster[1] = createEmptyWeapon();
+  weaponHolster[2] = createEmptyWeapon();
 }
 
 void drawWeapon(Weapon *weapon, Player *player){
@@ -68,12 +91,46 @@ bool checkIfWeaponCanShoot(Weapon *weapon){
   return false;
 }
 
+int checkIfWeaponIsInHolster(int id, Weapon *weaponHolster){
+  for(int i = 0; i < MAXWEAPONS; i++){
+    if(weaponHolster[i].id == id){
+      return i;
+    }
+  }
+  return -1;
+}
+
+int checkIfEmptySlotInHolster(Weapon *weaponHolster){
+  for(int i = 0; i < MAXWEAPONS; i++){
+    if(weaponHolster[i].id == -1){
+      return i;
+    }
+  }
+  return -1;
+}
+
+int findIndexOfWeaponHolster(Weapon *weaponHolster, Player *player){
+  for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+    if(player->weapon->id == weaponHolster[i].id){
+      return i;
+    }
+  }
+  return -1;
+}
+
+Weapon *findWeaponById(int id, Weapon *weaponArr){
+  return &weaponArr[id];
+}
+
 void switchWeapons(Weapon *weaponHolster, Player *player){
   if(IsKeyPressed(KEY_ONE)){
     player->weapon = &weaponHolster[0];
   }
-  else if(IsKeyPressed(KEY_TWO)){
+  else if(IsKeyPressed(KEY_TWO) && weaponHolster[1].id != -1){
     player->weapon = &weaponHolster[1];
+  }
+  else if(IsKeyPressed(KEY_THREE) && weaponHolster[2].id != -1){
+    player->weapon = &weaponHolster[2];
   }
 }
 

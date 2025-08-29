@@ -2,6 +2,7 @@
 
 Weapon createPistol(TextureManager *textureManager){
   Weapon pistol;
+  pistol.id = 0;
   pistol.pos = (Vector2){ 0, 0 };
   pistol.width = 32;
   pistol.height = 32;
@@ -11,6 +12,8 @@ Weapon createPistol(TextureManager *textureManager){
   pistol.projectileSpeed = 700.0f;
   pistol.range = 1000.0f;
   pistol.spread = 5.0f;
+  pistol.weaponCost = 50;
+  pistol.ammoCost = 10;
   pistol.maxMagCapacity = 1000;
   pistol.magCapacity = pistol.maxMagCapacity;
   pistol.maxReserveCapacity = 42;

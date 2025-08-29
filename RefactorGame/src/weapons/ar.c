@@ -2,6 +2,7 @@
 
 Weapon createAR(TextureManager *textureManager){
   Weapon ar;
+  ar.id = 1;
   ar.pos = (Vector2){ 0, 0 };
   ar.width = 32;
   ar.height = 32;
@@ -11,6 +12,8 @@ Weapon createAR(TextureManager *textureManager){
   ar.projectileSpeed = 500.0f;
   ar.range = 800.0f;
   ar.spread = 10.0f;
+  ar.weaponCost = 100;
+  ar.ammoCost = 10;
   ar.maxMagCapacity = 35;
   ar.magCapacity = ar.maxMagCapacity;
   ar.maxReserveCapacity = 175;

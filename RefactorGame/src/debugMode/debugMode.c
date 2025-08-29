@@ -4,6 +4,7 @@ extern bool DEBUGMODE;
 extern bool ENABLEPLAYERHITBOX;
 extern bool ENABLEENEMYHITBOX;
 extern bool ENABLESOLIDTILEHITBOX;
+extern bool ENABLEWEAPONBUYHITBOX;
 extern int AMOUNTOFTILES;
 
 void enableDebugMode(){
@@ -12,7 +13,7 @@ void enableDebugMode(){
   }
 }
 
-void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr){
+void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr){
   if(ENABLEPLAYERHITBOX){
     DrawRectangleLines(player->pos.x, player->pos.y, player->width, player->height, RED);
   }
@@ -30,9 +31,14 @@ void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr){
       }
     }
   }
+  if(ENABLEWEAPONBUYHITBOX){
+    for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+      DrawRectangleLines(weaponBuyArr[i].pos.x, weaponBuyArr[i].pos.y, weaponBuyArr[i].width, weaponBuyArr[i].height, RED);
+    }
+  }
 }
 
-void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr){
+void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr){
   enableDebugMode();
-  drawDebugStuff(player, enemyArr, tileArr);
+  drawDebugStuff(player, enemyArr, tileArr, weaponBuyArr);
 }

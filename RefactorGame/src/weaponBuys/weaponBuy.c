@@ -1,0 +1,75 @@
+#include "weaponBuy.h"
+
+WeaponBuy createWeaponBuy(Weapon *weaponArr, int id){
+  WeaponBuy weaponBuy;
+  weaponBuy.id = id;
+  weaponBuy.pos = (Vector2){ (id + 1) * 300, (id + 1) * 300 };
+  weaponBuy.width = 32;
+  weaponBuy.height = 32;
+  weaponBuy.scale = 1.0f;
+  weaponBuy.weapon = findWeaponById(id, weaponArr);
+  weaponBuy.frameRec = (Rectangle){ 0, 0, weaponBuy.width, weaponBuy.height };
+  return weaponBuy;
+}
+
+void initWeaponBuyArr(WeaponBuy *weaponBuyArr, Weapon *weaponArr){
+  for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+    weaponBuyArr[i] = createWeaponBuy(weaponArr, i);
+  }
+}
+
+void drawWeaponBuy(WeaponBuy *weaponBuy){
+  DrawTextureRec(*weaponBuy->weapon->texture, weaponBuy->frameRec, weaponBuy->pos, WHITE);
+}
+
+void drawWeaponBuyText(WeaponBuy *weaponBuy, Color colour, int price) {
+    DrawText(TextFormat("%s", weaponBuy->weapon->name), weaponBuy->pos.x, weaponBuy->pos.y - 50, 10, BLACK);
+    DrawText(TextFormat("%d", price), weaponBuy->pos.x, weaponBuy->pos.y - 30, 10, colour);
+}
+
+void buyWeaponBuy(WeaponBuy *weaponBuy, Weapon *weaponArr, Weapon *weaponHolster, Player *player) {
+  Rectangle playerRec = { player->pos.x, player->pos.y, player->width, player->height };
+  Rectangle weaponBuyRec = { weaponBuy->pos.x, weaponBuy->pos.y, weaponBuy->width, weaponBuy->height };
+  if(CheckCollisionRecs(playerRec, weaponBuyRec)){
+    //check if we have the weapon in our holster already
+    int indexOfWeaponInHolster = checkIfWeaponIsInHolster(weaponBuy->weapon->id, weaponHolster);
+    if(indexOfWeaponInHolster != -1){
+      if(player->money >= weaponBuy->weapon->ammoCost){
+        drawWeaponBuyText(weaponBuy, GREEN, weaponBuy->weapon->ammoCost);
+        if(weaponHolster[indexOfWeaponInHolster].reserveCapacity < weaponHolster[indexOfWeaponInHolster].maxReserveCapacity &&
+          IsKeyPressed(KEY_E)) {
+          weaponHolster[indexOfWeaponInHolster].reserveCapacity = weaponHolster[indexOfWeaponInHolster].maxReserveCapacity;
+          player->money -= weaponHolster[indexOfWeaponInHolster].ammoCost;
+        }
+      }else{
+        drawWeaponBuyText(weaponBuy, RED, weaponBuy->weapon->ammoCost);
+      }
+    }else{
+      Color colour = (player->money >= weaponBuy->weapon->weaponCost) ? GREEN : RED;
+      drawWeaponBuyText(weaponBuy, colour, weaponBuy->weapon->weaponCost);
+      if(player->money >= weaponBuy->weapon->weaponCost && IsKeyPressed(KEY_E)){
+        //check if we have a empty slot in our holster
+        int indexToPutInHolster = checkIfEmptySlotInHolster(weaponHolster);
+        if(indexToPutInHolster != -1){
+          weaponHolster[indexToPutInHolster] = *weaponBuy->weapon;
+          player->weapon = &weaponHolster[indexToPutInHolster];
+          player->money -= weaponBuy->weapon->weaponCost;
+        }else{
+          //otherwise replace our current weapon
+          int indexOfWeaponInHolster = findIndexOfWeaponHolster(weaponHolster, player);
+          weaponHolster[indexOfWeaponInHolster] = *weaponBuy->weapon;
+          *player->weapon = weaponHolster[indexOfWeaponInHolster];
+          player->money -= weaponBuy->weapon->weaponCost;
+        }
+      }
+    }
+  }
+}
+
+
+void updateWeaponBuy(WeaponBuy *weaponBuyArr, Weapon *weaponArr, Weapon *weaponHolster, Player *player){
+  for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+    drawWeaponBuy(&weaponBuyArr[i]);
+    buyWeaponBuy(&weaponBuyArr[i], weaponArr, weaponHolster, player);
+  }
+}

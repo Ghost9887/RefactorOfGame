@@ -43,6 +43,7 @@ typedef struct{
 }MoneyManager;
 
 typedef struct{
+  int id;
   Vector2 pos;
   float width;
   float height;
@@ -52,6 +53,8 @@ typedef struct{
   float projectileSpeed;
   float range;
   float spread;
+  int weaponCost;
+  int ammoCost;
   int maxMagCapacity;
   int magCapacity;
   int maxReserveCapacity;
@@ -64,6 +67,16 @@ typedef struct{
   Rectangle frameRec;
   char *name;
 }Weapon;
+
+typedef struct{
+  int id;
+  Vector2 pos;
+  int width;
+  int height;
+  float scale;
+  Weapon *weapon;
+  Rectangle frameRec;
+}WeaponBuy;
 
 typedef struct{
   Vector2 pos;
