@@ -10,6 +10,7 @@ Weapon createPistol(TextureManager *textureManager){
   pistol.damage = 100;
   pistol.projectileSpeed = 700.0f;
   pistol.range = 1000.0f;
+  pistol.spread = 5.0f;
   pistol.maxMagCapacity = 1000;
   pistol.magCapacity = pistol.maxMagCapacity;
   pistol.maxReserveCapacity = 42;
@@ -20,5 +21,6 @@ Weapon createPistol(TextureManager *textureManager){
   pistol.fireRate = 0.2f;
   pistol.fireRateTimer = 0.0f;
   pistol.frameRec = (Rectangle){ 0, 0, pistol.width, pistol.height };
+  pistol.name = "pistol";
   return pistol;
 }

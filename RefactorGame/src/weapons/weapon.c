@@ -1,8 +1,13 @@
 #include "weapon.h"
-#include "pistol.h"
 
 void initWeaponArr(Weapon *weaponArr, TextureManager *textureManager){
   weaponArr[0] = createPistol(textureManager);
+  weaponArr[1] = createAR(textureManager);
+}
+
+void initWeaponHolster(Weapon *weaponHolster, Weapon *weaponArr){
+  weaponHolster[0] = weaponArr[0];
+  weaponHolster[1] = weaponArr[1];
 }
 
 void drawWeapon(Weapon *weapon, Player *player){
@@ -63,13 +68,19 @@ bool checkIfWeaponCanShoot(Weapon *weapon){
   return false;
 }
 
-void switchWeapons(){
-  
+void switchWeapons(Weapon *weaponHolster, Player *player){
+  if(IsKeyPressed(KEY_ONE)){
+    player->weapon = &weaponHolster[0];
+  }
+  else if(IsKeyPressed(KEY_TWO)){
+    player->weapon = &weaponHolster[1];
+  }
 }
 
 //only take one because only one will always be active in the players hands
-void updateWeapons(Player *player){
+void updateWeapons(Player *player, Weapon *weaponHolster){
   drawWeapon(player->weapon, player);
   weaponCooldown(player->weapon);
   checkReload(player->weapon);
+  switchWeapons(weaponHolster, player);
 }

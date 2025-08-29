@@ -86,7 +86,8 @@ void playerShoot(Player *player, Projectile *projectileArr){
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && checkIfWeaponCanShoot(player->weapon)){
     player->weapon->fireRateTimer = player->weapon->fireRate;
     player->weapon->magCapacity -= 1;
-    createProjectile(projectileArr, player, 0);
+    float spread = (player->ads) ? 0 : GetRandomValue(-player->weapon->spread, player->weapon->spread);
+    createProjectile(projectileArr, player, spread);
   }
 }
 

@@ -19,7 +19,8 @@
 #define MAXPROJECTILES 100
 
 //weapon constants
-#define AMOUNTOFWEAPONS 1
+#define AMOUNTOFWEAPONS 2
+#define MAXWEAPONS 3 //max amount of weapons the player can have on him
 
 //tile constants
 #define MAXTILES 10000
@@ -50,6 +51,7 @@ typedef struct{
   int damage;
   float projectileSpeed;
   float range;
+  float spread;
   int maxMagCapacity;
   int magCapacity;
   int maxReserveCapacity;
@@ -60,6 +62,7 @@ typedef struct{
   float fireRate;
   float fireRateTimer;
   Rectangle frameRec;
+  char *name;
 }Weapon;
 
 typedef struct{

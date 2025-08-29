@@ -9,7 +9,8 @@ Weapon createAR(TextureManager *textureManager){
   ar.scale = 1.0f;
   ar.damage = 60;
   ar.projectileSpeed = 500.0f;
-  ar.range = 400.0f;
+  ar.range = 800.0f;
+  ar.spread = 10.0f;
   ar.maxMagCapacity = 35;
   ar.magCapacity = ar.maxMagCapacity;
   ar.maxReserveCapacity = 175;
@@ -17,8 +18,9 @@ Weapon createAR(TextureManager *textureManager){
   ar.reloadTime = 2.0f;
   ar.reloadTimer = 0.0f;
   ar.texture = &textureManager->arTexture;
-  ar.fireRate = 0.4;
+  ar.fireRate = 0.2;
   ar.fireRateTimer = 0.0f;
   ar.frameRec = (Rectangle){ 0, 0, ar.width, ar.height };
+  ar.name = "ar";
   return ar;
 }

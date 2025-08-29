@@ -28,7 +28,7 @@ bool ENABLESOLIDTILEHITBOX = false;
 
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
-                     Tile *tileArr, Texture2D *tileTextureArr);
+                     Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster);
 
 int main(){
   
@@ -50,6 +50,9 @@ int main(){
 
   Weapon weaponArr[AMOUNTOFWEAPONS];
   initWeaponArr(weaponArr, &textureManager);
+
+  Weapon weaponHolster[MAXWEAPONS];
+  initWeaponHolster(weaponHolster, weaponArr);
 
   Projectile projectileArr[MAXPROJECTILES];
   initProjectileArr(projectileArr);
@@ -85,7 +88,8 @@ int main(){
    
       BeginMode2D(camera);
         
-        updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager, &textureManager, tileArr, tileTextureArr);
+        updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager,
+                        &textureManager, tileArr, tileTextureArr, weaponHolster);
       
         updateDebugMode(&player, enemyArr, tileArr);
 
@@ -105,7 +109,7 @@ int main(){
 
 void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
-                     Tile *tileArr, Texture2D *tileTextureArr){
+                     Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster){
   
   //in order of drawing / operations
   updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr);
@@ -116,7 +120,7 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
   
   updatePlayer(player, camera, projectileArr, enemyArr, tileArr);
 
-  updateWeapons(player);
+  updateWeapons(player, weaponHolster);
 
   updateCamera(camera, player);
 
