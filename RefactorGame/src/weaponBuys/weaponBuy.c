@@ -22,11 +22,13 @@ void drawWeaponBuy(WeaponBuy *weaponBuy){
   DrawTextureRec(*weaponBuy->weapon->texture, weaponBuy->frameRec, weaponBuy->pos, WHITE);
 }
 
+//TODO: make it prettier
 void drawWeaponBuyText(WeaponBuy *weaponBuy, Color colour, int price) {
-    DrawText(TextFormat("%s", weaponBuy->weapon->name), weaponBuy->pos.x, weaponBuy->pos.y - 50, 10, BLACK);
-    DrawText(TextFormat("%d", price), weaponBuy->pos.x, weaponBuy->pos.y - 30, 10, colour);
+    DrawText(TextFormat("%s", weaponBuy->weapon->name), weaponBuy->pos.x, weaponBuy->pos.y - 50, 20, BLACK);
+    DrawText(TextFormat("%d", price), weaponBuy->pos.x, weaponBuy->pos.y - 30, 20, colour);
 }
 
+//TODO: check and maybe refactor brain was mush when wrighting this
 void buyWeaponBuy(WeaponBuy *weaponBuy, Weapon *weaponArr, Weapon *weaponHolster, Player *player) {
   Rectangle playerRec = { player->pos.x, player->pos.y, player->width, player->height };
   Rectangle weaponBuyRec = { weaponBuy->pos.x, weaponBuy->pos.y, weaponBuy->width, weaponBuy->height };
@@ -36,6 +38,7 @@ void buyWeaponBuy(WeaponBuy *weaponBuy, Weapon *weaponArr, Weapon *weaponHolster
     if(indexOfWeaponInHolster != -1){
       if(player->money >= weaponBuy->weapon->ammoCost){
         drawWeaponBuyText(weaponBuy, GREEN, weaponBuy->weapon->ammoCost);
+        //only buy ammo if we dont have max amount of ammo already
         if(weaponHolster[indexOfWeaponInHolster].reserveCapacity < weaponHolster[indexOfWeaponInHolster].maxReserveCapacity &&
           IsKeyPressed(KEY_E)) {
           weaponHolster[indexOfWeaponInHolster].reserveCapacity = weaponHolster[indexOfWeaponInHolster].maxReserveCapacity;
@@ -65,7 +68,6 @@ void buyWeaponBuy(WeaponBuy *weaponBuy, Weapon *weaponArr, Weapon *weaponHolster
     }
   }
 }
-
 
 void updateWeaponBuy(WeaponBuy *weaponBuyArr, Weapon *weaponArr, Weapon *weaponHolster, Player *player){
   for(int i = 0; i < AMOUNTOFWEAPONS; i++){

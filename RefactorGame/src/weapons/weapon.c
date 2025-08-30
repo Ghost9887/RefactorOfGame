@@ -110,7 +110,7 @@ int checkIfEmptySlotInHolster(Weapon *weaponHolster){
 }
 
 int findIndexOfWeaponHolster(Weapon *weaponHolster, Player *player){
-  for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+  for(int i = 0; i < MAXWEAPONS; i++){
     if(player->weapon->id == weaponHolster[i].id){
       return i;
     }
