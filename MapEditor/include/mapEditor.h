@@ -5,6 +5,6 @@
 #include "camera.h"
 #include "user.h"
 
-  void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr, User *user);
+  void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, User *user);
 
 #endif

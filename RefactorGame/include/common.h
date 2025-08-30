@@ -21,6 +21,7 @@
 //weapon constants
 #define AMOUNTOFWEAPONS 2
 #define MAXWEAPONS 3 //max amount of weapons the player can have on him
+#define MAXWEAPONBUYS 20
 
 //tile constants
 #define MAXTILES 10000
@@ -144,6 +145,8 @@ typedef struct{
   bool active;
   bool solid;
   bool playerSpawn;
+  bool weaponBuy;
+  int weaponIndex;
 }Tile;
 
 #endif

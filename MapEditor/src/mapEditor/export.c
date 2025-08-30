@@ -11,13 +11,15 @@ void exportMap(Tile *tileArr){
     return;
   }
   for(int i = 0; i < MAXTILES; i++){
-    fprintf(file, "%d{{%d,%d},{%d},{%d},{%d}}",
+    fprintf(file, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d}}",
     tileArr[i].id,
     (int)tileArr[i].pos.x,
     (int)tileArr[i].pos.y,
     tileArr[i].active,
     tileArr[i].solid,
-    tileArr[i].playerSpawn
+    tileArr[i].playerSpawn,
+    tileArr[i].weaponBuy,
+    tileArr[i].weaponIndex
     );
     if(i < MAXTILES - 1){
       fprintf(file, ";");
@@ -43,14 +45,16 @@ void importMap(Tile *tileArr){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < MAXTILES){
-    int id, posX, posY, active, solid, playerSpawn;
-    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn);
+    int id, posX, posY, active, solid, playerSpawn, weaponBuy, weaponIndex;
+    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn, &weaponBuy, &weaponIndex);
     tileArr[index].id = id;
     tileArr[index].pos.x = posX;
     tileArr[index].pos.y = posY;
     tileArr[index].active = active;
     tileArr[index].solid = solid;
     tileArr[index].playerSpawn = playerSpawn;
+    tileArr[index].weaponBuy = weaponBuy;
+    tileArr[index].weaponIndex = weaponIndex;
     token = strtok(NULL, ";");
     index++;
   }

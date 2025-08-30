@@ -20,10 +20,15 @@
 #define AMOUNTOFTILETEXTURES 5
 #define MAXTILES 10000
 
+//WEAPONBUYS
+#define AMOUNTOFWEAPONS 2
+#define MAXWEAPONSBUYS 100
+
 //PLAYER CONSTANTS/ENUM
 #define PAINT 0 // tile can be walked through
 #define SOLID 1 // tile cannot be walked through
 #define PLAYERSPAWN 2
+#define WEAPONBUY 3
 
 typedef struct{
   Texture2D *selectedTexture;
@@ -37,10 +42,13 @@ typedef struct{
   Vector2 pos;
   bool active;
   bool solid; //cant walk through
-  //
+  
   //playerspawn attributes
   bool playerSpawn;
 
+  //weaponBuy attributes
+  bool weaponBuy;
+  int weaponIndex;
 }Tile;
 
 typedef struct{
@@ -49,6 +57,8 @@ typedef struct{
   Texture2D tile3;
   Texture2D tile4;
   Texture2D player;
+  Texture2D pistol;
+  Texture2D ar;
 }TextureManager;
 
 #endif

@@ -21,8 +21,10 @@ int main(){
 
     Tile tileArr[MAXTILES];
     Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
+    Texture2D weaponTextureArr[AMOUNTOFWEAPONS];
     initTileArr(tileArr);
     initTileTextureArr(tileTextureArr, &textureManager);
+    initWeaponTextureArr(weaponTextureArr, &textureManager);
   
     User user;
     user = createUser(tileTextureArr);
@@ -41,7 +43,7 @@ int main(){
 
       ClearBackground(WHITE);
 
-      updateMapEditor(&camera, tileArr, tileTextureArr, &user);
+      updateMapEditor(&camera, tileArr, tileTextureArr, weaponTextureArr, &user);
 
       EndMode2D();
 

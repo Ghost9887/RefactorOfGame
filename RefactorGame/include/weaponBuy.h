@@ -5,7 +5,8 @@
 #include "weapon.h"
 #include "ui.h"
 
-  void initWeaponBuyArr(WeaponBuy *weaponBuyArr, Weapon *weaponArr);
+  void createWeaponBuy(WeaponBuy *weaponBuyArr, Weapon *weaponArr, int id, float x, float y);
+  void initWeaponBuyArr(WeaponBuy *weaponBuyArr);
   void updateWeaponBuy(WeaponBuy *weaponBuyArr, Weapon *weaponArr, Weapon *weaponHolster, Player *player);
 
 #endif

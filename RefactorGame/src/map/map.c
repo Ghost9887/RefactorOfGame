@@ -5,6 +5,9 @@
 #include <string.h>
 
 extern int AMOUNTOFTILES;
+extern int AMOUNTOFWEAPONBUYS;
+
+//TODO: theres a bug where if there arent any tiles around a playerSpawn the playerSpawn doesnt work
 
 int getAmountOfTiles(){
   FILE *file = fopen("../RefactorGame/assets/map1.map", "r");
@@ -22,8 +25,8 @@ int getAmountOfTiles(){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < MAXTILES){
-    int id, posX, posY, active, solid, playerSpawn;
-    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn);
+    int id, posX, posY, active, solid, playerSpawn, weaponBuy, weaponIndex;
+    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn, &weaponBuy, &weaponIndex);
     if(active == true){
       index++;
     }
@@ -50,14 +53,16 @@ void importMap(Tile *tileArr){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < AMOUNTOFTILES){
-    int id, posX, posY, active, solid, playerSpawn;
-    sscanf(token, "%d{{%d,%d},{%d},{%d}, {%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn);
+    int id, posX, posY, active, solid, playerSpawn, weaponBuy, weaponIndex;
+    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn, &weaponBuy, &weaponIndex);
     tileArr[index].id = id;
     tileArr[index].pos.x = posX;
     tileArr[index].pos.y = posY;
     tileArr[index].active = active;
     tileArr[index].solid = solid;
     tileArr[index].playerSpawn = playerSpawn;
+    tileArr[index].weaponBuy = weaponBuy;
+    tileArr[index].weaponIndex = weaponIndex;
     token = strtok(NULL, ";");
     index++;
   }
@@ -65,10 +70,14 @@ void importMap(Tile *tileArr){
 }
 
 //spawning stuff 
-void spawnObjects(Tile *tileArr, Player *player){
+void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *weaponBuyArr){
   for(int i = 0; i < AMOUNTOFTILES; i++){
     if(tileArr[i].playerSpawn){
       player->pos = tileArr[i].pos;
+    }
+    else if(tileArr[i].weaponBuy){
+      createWeaponBuy(weaponBuyArr, weaponArr, tileArr[i].weaponIndex, tileArr[i].pos.x, tileArr[i].pos.y);
+      AMOUNTOFWEAPONBUYS++;
     }
   } 
 }

@@ -6,6 +6,7 @@ extern bool ENABLEENEMYHITBOX;
 extern bool ENABLESOLIDTILEHITBOX;
 extern bool ENABLEWEAPONBUYHITBOX;
 extern int AMOUNTOFTILES;
+extern int AMOUNTOFWEAPONBUYS;
 
 void enableDebugMode(){
   if(IsKeyPressed(KEY_I)){
@@ -32,7 +33,7 @@ void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *w
     }
   }
   if(ENABLEWEAPONBUYHITBOX){
-    for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+    for(int i = 0; i < AMOUNTOFWEAPONBUYS; i++){
       DrawRectangleLines(weaponBuyArr[i].pos.x, weaponBuyArr[i].pos.y, weaponBuyArr[i].width, weaponBuyArr[i].height, RED);
     }
   }

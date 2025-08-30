@@ -124,12 +124,21 @@ Weapon *findWeaponById(int id, Weapon *weaponArr){
 
 void switchWeapons(Weapon *weaponHolster, Player *player){
   if(IsKeyPressed(KEY_ONE)){
+    if(player->weapon->reloadTimer > 0.0f){
+      player->weapon->reloadTimer = 0.0f;
+    }
     player->weapon = &weaponHolster[0];
   }
   else if(IsKeyPressed(KEY_TWO) && weaponHolster[1].id != -1){
+    if(player->weapon->reloadTimer > 0.0f){
+      player->weapon->reloadTimer = 0.0f;
+    }
     player->weapon = &weaponHolster[1];
   }
   else if(IsKeyPressed(KEY_THREE) && weaponHolster[2].id != -1){
+    if(player->weapon->reloadTimer > 0.0f){
+      player->weapon->reloadTimer = 0.0f;
+    }
     player->weapon = &weaponHolster[2];
   }
 }

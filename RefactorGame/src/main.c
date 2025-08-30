@@ -27,6 +27,9 @@ bool ENABLEENEMYHITBOX = false;
 bool ENABLESOLIDTILEHITBOX = false;
 bool ENABLEWEAPONBUYHITBOX = false;
 
+//weapon buys
+int AMOUNTOFWEAPONBUYS = 0;
+
 
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
@@ -57,8 +60,8 @@ int main(){
   Weapon weaponHolster[MAXWEAPONS];
   initWeaponHolster(weaponHolster, weaponArr);
 
-  WeaponBuy weaponBuyArr[AMOUNTOFWEAPONS];
-  initWeaponBuyArr(weaponBuyArr, weaponArr);
+  WeaponBuy weaponBuyArr[MAXWEAPONBUYS];
+  initWeaponBuyArr(weaponBuyArr);
   
   Projectile projectileArr[MAXPROJECTILES];
   initProjectileArr(projectileArr);
@@ -80,7 +83,7 @@ int main(){
   //**************************************
   
   //SPAWN OBJECTS*************************
-  spawnObjects(tileArr, &player);
+  spawnObjects(tileArr, &player, weaponArr, weaponBuyArr);
   //**************************************
   
   //Toggle Full Screen

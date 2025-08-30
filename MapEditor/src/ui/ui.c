@@ -22,6 +22,9 @@ void drawUserMode(User *user){
   else if(user->mode == PLAYERSPAWN){
     DrawText("PlayerSpawn", SCREENWIDTH - 300, 30, 40, BLUE);
   }
+  else if(user->mode == WEAPONBUY){
+    DrawText("WeaponBuy", SCREENWIDTH - 300, 30, 40, BLUE);
+  }
 }
 
 void drawExportButton(Tile *tileArr){
@@ -71,15 +74,55 @@ void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
   */
 }
 
+void drawWeaponBuyBar(User *user){
+  if(user->mode == WEAPONBUY){
+    DrawRectangle(SCREENWIDTH - 250, SCREENHEIGHT - 800 , 250, 600, BLUE);
+    DrawText("Weapons", SCREENWIDTH - 200, SCREENHEIGHT - 775, 30, BLACK);
+
+    int startY = SCREENHEIGHT - 700;
+    int spacing = 50;
+
+    Rectangle recArr[AMOUNTOFWEAPONS];
+    const char *weaponNames[AMOUNTOFWEAPONS] = { "pistol", "ar" };
+
+    for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+      int yPos = startY + i * spacing;
+      recArr[i] = (Rectangle){ SCREENWIDTH - 100, yPos - 5, 80, 30 };
+      DrawText(weaponNames[i], SCREENWIDTH - 240, yPos, 20, BLACK);
+      Color buttonColor = (user->textureId == i) ? GREEN : BLACK;
+      DrawRectangleRec(recArr[i], buttonColor);
+      DrawText("Select", SCREENWIDTH - 85, yPos, 20, WHITE);
+    }
+
+    // Check input
+    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+      Vector2 mousePos = GetMousePosition();
+      Rectangle mouseClick = { mousePos.x, mousePos.y, 1, 1 };
+      for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+        if(CheckCollisionRecs(recArr[i], mouseClick)){
+          user->textureId = i;
+        }
+      }
+    }
+  }
+}
+
+
 //fixes the bug where when selecting a texture it would instantly paint it under the rectangle 
 void userInteractingWithUI(User *user){
   Vector2 mousePos = GetMousePosition();
-  //bottom bar location
-  if(mousePos.y >= 600){
+
+  // Bottom bar location
+  if(mousePos.y >= SCREENWIDTH - 200){
     user->interactingWithUI = true;
-    }
-  //save button location fine for now just looks ugly
+  }
+  // Save button location
   else if(mousePos.y >= 10 && mousePos.y <= 40 && mousePos.x >= 10 && mousePos.x <= 80){
+    user->interactingWithUI = true;
+  }
+  // Weapon buy box area
+  else if(mousePos.x >= SCREENWIDTH - 250 && mousePos.x <= SCREENWIDTH &&
+          mousePos.y >= SCREENHEIGHT - 800 && mousePos.y <= SCREENHEIGHT - 200){
     user->interactingWithUI = true;
   }
   else{
@@ -87,8 +130,10 @@ void userInteractingWithUI(User *user){
   }
 }
 
+
 void updateUI(Texture2D *tileTextureArr, User *user, Tile *tileArr){
   drawTexturesToSelect(tileTextureArr, user);
+  drawWeaponBuyBar(user);
   drawUserMode(user);
   userInteractingWithUI(user);
   drawExportButton(tileArr);

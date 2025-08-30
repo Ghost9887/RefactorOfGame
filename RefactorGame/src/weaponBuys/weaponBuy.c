@@ -1,20 +1,34 @@
 #include "weaponBuy.h"
 
-WeaponBuy createWeaponBuy(Weapon *weaponArr, int id){
+extern int AMOUNTOFWEAPONBUYS;
+
+WeaponBuy createEmptyWeaponBuy(){
+  WeaponBuy weaponBuy;
+  weaponBuy.id = -1;
+  weaponBuy.pos = (Vector2){ 0, 0 };
+  weaponBuy.width = 32;
+  weaponBuy.height = 32;
+  weaponBuy.scale = 1.0f;
+  weaponBuy.weapon;
+  weaponBuy.frameRec = (Rectangle){ 0, 0, 32, 32 };
+  return weaponBuy;
+}
+
+void createWeaponBuy(WeaponBuy *weaponBuyArr, Weapon *weaponArr, int id, float x, float y){
   WeaponBuy weaponBuy;
   weaponBuy.id = id;
-  weaponBuy.pos = (Vector2){ (id + 1) * 300, (id + 1) * 300 };
+  weaponBuy.pos = (Vector2){ x, y };
   weaponBuy.width = 32;
   weaponBuy.height = 32;
   weaponBuy.scale = 1.0f;
   weaponBuy.weapon = findWeaponById(id, weaponArr);
   weaponBuy.frameRec = (Rectangle){ 0, 0, weaponBuy.width, weaponBuy.height };
-  return weaponBuy;
+  weaponBuyArr[AMOUNTOFWEAPONBUYS] = weaponBuy;
 }
 
-void initWeaponBuyArr(WeaponBuy *weaponBuyArr, Weapon *weaponArr){
-  for(int i = 0; i < AMOUNTOFWEAPONS; i++){
-    weaponBuyArr[i] = createWeaponBuy(weaponArr, i);
+void initWeaponBuyArr(WeaponBuy *weaponBuyArr){
+  for(int i = 0; i < MAXWEAPONBUYS; i++){
+    weaponBuyArr[i] = createEmptyWeaponBuy();   
   }
 }
 
@@ -70,7 +84,7 @@ void buyWeaponBuy(WeaponBuy *weaponBuy, Weapon *weaponArr, Weapon *weaponHolster
 }
 
 void updateWeaponBuy(WeaponBuy *weaponBuyArr, Weapon *weaponArr, Weapon *weaponHolster, Player *player){
-  for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+  for(int i = 0; i < AMOUNTOFWEAPONBUYS; i++){
     drawWeaponBuy(&weaponBuyArr[i]);
     buyWeaponBuy(&weaponBuyArr[i], weaponArr, weaponHolster, player);
   }
