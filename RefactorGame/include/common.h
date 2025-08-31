@@ -131,6 +131,7 @@ typedef struct{
   float size;
   float distanceTraveled;
   bool active;
+  char *type;
 }Projectile;
 
 typedef struct{

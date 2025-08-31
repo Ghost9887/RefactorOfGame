@@ -9,7 +9,7 @@ void addProjectileToArr(Projectile *projectileArr, Projectile *projectile){
   }
 }
 
-void createProjectile(Projectile *projectileArr, Player *player, float offset){
+void createProjectile(Projectile *projectileArr, Player *player, float offset, char *type){
     Projectile projectile;
 
     float angleDeg = player->weapon->rotation + offset;
@@ -26,6 +26,7 @@ void createProjectile(Projectile *projectileArr, Player *player, float offset){
     projectile.range = player->weapon->range;
     projectile.distanceTraveled = 0.0f + projectile.length;
     projectile.active = true;
+    projectile.type = type;
     addProjectileToArr(projectileArr, &projectile);
 }
 
@@ -68,15 +69,17 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *pl
     if(enemyArr[i].active){
       Rectangle enemyRect = { enemyArr[i].pos.x, enemyArr[i].pos.y, enemyArr[i].width, enemyArr[i].height };
       if(CheckCollisionPointRec(projectile->pos, enemyRect)){
-        if(strcmp(player->weapon->type, "explosive") == 0){
-          splashDamage(projectile, enemyArr, &enemyArr[i]);
+        if(strcmp(projectile->type, "ballistic") == 0){
+          enemyArr[i].health -= projectile->damage;
+          destroyProjectile(projectile);
+          player->money += 10;
+          break;
+        }
+        else if(strcmp(projectile->type, "explosive") == 0){
+          splashDamage(projectile, enemyArr, &enemyArr[i], player);
           destroyProjectile(projectile);
           break;
         }
-        enemyArr[i].health -= projectile->damage;
-        destroyProjectile(projectile);
-        player->money += 10;
-        break;
       }
     }
   }

@@ -87,7 +87,7 @@ void playerShoot(Player *player, Projectile *projectileArr){
     player->weapon->fireRateTimer = player->weapon->fireRate;
     player->weapon->magCapacity -= 1;
     float spread = (player->ads) ? 0 : GetRandomValue(-player->weapon->spread, player->weapon->spread);
-    createProjectile(projectileArr, player, spread);
+    createProjectile(projectileArr, player, spread, player->weapon->type);
   }
 }
 

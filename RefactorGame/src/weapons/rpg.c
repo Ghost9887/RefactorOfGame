@@ -29,7 +29,7 @@ Weapon createRPG(TextureManager *textureManager){
   return rpg;
 }
 
-void splashDamage(Projectile *projectile, Enemy *enemyArr, Enemy *enemy){
+void splashDamage(Projectile *projectile, Enemy *enemyArr, Enemy *enemy, Player *player){
   float posX = enemy->pos.x + enemy->width / 2.0f;
   float posY = enemy->pos.y + enemy->height / 2.0f;
   float damage = (float)projectile->damage;
@@ -40,7 +40,13 @@ void splashDamage(Projectile *projectile, Enemy *enemyArr, Enemy *enemy){
     float length = fabs(sqrtf(dx * dx + dy * dy));
     if (length <= radius) {
       float actualDamage = damage * (1.0f - (length / radius));
+      //TODO: money is inconsistent fix later
       enemyArr[i].health -= actualDamage;
+      if(enemyArr[i].health > 0){
+        player->money += 10;
+      }else{
+        player->money += 80;
+      }
     }
   }
   enemy->health -= damage;
