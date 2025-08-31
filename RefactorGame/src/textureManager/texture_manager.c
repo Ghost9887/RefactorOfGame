@@ -12,4 +12,6 @@ void loadAllTextures(TextureManager *textureManager){
   textureManager->tile4 = LoadTexture("assets/tiles/tile4.png");
   textureManager->ammoPickupTexture = LoadTexture("assets/pickups/ammo.png");
   textureManager->healthPickupTexture = LoadTexture("assets/pickups/health.png");
+  textureManager->healthPerkTexture = LoadTexture("assets/perks/health.png");
+  textureManager->speedPerkTexture = LoadTexture("assets/perks/speed.png");
 }

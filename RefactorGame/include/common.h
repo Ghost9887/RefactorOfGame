@@ -33,6 +33,10 @@
 #define MAXPICKUPS 15 
 #define AMOUNTOFPICKUPS 2
 
+//perk constants
+#define AMOUNTOFPERKS 2
+#define MAXPERKBUYS 20
+
 typedef struct{
   Texture2D playerTexture;
   Texture2D basicEnemyTexture;
@@ -45,6 +49,8 @@ typedef struct{
   Texture2D tile4;
   Texture2D ammoPickupTexture;
   Texture2D healthPickupTexture;
+  Texture2D healthPerkTexture;
+  Texture2D speedPerkTexture;
 }TextureManager;
 
 typedef struct{
@@ -87,6 +93,30 @@ typedef struct{
   Weapon *weapon;
   Rectangle frameRec;
 }WeaponBuy;
+
+typedef struct{
+  int id;
+  int data;
+  int cost;
+  char *name;
+  Texture2D *texture;
+}Perk;
+
+typedef struct{
+  int id;
+  Vector2 pos;
+  int width;
+  int height;
+  float scale;
+  int cost;
+  Perk *perk;
+  int amountOfFrames;
+  int currentFrame;
+  int frameTime;
+  int frameSpeed;
+  Rectangle frameRec;
+  bool consumed;
+}PerkBuy;
 
 typedef struct{
   Vector2 pos;
@@ -158,6 +188,8 @@ typedef struct{
   bool playerSpawn;
   bool weaponBuy;
   int weaponIndex;
+  bool perkBuy;
+  int perkIndex;
 }Tile;
 
 typedef struct{

@@ -1,0 +1,85 @@
+#include "perkBuy.h"
+
+extern int AMOUNTOFPERKBUYS;
+
+PerkBuy createEmptyPerkBuy(){
+  PerkBuy perkBuy;
+  perkBuy.id = -1;
+  perkBuy.pos = (Vector2){ 0, 0 };
+  perkBuy.width = 0;
+  perkBuy.height = 0;
+  perkBuy.scale = 0.0f;
+  perkBuy.perk;
+  perkBuy.amountOfFrames = 0;
+  perkBuy.currentFrame = 0;
+  perkBuy.frameTime = 0.0f;
+  perkBuy.frameSpeed = 0.0f;
+  perkBuy.frameRec = (Rectangle){ 0, 0, 0, 0 }; 
+}
+
+void createPerkBuy(PerkBuy *perkBuyArr, Perk *perkArr, int id, float x, float y){
+  PerkBuy perkBuy;
+  perkBuy.id = id;
+  perkBuy.pos = (Vector2){ x, y };
+  perkBuy.width = 32;
+  perkBuy.height = 32;
+  perkBuy.scale = 1.0f;
+  perkBuy.perk = findPerkById(id, perkArr);
+  perkBuy.cost = perkBuy.perk->cost;
+  perkBuy.amountOfFrames = 6;
+  perkBuy.currentFrame = 0;
+  perkBuy.frameTime = 0.0f;
+  perkBuy.frameSpeed = 0.3f;
+  perkBuy.frameRec = (Rectangle) { 0, 0, perkBuy.width, perkBuy.height };
+  perkBuy.consumed = false;
+  perkBuyArr[AMOUNTOFPERKBUYS] = perkBuy;
+}
+
+void initPerkBuyArr(PerkBuy *perkBuyArr){
+  for(int i = 0; i < MAXPERKBUYS; i++){
+    perkBuyArr[i] = createEmptyPerkBuy();
+  }
+}
+
+void drawPerkBuy(PerkBuy *perkBuy){
+  DrawTextureRec(*perkBuy->perk->texture, perkBuy->frameRec, perkBuy->pos, WHITE);
+}
+
+void drawTextPerkBuyRec(PerkBuy *perkBuy, Color colour){
+  DrawText(TextFormat("%s", perkBuy->perk->name), perkBuy->pos.x, perkBuy->pos.y - 50, 20, BLACK);
+  DrawText(TextFormat("%d", perkBuy->cost), perkBuy->pos.x, perkBuy->pos.y - 30, 20, colour);
+}
+
+
+void consumePerk(PerkBuy *perkBuy, Player *player){
+  if(perkBuy->consumed == false){
+    Rectangle perkBuyRec = { perkBuy->pos.x, perkBuy->pos.y, perkBuy->width, perkBuy->height };
+    Rectangle playerRec = { player->pos.x, player->pos.y, player->width, player->height };
+    if(CheckCollisionRecs(perkBuyRec, playerRec)){
+      if(player->money >= perkBuy->cost){
+        drawTextPerkBuyRec(perkBuy, GREEN);
+        if(IsKeyPressed(KEY_E)){
+          perkBuy->consumed = true;
+          if(strcmp(perkBuy->perk->name, "Health Perk") == 0){
+            player->maxHealth = perkBuy->perk->data;
+            player->health = player->maxHealth;
+          }
+          else if(strcmp(perkBuy->perk->name, "Speed Perk") == 0){
+            player->speed = perkBuy->perk->data;
+          }
+          player->money -= perkBuy->cost;
+        }
+      }else{
+        drawTextPerkBuyRec(perkBuy, RED);
+      }
+    }
+  }
+}
+
+void updatePerkBuys(PerkBuy *perkBuyArr, Player *player){
+  for(int i = 0; i < AMOUNTOFPERKBUYS; i++){
+    drawPerkBuy(&perkBuyArr[i]);
+    consumePerk(&perkBuyArr[i], player);
+  }
+}
+

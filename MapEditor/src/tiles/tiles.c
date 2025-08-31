@@ -25,3 +25,8 @@ void initWeaponTextureArr(Texture2D *weaponTextureArr, TextureManager *textureMa
   weaponTextureArr[1] = textureManager->ar;
   weaponTextureArr[2] = textureManager->rpg;
 }
+
+void initPerkTextureArr(Texture2D *perkTextureArr, TextureManager *textureManager){
+  perkTextureArr[0] = textureManager->healthPerk;
+  perkTextureArr[1] = textureManager->speedPerk;
+}

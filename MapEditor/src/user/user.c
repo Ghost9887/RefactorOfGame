@@ -14,5 +14,6 @@ void switchMode(User *user){
   else if(IsKeyPressed(KEY_TWO)) user->mode = SOLID;
   else if(IsKeyPressed(KEY_THREE)) user->mode = PLAYERSPAWN;
   else if(IsKeyPressed(KEY_FOUR)) user->mode = WEAPONBUY;
+  else if(IsKeyPressed(KEY_FIVE)) user->mode = PERKBUY;
 }
 

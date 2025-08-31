@@ -108,6 +108,39 @@ void drawWeaponBuyBar(User *user) {
   }
 }
 
+void drawPerkBuyBar(User *user){
+if (user->mode == PERKBUY) {
+    DrawRectangle(SCREENWIDTH - 250, SCREENHEIGHT - 800, 250, 600, BLUE);
+    DrawText("Perks", SCREENWIDTH - 200, SCREENHEIGHT - 775, 30, BLACK);
+
+    int startY = SCREENHEIGHT - 700;
+    int spacing = 50;
+
+    Rectangle recArr[AMOUNTOFPERKS];
+    const char *perkNames[AMOUNTOFPERKS] = { "health", "speed"};
+
+    for (int i = 0; i < AMOUNTOFPERKS; i++) {
+      int yPos = startY + i * spacing;
+      recArr[i] = (Rectangle){ SCREENWIDTH - 200, yPos - 5, 150, 30 };
+      Color buttonColor = (user->textureId == i) ? GREEN : DARKGRAY;
+      DrawRectangleRec(recArr[i], buttonColor);
+      int textWidth = MeasureText(perkNames[i], 20);
+      int textX = recArr[i].x + (recArr[i].width - textWidth) / 2;
+      int textY = yPos;
+      DrawText(perkNames[i], textX, textY, 20, WHITE);
+    }
+    // Check input
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+      Vector2 mousePos = GetMousePosition();
+      Rectangle mouseClick = { mousePos.x, mousePos.y, 1, 1 };
+      for (int i = 0; i < AMOUNTOFPERKS; i++) {
+        if (CheckCollisionRecs(recArr[i], mouseClick)) {
+          user->textureId = i;
+        }
+      }
+    }
+  }
+}
 
 
 //fixes the bug where when selecting a texture it would instantly paint it under the rectangle 
@@ -136,6 +169,7 @@ void userInteractingWithUI(User *user){
 void updateUI(Texture2D *tileTextureArr, User *user, Tile *tileArr){
   drawTexturesToSelect(tileTextureArr, user);
   drawWeaponBuyBar(user);
+  drawPerkBuyBar(user);
   drawUserMode(user);
   userInteractingWithUI(user);
   drawExportButton(tileArr);

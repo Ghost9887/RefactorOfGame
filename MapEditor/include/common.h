@@ -24,11 +24,16 @@
 #define AMOUNTOFWEAPONS 3
 #define MAXWEAPONSBUYS 100
 
+//PERKBUYS
+#define AMOUNTOFPERKS 2
+#define MAXPERKBUYS 20
+
 //PLAYER CONSTANTS/ENUM
 #define PAINT 0 // tile can be walked through
 #define SOLID 1 // tile cannot be walked through
 #define PLAYERSPAWN 2
 #define WEAPONBUY 3
+#define PERKBUY 4
 
 typedef struct{
   Texture2D *selectedTexture;
@@ -49,6 +54,10 @@ typedef struct{
   //weaponBuy attributes
   bool weaponBuy;
   int weaponIndex;
+
+  //perkBuy attributes
+  bool perkBuy;
+  int perkIndex;
 }Tile;
 
 typedef struct{
@@ -60,6 +69,8 @@ typedef struct{
   Texture2D pistol;
   Texture2D ar;
   Texture2D rpg;
+  Texture2D healthPerk;
+  Texture2D speedPerk;
 }TextureManager;
 
 #endif

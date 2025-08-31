@@ -12,6 +12,8 @@
 #include "debugMode.h"
 #include "weaponBuy.h"
 #include "pickup.h"
+#include "perk.h"
+#include "perkBuy.h"
 
 //GLOBAL VARIABLES
 //ENEMY
@@ -31,11 +33,13 @@ bool ENABLEWEAPONBUYHITBOX = false;
 //weapon buys
 int AMOUNTOFWEAPONBUYS = 0;
 
+//perk buys
+int AMOUNTOFPERKBUYS = 0;
 
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr, Pickup *pickupArr);
+                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr);
 
 int main(){
   
@@ -78,6 +82,12 @@ int main(){
   Pickup pickupArr[MAXPICKUPS];
   initPickupArr(pickupArr);
 
+  Perk perkArr[AMOUNTOFPERKS];
+  initPerkArr(perkArr, &textureManager);
+
+  PerkBuy perkBuyArr[MAXPERKBUYS];
+  initPerkBuyArr(perkBuyArr);
+
   Player player = createPlayer(&textureManager);
   player.weapon = &weaponHolster[0];
   //****************************************************************************
@@ -87,7 +97,7 @@ int main(){
   //**************************************
   
   //SPAWN OBJECTS*************************
-  spawnObjects(tileArr, &player, weaponArr, weaponBuyArr);
+  spawnObjects(tileArr, &player, weaponArr, weaponBuyArr, perkArr, perkBuyArr);
   //**************************************
   
   //Toggle Full Screen
@@ -103,7 +113,7 @@ int main(){
         
         updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager,
                         &textureManager, tileArr, tileTextureArr, weaponHolster, weaponBuyArr,
-                        weaponArr, pickupArr);
+                        weaponArr, pickupArr, perkBuyArr);
       
         updateDebugMode(&player, enemyArr, tileArr, weaponBuyArr);
 
@@ -124,7 +134,7 @@ int main(){
 void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr, Pickup *pickupArr){
+                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr){
   
   //in order of drawing / operations
   updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr);
@@ -140,6 +150,8 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
   updateWeaponBuy(weaponBuyArr, weaponArr, weaponHolster, player);
 
   updatePickups(pickupArr, player);
+
+  updatePerkBuys(perkBuyArr, player);
 
   updateCamera(camera, player);
 

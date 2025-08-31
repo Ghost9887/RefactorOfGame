@@ -6,6 +6,7 @@
 
 extern int AMOUNTOFTILES;
 extern int AMOUNTOFWEAPONBUYS;
+extern int AMOUNTOFPERKBUYS;
 
 //TODO: theres a bug where if there arent any tiles around a playerSpawn the playerSpawn doesnt work
 
@@ -25,8 +26,9 @@ int getAmountOfTiles(){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < MAXTILES){
-    int id, posX, posY, active, solid, playerSpawn, weaponBuy, weaponIndex;
-    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn, &weaponBuy, &weaponIndex);
+    int id, posX, posY, active, solid, playerSpawn, weaponBuy, weaponIndex, perkBuy, perkIndex;
+    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, 
+           &playerSpawn, &weaponBuy, &weaponIndex, &perkBuy, &perkIndex);
     if(active == true){
       index++;
     }
@@ -53,8 +55,9 @@ void importMap(Tile *tileArr){
   char *token = strtok(buffer, ";");
   int index = 0;
   while(token != NULL && index < AMOUNTOFTILES){
-    int id, posX, posY, active, solid, playerSpawn, weaponBuy, weaponIndex;
-    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, &playerSpawn, &weaponBuy, &weaponIndex);
+    int id, posX, posY, active, solid, playerSpawn, weaponBuy, weaponIndex, perkBuy, perkIndex;
+    sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d}{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, 
+           &playerSpawn, &weaponBuy, &weaponIndex, &perkBuy, &perkIndex);
     tileArr[index].id = id;
     tileArr[index].pos.x = posX;
     tileArr[index].pos.y = posY;
@@ -63,6 +66,8 @@ void importMap(Tile *tileArr){
     tileArr[index].playerSpawn = playerSpawn;
     tileArr[index].weaponBuy = weaponBuy;
     tileArr[index].weaponIndex = weaponIndex;
+    tileArr[index].perkBuy = perkBuy;
+    tileArr[index].perkIndex = perkIndex;
     token = strtok(NULL, ";");
     index++;
   }
@@ -70,7 +75,7 @@ void importMap(Tile *tileArr){
 }
 
 //spawning stuff 
-void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *weaponBuyArr){
+void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *weaponBuyArr, Perk *perkArr, PerkBuy *perkBuyArr){
   for(int i = 0; i < AMOUNTOFTILES; i++){
     if(tileArr[i].playerSpawn){
       player->pos = tileArr[i].pos;
@@ -78,6 +83,10 @@ void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *w
     else if(tileArr[i].weaponBuy){
       createWeaponBuy(weaponBuyArr, weaponArr, tileArr[i].weaponIndex, tileArr[i].pos.x, tileArr[i].pos.y);
       AMOUNTOFWEAPONBUYS++;
+    }
+    else if(tileArr[i].perkBuy){
+      createPerkBuy(perkBuyArr, perkArr, tileArr[i].perkIndex, tileArr[i].pos.x, tileArr[i].pos.y);
+      AMOUNTOFPERKBUYS++;
     }
   } 
 }

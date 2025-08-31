@@ -22,9 +22,11 @@ int main(){
     Tile tileArr[MAXTILES];
     Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
     Texture2D weaponTextureArr[AMOUNTOFWEAPONS];
+    Texture2D perkTextureArr[AMOUNTOFPERKS];
     initTileArr(tileArr);
     initTileTextureArr(tileTextureArr, &textureManager);
     initWeaponTextureArr(weaponTextureArr, &textureManager);
+    initPerkTextureArr(perkTextureArr, &textureManager);
   
     User user;
     user = createUser(tileTextureArr);
@@ -43,7 +45,7 @@ int main(){
 
       ClearBackground(WHITE);
 
-      updateMapEditor(&camera, tileArr, tileTextureArr, weaponTextureArr, &user);
+      updateMapEditor(&camera, tileArr, tileTextureArr, weaponTextureArr, perkTextureArr, &user);
 
       EndMode2D();
 

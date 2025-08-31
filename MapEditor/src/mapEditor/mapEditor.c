@@ -33,6 +33,7 @@ int tileExists(int x, int y, Tile *tileArr){
   return -1;
 }
 
+//TODO: remove the weapon textuer arr dont need it
 void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, Camera2D *camera, User *user){
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_LEFT_SHIFT)){
     Vector2 mousePos =  GetScreenToWorld2D(GetMousePosition(), *camera);
@@ -53,6 +54,8 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextur
           tileArr[i].playerSpawn = false;
           tileArr[i].weaponBuy = false;
           tileArr[i].weaponIndex = -1;
+          tileArr[i].perkBuy = false;
+          tileArr[i].perkIndex = -1;
         break;      
         }
       }
@@ -73,12 +76,21 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextur
     else if(user->mode == WEAPONBUY && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI){
       int indexOfTile = tileExists(posX, posY, tileArr);
       if(indexOfTile != -1){
-        if(!tileArr[indexOfTile].solid && !tileArr[indexOfTile].playerSpawn){
+        if(!tileArr[indexOfTile].solid && !tileArr[indexOfTile].playerSpawn && !tileArr[indexOfTile].perkBuy){
           tileArr[indexOfTile].weaponBuy = true;
           tileArr[indexOfTile].weaponIndex = user->textureId;
         }
       }
       printf("Tile Data: id:%d, weaponBuy: %d, weaponIndex: %d\n", tileArr[indexOfTile].id, tileArr[indexOfTile].weaponBuy, tileArr[indexOfTile].weaponIndex);
+    }
+    else if(user->mode == PERKBUY  && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI){
+      int indexOfTile = tileExists(posX, posY, tileArr);
+      if(indexOfTile != -1){
+        if(!tileArr[indexOfTile].solid && !tileArr[indexOfTile].playerSpawn && !tileArr[indexOfTile].weaponBuy){
+          tileArr[indexOfTile].perkBuy = true;
+          tileArr[indexOfTile].perkIndex = user->textureId;
+        }
+      }
     }
   }
 }
@@ -97,7 +109,7 @@ void deleteTile(Tile *tileArr, Camera2D *camera){
   }
 }
 
-void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr){
+void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, Texture2D *perkTextureArr){
   for(int i = 0; i < MAXTILES; i++){
     if(tileArr[i].active){
       DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
@@ -113,17 +125,21 @@ void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTexture
         Rectangle rec = { 0, 0, 32, 32 };
         DrawTextureRec(weaponTextureArr[tileArr[i].weaponIndex], rec, tileArr[i].pos, WHITE);
       }
+      if(tileArr[i].perkBuy){
+        Rectangle rec = { 0, 0, 32, 32 };
+        DrawTextureRec(perkTextureArr[tileArr[i].perkIndex], rec, tileArr[i].pos, WHITE);
+      }
       DrawText(TextFormat("%d", tileArr[i].id), tileArr[i].pos.x + CELLSIZE / 2, tileArr[i].pos.y + CELLSIZE / 2, 5, BLUE);
     }
   }
 }
 
-void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, User *user){
+void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr,Texture2D *weaponTextureArr, Texture2D *perkTextureArr, User *user){
   cameraMovement(camera);
   drawGrid();
   placeTile(tileArr, tileTextureArr, weaponTextureArr, camera, user);
   deleteTile(tileArr, camera);
-  drawTile(tileArr, tileTextureArr, weaponTextureArr);
+  drawTile(tileArr, tileTextureArr, weaponTextureArr, perkTextureArr);
   switchMode(user);
 }
 
