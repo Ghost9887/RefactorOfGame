@@ -74,9 +74,9 @@ void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
   */
 }
 
-void drawWeaponBuyBar(User *user){
-  if(user->mode == WEAPONBUY){
-    DrawRectangle(SCREENWIDTH - 250, SCREENHEIGHT - 800 , 250, 600, BLUE);
+void drawWeaponBuyBar(User *user) {
+  if (user->mode == WEAPONBUY) {
+    DrawRectangle(SCREENWIDTH - 250, SCREENHEIGHT - 800, 250, 600, BLUE);
     DrawText("Weapons", SCREENWIDTH - 200, SCREENHEIGHT - 775, 30, BLACK);
 
     int startY = SCREENHEIGHT - 700;
@@ -85,27 +85,29 @@ void drawWeaponBuyBar(User *user){
     Rectangle recArr[AMOUNTOFWEAPONS];
     const char *weaponNames[AMOUNTOFWEAPONS] = { "pistol", "ar" };
 
-    for(int i = 0; i < AMOUNTOFWEAPONS; i++){
+    for (int i = 0; i < AMOUNTOFWEAPONS; i++) {
       int yPos = startY + i * spacing;
-      recArr[i] = (Rectangle){ SCREENWIDTH - 100, yPos - 5, 80, 30 };
-      DrawText(weaponNames[i], SCREENWIDTH - 240, yPos, 20, BLACK);
-      Color buttonColor = (user->textureId == i) ? GREEN : BLACK;
+      recArr[i] = (Rectangle){ SCREENWIDTH - 200, yPos - 5, 150, 30 };
+      Color buttonColor = (user->textureId == i) ? GREEN : DARKGRAY;
       DrawRectangleRec(recArr[i], buttonColor);
-      DrawText("Select", SCREENWIDTH - 85, yPos, 20, WHITE);
+      int textWidth = MeasureText(weaponNames[i], 20);
+      int textX = recArr[i].x + (recArr[i].width - textWidth) / 2;
+      int textY = yPos;
+      DrawText(weaponNames[i], textX, textY, 20, WHITE);
     }
-
     // Check input
-    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       Vector2 mousePos = GetMousePosition();
       Rectangle mouseClick = { mousePos.x, mousePos.y, 1, 1 };
-      for(int i = 0; i < AMOUNTOFWEAPONS; i++){
-        if(CheckCollisionRecs(recArr[i], mouseClick)){
+      for (int i = 0; i < AMOUNTOFWEAPONS; i++) {
+        if (CheckCollisionRecs(recArr[i], mouseClick)) {
           user->textureId = i;
         }
       }
     }
   }
 }
+
 
 
 //fixes the bug where when selecting a texture it would instantly paint it under the rectangle 
