@@ -4,6 +4,7 @@
 #include "common.h"
 #include "pistol.h"
 #include "ar.h"
+#include "rpg.h"
   
   void initWeaponArr(Weapon *weaponArr, TextureManager *textureManager);
   void initWeaponHolster(Weapon *weaponHolster, Weapon *weaponArr);

@@ -68,9 +68,13 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *pl
     if(enemyArr[i].active){
       Rectangle enemyRect = { enemyArr[i].pos.x, enemyArr[i].pos.y, enemyArr[i].width, enemyArr[i].height };
       if(CheckCollisionPointRec(projectile->pos, enemyRect)){
+        if(strcmp(player->weapon->type, "explosive") == 0){
+          splashDamage(projectile, enemyArr, &enemyArr[i]);
+          destroyProjectile(projectile);
+          break;
+        }
         enemyArr[i].health -= projectile->damage;
         destroyProjectile(projectile);
-        //10 money for hit
         player->money += 10;
         break;
       }

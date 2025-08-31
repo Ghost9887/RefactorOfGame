@@ -9,5 +9,6 @@ void loadAllTextures(TextureManager *textureManager){
   textureManager->player = LoadTexture("../RefactorGame/assets/tiles/player.png");
   textureManager->pistol = LoadTexture("../RefactorGame/assets/tiles/pistol.png");
   textureManager->ar = LoadTexture("../RefactorGame/assets/tiles/ar.png");
+  textureManager->rpg = LoadTexture("../RefactorGame/assets/tiles/rpg.png");
 }
 

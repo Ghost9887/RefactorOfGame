@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 //game constants
 #define SCREENWIDTH (GetScreenWidth())
@@ -19,7 +20,7 @@
 #define MAXPROJECTILES 100
 
 //weapon constants
-#define AMOUNTOFWEAPONS 2
+#define AMOUNTOFWEAPONS 3
 #define MAXWEAPONS 3 //max amount of weapons the player can have on him
 #define MAXWEAPONBUYS 20
 
@@ -33,6 +34,7 @@ typedef struct{
   Texture2D basicEnemyTexture;
   Texture2D pistolTexture;
   Texture2D arTexture;
+  Texture2D rpgTexture;
   Texture2D tile1;
   Texture2D tile2;
   Texture2D tile3;
@@ -67,6 +69,7 @@ typedef struct{
   float fireRateTimer;
   Rectangle frameRec;
   char *name;
+  char *type;
 }Weapon;
 
 typedef struct{

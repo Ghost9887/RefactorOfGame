@@ -25,5 +25,6 @@ Weapon createAR(TextureManager *textureManager){
   ar.fireRateTimer = 0.0f;
   ar.frameRec = (Rectangle){ 0, 0, ar.width, ar.height };
   ar.name = "ar";
+  ar.type = "ballistic";
   return ar;
 }

@@ -25,5 +25,6 @@ Weapon createPistol(TextureManager *textureManager){
   pistol.fireRateTimer = 0.0f;
   pistol.frameRec = (Rectangle){ 0, 0, pistol.width, pistol.height };
   pistol.name = "pistol";
+  pistol.type = "ballistic";
   return pistol;
 }

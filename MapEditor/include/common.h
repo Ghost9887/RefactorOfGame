@@ -21,7 +21,7 @@
 #define MAXTILES 10000
 
 //WEAPONBUYS
-#define AMOUNTOFWEAPONS 2
+#define AMOUNTOFWEAPONS 3
 #define MAXWEAPONSBUYS 100
 
 //PLAYER CONSTANTS/ENUM
@@ -59,6 +59,7 @@ typedef struct{
   Texture2D player;
   Texture2D pistol;
   Texture2D ar;
+  Texture2D rpg;
 }TextureManager;
 
 #endif

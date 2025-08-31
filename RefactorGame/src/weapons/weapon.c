@@ -25,6 +25,7 @@ Weapon createEmptyWeapon(){
 void initWeaponArr(Weapon *weaponArr, TextureManager *textureManager){
   weaponArr[0] = createPistol(textureManager);
   weaponArr[1] = createAR(textureManager);
+  weaponArr[2] = createRPG(textureManager);
 }
 
 void initWeaponHolster(Weapon *weaponHolster, Weapon *weaponArr){

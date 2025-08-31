@@ -2,6 +2,7 @@
 #define PROJECTILE_H
 
 #include "common.h"
+#include "rpg.h"
 
   void createProjectile(Projectile *projectileArr, Player *player, float offset);
   void initProjectileArr(Projectile *projectileArr);

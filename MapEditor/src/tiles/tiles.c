@@ -23,4 +23,5 @@ void initTileTextureArr(Texture2D *tileTextureArr, TextureManager *textureManage
 void initWeaponTextureArr(Texture2D *weaponTextureArr, TextureManager *textureManager){
   weaponTextureArr[0] = textureManager->pistol;
   weaponTextureArr[1] = textureManager->ar;
+  weaponTextureArr[2] = textureManager->rpg;
 }
