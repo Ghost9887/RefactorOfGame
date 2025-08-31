@@ -100,15 +100,31 @@ bool checkIfEnemyCanAttack(Enemy *enemy){
   return false;
 }
 
-void destroyEnemy(Enemy *enemy, Player *player){
+void destroyEnemy(Enemy *enemy, Player *player, Pickup *pickupArr, TextureManager *textureManager){
+  //chance to spawn a pickup
+  int randNumber = GetRandomValue(1, 6);
+  if(randNumber == 5){
+    int pickupNumber = GetRandomValue(1, AMOUNTOFPICKUPS);
+    switch(pickupNumber){
+      case 1: 
+        spawnPickup(pickupArr, "ammo", enemy, player, textureManager);
+        break;
+      case 2:
+        spawnPickup(pickupArr, "health", enemy, player, textureManager);
+        break;
+      default:
+        break;
+    }
+  }
+
   enemy->active = false;
   enemy->speed = 0.0f;
   player->money += 80;
   ALIVEENEMIES--;
 }
 
-void checkIfEnemyIsDead(Enemy *enemy, Player *player){
-  if(enemy->health <= 0) destroyEnemy(enemy, player);
+void checkIfEnemyIsDead(Enemy *enemy, Player *player, Pickup *pickupArr, TextureManager *textureManager){
+  if(enemy->health <= 0) destroyEnemy(enemy, player, pickupArr, textureManager);
 }
 
 void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile){
@@ -138,10 +154,10 @@ void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile){
   }
 }
 
-void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager){
+void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager, Pickup *pickupArr){
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(enemyArr[i].active){
-      checkIfEnemyIsDead(&enemyArr[i], player);
+      checkIfEnemyIsDead(&enemyArr[i], player, pickupArr, textureManager);
       enemyMovement(&enemyArr[i], player);
       drawEnemy(&enemyArr[i]);
       updateAnimation(&enemyArr[i]);

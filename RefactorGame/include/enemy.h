@@ -3,10 +3,11 @@
 
 #include "common.h"
 #include "basic_enemy.h"
+#include "pickup.h"
   
   void initEnemyArr(Enemy *enemyArr);
   void spawnEnemies(Enemy *enemyArr, TextureManager *textureManager, RoundManager *roundManager);
-  void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager);
+  void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager, Pickup *pickupArr);
   void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile);
 
 #endif

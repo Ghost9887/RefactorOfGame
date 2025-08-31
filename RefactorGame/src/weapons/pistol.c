@@ -7,7 +7,7 @@ Weapon createPistol(TextureManager *textureManager){
   pistol.width = 32;
   pistol.height = 32;
   pistol.rotation = 0.0f;
-  pistol.scale = 1.0f;
+  pistol.scale = 0.7f;
   pistol.damage = 100;
   pistol.projectileSpeed = 700.0f;
   pistol.range = 1000.0f;

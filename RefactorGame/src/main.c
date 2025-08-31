@@ -11,6 +11,7 @@
 #include "map.h"
 #include "debugMode.h"
 #include "weaponBuy.h"
+#include "pickup.h"
 
 //GLOBAL VARIABLES
 //ENEMY
@@ -34,7 +35,7 @@ int AMOUNTOFWEAPONBUYS = 0;
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr);
+                     Weapon *weaponArr, Pickup *pickupArr);
 
 int main(){
   
@@ -74,6 +75,9 @@ int main(){
   initTileArr(tileArr);
   initTileTextureArr(tileTextureArr, &textureManager);
 
+  Pickup pickupArr[MAXPICKUPS];
+  initPickupArr(pickupArr);
+
   Player player = createPlayer(&textureManager);
   player.weapon = &weaponHolster[0];
   //****************************************************************************
@@ -99,7 +103,7 @@ int main(){
         
         updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager,
                         &textureManager, tileArr, tileTextureArr, weaponHolster, weaponBuyArr,
-                        weaponArr);
+                        weaponArr, pickupArr);
       
         updateDebugMode(&player, enemyArr, tileArr, weaponBuyArr);
 
@@ -120,12 +124,12 @@ int main(){
 void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr){
+                     Weapon *weaponArr, Pickup *pickupArr){
   
   //in order of drawing / operations
   updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr);
 
-  updateEnemies(enemyArr, player, roundManager, textureManager);
+  updateEnemies(enemyArr, player, roundManager, textureManager, pickupArr);
 
   updateRoundManager(roundManager);
   
@@ -134,6 +138,8 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
   updateWeapons(player, weaponHolster);
 
   updateWeaponBuy(weaponBuyArr, weaponArr, weaponHolster, player);
+
+  updatePickups(pickupArr, player);
 
   updateCamera(camera, player);
 

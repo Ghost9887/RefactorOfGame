@@ -16,6 +16,7 @@ Player createPlayer(TextureManager *textureManager){
   player.speed = 150.0f;
   player.velocity = (Vector2){ 0, 0 };
   player.health = 100;
+  player.maxHealth = 100;
   player.texture = &textureManager->playerTexture;
   player.weapon;
   player.ads = false;

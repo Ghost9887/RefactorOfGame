@@ -10,4 +10,6 @@ void loadAllTextures(TextureManager *textureManager){
   textureManager->tile2 = LoadTexture("assets/tiles/tile2.png");
   textureManager->tile3 = LoadTexture("assets/tiles/tile3.png");
   textureManager->tile4 = LoadTexture("assets/tiles/tile4.png");
+  textureManager->ammoPickupTexture = LoadTexture("assets/pickups/ammo.png");
+  textureManager->healthPickupTexture = LoadTexture("assets/pickups/health.png");
 }

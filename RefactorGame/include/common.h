@@ -29,6 +29,10 @@
 #define AMOUNTOFTILETEXTURES 4
 #define CELLSIZE 32 // size of a tile 
 
+//pickup constants
+#define MAXPICKUPS 15 
+#define AMOUNTOFPICKUPS 2
+
 typedef struct{
   Texture2D playerTexture;
   Texture2D basicEnemyTexture;
@@ -39,6 +43,8 @@ typedef struct{
   Texture2D tile2;
   Texture2D tile3;
   Texture2D tile4;
+  Texture2D ammoPickupTexture;
+  Texture2D healthPickupTexture;
 }TextureManager;
 
 typedef struct{
@@ -91,6 +97,7 @@ typedef struct{
   float speed;
   Vector2 velocity;
   int health;
+  int maxHealth;
   Texture2D *texture;
   Weapon *weapon;
   bool ads;
@@ -152,5 +159,20 @@ typedef struct{
   bool weaponBuy;
   int weaponIndex;
 }Tile;
+
+typedef struct{
+  Vector2 pos;
+  int data;
+  float durationTime;
+  float durationTimer;
+  bool active;
+  Texture2D *texture;
+  int amountOfFrames;
+  int currentFrame;
+  float frameTime;
+  float frameSpeed;
+  Rectangle frameRec;
+  char *type;
+}Pickup;
 
 #endif
