@@ -35,7 +35,7 @@ void updatePlayerAnimation(Player *player){
       player->frameTime = 0.0f;
       player->currentFrame++;
       if (player->currentFrame > player->amountOfFrames) player->currentFrame = 0;
-      player->frameRec.y = (float)player->currentFrame * player->frameRec.width;
+      player->frameRec.y = (float)player->currentFrame * player->frameRec.height;
   }
 }
 

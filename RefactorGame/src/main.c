@@ -29,6 +29,7 @@ bool ENABLEPLAYERHITBOX = false;
 bool ENABLEENEMYHITBOX = false;
 bool ENABLESOLIDTILEHITBOX = false;
 bool ENABLEWEAPONBUYHITBOX = false;
+bool ENABLEPERKBUYHITBOX = false;
 
 //weapon buys
 int AMOUNTOFWEAPONBUYS = 0;
@@ -115,7 +116,7 @@ int main(){
                         &textureManager, tileArr, tileTextureArr, weaponHolster, weaponBuyArr,
                         weaponArr, pickupArr, perkBuyArr);
       
-        updateDebugMode(&player, enemyArr, tileArr, weaponBuyArr);
+        updateDebugMode(&player, enemyArr, tileArr, weaponBuyArr, perkBuyArr);
 
       EndMode2D();
           

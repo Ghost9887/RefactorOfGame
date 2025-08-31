@@ -4,6 +4,6 @@
 #include "common.h"
 #include "ui.h"
 
-  void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr);
+  void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr, PerkBuy *perkBuyArr);
 
 #endif

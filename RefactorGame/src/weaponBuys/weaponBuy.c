@@ -33,7 +33,11 @@ void initWeaponBuyArr(WeaponBuy *weaponBuyArr){
 }
 
 void drawWeaponBuy(WeaponBuy *weaponBuy){
-  DrawTextureRec(*weaponBuy->weapon->texture, weaponBuy->frameRec, weaponBuy->pos, WHITE);
+  Rectangle source = { 0, 0, weaponBuy->width, weaponBuy->height };
+  Rectangle destRec = { weaponBuy->pos.x, weaponBuy->pos.y, weaponBuy->width * weaponBuy->scale, weaponBuy->height * weaponBuy->scale };
+  Vector2 origin = { 0, 0 };
+  float rotation = 0.0f;
+  DrawTexturePro(*weaponBuy->weapon->texture, source, destRec, origin, rotation, WHITE);
 }
 
 //TODO: make it prettier

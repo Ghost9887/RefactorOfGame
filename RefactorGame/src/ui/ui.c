@@ -7,6 +7,7 @@ extern bool ENABLEPLAYERHITBOX;
 extern bool ENABLEENEMYHITBOX;
 extern bool ENABLESOLIDTILEHITBOX;
 extern bool ENABLEWEAPONBUYHITBOX;
+extern bool ENABLEPERKBUYHITBOX;
 
 void drawUI(Player *player, RoundManager *roundManager){
   //Draw FPS
@@ -52,16 +53,19 @@ void drawUIForDebugMode() {
     Rectangle enemyButtonRec = { startX, startY + (buttonHeight + spacing), buttonWidth, buttonHeight };
     Rectangle tileButtonRec   = { startX, startY + 2 * (buttonHeight + spacing), buttonWidth, buttonHeight };
     Rectangle weaponBuyButtonRec = { startX, startY + 3 * (buttonHeight + spacing), buttonWidth, buttonHeight };
+    Rectangle perkBuyButtonRec = { startX, startY + 4 * (buttonHeight + spacing), buttonWidth, buttonHeight };
 
     DrawText("Player Hitbox:", labelX, playerButtonRec.y, 20, BLACK);
     DrawText("Enemy Hitbox:", labelX, enemyButtonRec.y, 20, BLACK);
     DrawText("Solid Tile Hitbox:", labelX, tileButtonRec.y, 20, BLACK);
     DrawText("Weapon buy Hitbox:", labelX, weaponBuyButtonRec.y, 20, BLACK);
+    DrawText("Perk Buy Hitbox: ", labelX, perkBuyButtonRec.y, 20, BLACK);
 
     DrawRectangleRec(playerButtonRec, ENABLEPLAYERHITBOX ? GREEN : WHITE);
     DrawRectangleRec(enemyButtonRec, ENABLEENEMYHITBOX ? GREEN : WHITE);
     DrawRectangleRec(tileButtonRec, ENABLESOLIDTILEHITBOX ? GREEN : WHITE);
     DrawRectangleRec(weaponBuyButtonRec, ENABLEWEAPONBUYHITBOX ? GREEN : WHITE);
+    DrawRectangleRec(perkBuyButtonRec, ENABLEPERKBUYHITBOX ? GREEN : WHITE);
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Vector2 mousePos = GetMousePosition();
@@ -75,6 +79,8 @@ void drawUIForDebugMode() {
             ENABLESOLIDTILEHITBOX = !ENABLESOLIDTILEHITBOX;
         } else if (CheckCollisionRecs(weaponBuyButtonRec, mouseClick)) {
             ENABLEWEAPONBUYHITBOX = !ENABLEWEAPONBUYHITBOX;
+        } else if(CheckCollisionRecs(perkBuyButtonRec, mouseClick)) {
+          ENABLEPERKBUYHITBOX = !ENABLEPERKBUYHITBOX;
       }
     }
   }else{

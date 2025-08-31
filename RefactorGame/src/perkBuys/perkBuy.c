@@ -15,6 +15,7 @@ PerkBuy createEmptyPerkBuy(){
   perkBuy.frameTime = 0.0f;
   perkBuy.frameSpeed = 0.0f;
   perkBuy.frameRec = (Rectangle){ 0, 0, 0, 0 }; 
+  return perkBuy;
 }
 
 void createPerkBuy(PerkBuy *perkBuyArr, Perk *perkArr, int id, float x, float y){
@@ -23,7 +24,7 @@ void createPerkBuy(PerkBuy *perkBuyArr, Perk *perkArr, int id, float x, float y)
   perkBuy.pos = (Vector2){ x, y };
   perkBuy.width = 32;
   perkBuy.height = 32;
-  perkBuy.scale = 1.0f;
+  perkBuy.scale = 2.0f;
   perkBuy.perk = findPerkById(id, perkArr);
   perkBuy.cost = perkBuy.perk->cost;
   perkBuy.amountOfFrames = 6;
@@ -42,7 +43,22 @@ void initPerkBuyArr(PerkBuy *perkBuyArr){
 }
 
 void drawPerkBuy(PerkBuy *perkBuy){
-  DrawTextureRec(*perkBuy->perk->texture, perkBuy->frameRec, perkBuy->pos, WHITE);
+  Rectangle source = perkBuy->frameRec;
+  Rectangle destRec = { perkBuy->pos.x, perkBuy->pos.y, perkBuy->width * perkBuy->scale, perkBuy->height * perkBuy->scale };
+  Vector2 origin = { 0, 0 };
+  float rotation = 0.0f;
+  DrawTexturePro(*perkBuy->perk->texture, source, destRec, origin, rotation, WHITE);
+}
+
+//TODO: animation is too fast for some reason fix later
+void updateAnimationPerkBuy(PerkBuy *perkBuy){
+  perkBuy->frameTime += GetFrameTime();
+  if (perkBuy->frameTime >= perkBuy->frameSpeed) {
+    perkBuy->frameTime = 0.0f;
+    perkBuy->currentFrame++;
+    if (perkBuy->currentFrame > perkBuy->amountOfFrames) perkBuy->currentFrame = 0;
+    perkBuy->frameRec.y = (float)perkBuy->currentFrame * perkBuy->height;
+  } 
 }
 
 void drawTextPerkBuyRec(PerkBuy *perkBuy, Color colour){
@@ -53,7 +69,7 @@ void drawTextPerkBuyRec(PerkBuy *perkBuy, Color colour){
 
 void consumePerk(PerkBuy *perkBuy, Player *player){
   if(perkBuy->consumed == false){
-    Rectangle perkBuyRec = { perkBuy->pos.x, perkBuy->pos.y, perkBuy->width, perkBuy->height };
+    Rectangle perkBuyRec = { perkBuy->pos.x, perkBuy->pos.y, perkBuy->width * perkBuy->scale, perkBuy->height *perkBuy->scale };
     Rectangle playerRec = { player->pos.x, player->pos.y, player->width, player->height };
     if(CheckCollisionRecs(perkBuyRec, playerRec)){
       if(player->money >= perkBuy->cost){
@@ -79,7 +95,7 @@ void consumePerk(PerkBuy *perkBuy, Player *player){
 void updatePerkBuys(PerkBuy *perkBuyArr, Player *player){
   for(int i = 0; i < AMOUNTOFPERKBUYS; i++){
     drawPerkBuy(&perkBuyArr[i]);
+    updateAnimationPerkBuy(&perkBuyArr[i]);
     consumePerk(&perkBuyArr[i], player);
   }
 }
-

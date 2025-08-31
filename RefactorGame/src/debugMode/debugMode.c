@@ -5,8 +5,10 @@ extern bool ENABLEPLAYERHITBOX;
 extern bool ENABLEENEMYHITBOX;
 extern bool ENABLESOLIDTILEHITBOX;
 extern bool ENABLEWEAPONBUYHITBOX;
+extern bool ENABLEPERKBUYHITBOX;
 extern int AMOUNTOFTILES;
 extern int AMOUNTOFWEAPONBUYS;
+extern int AMOUNTOFPERKBUYS;
 
 void enableDebugMode(){
   if(IsKeyPressed(KEY_I)){
@@ -14,7 +16,7 @@ void enableDebugMode(){
   }
 }
 
-void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr){
+void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr, PerkBuy *perkBuyArr){
   if(ENABLEPLAYERHITBOX){
     DrawRectangleLines(player->pos.x, player->pos.y, player->width, player->height, RED);
   }
@@ -37,9 +39,14 @@ void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *w
       DrawRectangleLines(weaponBuyArr[i].pos.x, weaponBuyArr[i].pos.y, weaponBuyArr[i].width, weaponBuyArr[i].height, RED);
     }
   }
+  if(ENABLEPERKBUYHITBOX){
+    for(int i = 0; i < AMOUNTOFPERKBUYS; i++){
+      DrawRectangleLines(perkBuyArr[i].pos.x, perkBuyArr[i].pos.y, perkBuyArr[i].width * perkBuyArr[i].scale, perkBuyArr[i].height * perkBuyArr[i].scale, RED);
+    }
+  }
 }
 
-void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr){
+void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr, PerkBuy *perkBuyArr){
   enableDebugMode();
-  drawDebugStuff(player, enemyArr, tileArr, weaponBuyArr);
+  drawDebugStuff(player, enemyArr, tileArr, weaponBuyArr, perkBuyArr);
 }
