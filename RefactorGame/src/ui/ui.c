@@ -37,6 +37,7 @@ void drawUI(Player *player, RoundManager *roundManager){
 //copilot was here
 void drawUIForDebugMode() {
   if(DEBUGMODE){
+    ShowCursor();
     DrawRectangle(SCREENWIDTH - 200, 0, SCREENWIDTH, SCREENHEIGHT, BLUE);
     DrawText("Debug Panel", SCREENWIDTH - 180, 30, 25, BLACK);
 
@@ -76,6 +77,8 @@ void drawUIForDebugMode() {
             ENABLEWEAPONBUYHITBOX = !ENABLEWEAPONBUYHITBOX;
       }
     }
+  }else{
+    HideCursor();
   }
 }
 
