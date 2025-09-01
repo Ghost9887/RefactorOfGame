@@ -156,7 +156,7 @@ void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr,
 
   updateCamera(camera, player);
 
-  updateProjectile(projectileArr, enemyArr, player);
+  updateProjectile(projectileArr, enemyArr, player, tileArr);
 
 }
 

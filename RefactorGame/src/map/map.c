@@ -99,7 +99,7 @@ for(int i = 0; i < AMOUNTOFTILES; i++){
       if(tileArr[i].solid){
         checkPlayerCollisionWithTile(player, &tileArr[i]);
         checkEnemyCollisionWithTile(enemyArr, &tileArr[i]);
-        checkProjectileCollisionWithTile(projectileArr, &tileArr[i]);
+        checkProjectileCollisionWithTile(projectileArr, &tileArr[i], enemyArr, player, tileArr);
       }
     }
   }

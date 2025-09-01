@@ -64,7 +64,7 @@ void destroyProjectile(Projectile *projectile){
   projectile->speed = 0.0f;
 }
 
-void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *player){
+void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *player, Tile *tileArr){
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(enemyArr[i].active){
       Rectangle enemyRect = { enemyArr[i].pos.x, enemyArr[i].pos.y, enemyArr[i].width, enemyArr[i].height };
@@ -76,7 +76,7 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *pl
           break;
         }
         else if(strcmp(projectile->type, "explosive") == 0){
-          splashDamage(projectile, enemyArr, &enemyArr[i], player);
+          splashDamage(projectile, enemyArr, player, tileArr);
           destroyProjectile(projectile);
           break;
         }
@@ -86,18 +86,22 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *pl
 }
 
 //TODO: add splashDamage
-void checkProjectileCollisionWithTile(Projectile *projectileArr, Tile *tile){
+void checkProjectileCollisionWithTile(Projectile *projectileArr, Tile *tile, Enemy *enemyArr, Player *player, Tile *tileArr){
   Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
   for(int i = 0; i < MAXPROJECTILES; i++){
     if(projectileArr[i].active){
       if(CheckCollisionPointRec(projectileArr[i].pos, tileRec)){
+        if(strcmp(projectileArr[i].type, "explosive") == 0){
+          splashDamage(&projectileArr[i], enemyArr, player, tileArr);
+          destroyProjectile(&projectileArr[i]);
+        }
         destroyProjectile(&projectileArr[i]);
       }
     }
   }
 }
 
-void updateProjectile(Projectile *projectileArr, Enemy *enemyArr, Player *player){
+void updateProjectile(Projectile *projectileArr, Enemy *enemyArr, Player *player, Tile *tileArr){
   for(int i = 0; i < MAXPROJECTILES; i++){
     if(projectileArr[i].active){
       if(projectileArr[i].distanceTraveled >= projectileArr[i].range){
@@ -105,7 +109,7 @@ void updateProjectile(Projectile *projectileArr, Enemy *enemyArr, Player *player
       }
       drawProjectile(&projectileArr[i]);
       moveProjectile(&projectileArr[i]);
-      checkCollisionWithEnemy(&projectileArr[i], enemyArr, player);
+      checkCollisionWithEnemy(&projectileArr[i], enemyArr, player, tileArr);
     }
   }
 }

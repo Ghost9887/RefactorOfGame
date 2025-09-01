@@ -6,7 +6,7 @@
 
   void createProjectile(Projectile *projectileArr, Player *player, float offset, char *type);
   void initProjectileArr(Projectile *projectileArr);
-  void updateProjectile(Projectile *projectileArr, Enemy *enemyArr, Player *player);
-  void checkProjectileCollisionWithTile(Projectile *projectileArr, Tile *tile);
+  void updateProjectile(Projectile *projectileArr, Enemy *enemyArr, Player *player, Tile *tileArr);
+  void checkProjectileCollisionWithTile(Projectile *projectileArr, Tile *tile, Enemy *enemyArr, Player *player, Tile *tileArr);
 
 #endif

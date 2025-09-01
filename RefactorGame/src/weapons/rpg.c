@@ -1,5 +1,7 @@
 #include "rpg.h"
 
+extern int AMOUNTOFTILES;
+
 Weapon createRPG(TextureManager *textureManager){
   Weapon rpg;
   rpg.id = 2;
@@ -29,29 +31,42 @@ Weapon createRPG(TextureManager *textureManager){
   return rpg;
 }
 
-void splashDamage(Projectile *projectile, Enemy *enemyArr, Enemy *enemy, Player *player){
-  float posX = enemy->pos.x + enemy->width / 2.0f;
-  float posY = enemy->pos.y + enemy->height / 2.0f;
+//defenitely not effecient but works for now
+bool hasLineOfSight(Vector2 from, Vector2 to, Tile *tileArr) {
+  for (int i = 0; i < AMOUNTOFTILES; i++) {
+    Rectangle tileRec = { tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE };
+    //maybe??
+    Rectangle line = { from.x, from.y, to.x, to.y };
+    if (tileArr[i].solid && CheckCollisionRecs(line, tileRec)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+void splashDamage(Projectile *projectile, Enemy *enemyArr, Player *player, Tile *tileArr){
+  Vector2 center = { projectile->pos.x + projectile->size / 2.0f, projectile->pos.y + projectile->size / 2.0f };
   float damage = (float)projectile->damage;
   float radius = 200.0f;
   for (int i = 0; i < MAXSPAWNENEMIES; i++) {
-    float dx = posX - enemyArr[i].pos.x;
-    float dy = posY - enemyArr[i].pos.y;
-    float length = fabs(sqrtf(dx * dx + dy * dy));
-    if (length <= radius) {
-      float actualDamage = damage * (1.0f - (length / radius));
-      //TODO: money is inconsistent fix later
+    Vector2 enemyPos = enemyArr[i].pos;
+    float dx = center.x - enemyPos.x;
+    float dy = center.y - enemyPos.y;
+    float dist = sqrtf(dx * dx + dy * dy);
+    if (dist <= radius && hasLineOfSight(center, enemyPos, tileArr)) {
+      float actualDamage = damage * (1.0f - (dist / radius));
       enemyArr[i].health -= actualDamage;
-      if(enemyArr[i].health > 0){
+      if (enemyArr[i].health > 0) {
         player->money += 10;
-      }else{
+      } else {
         player->money += 80;
       }
     }
   }
-  enemy->health -= damage;
-  DrawCircle(posX, posY, radius, YELLOW);
+  //explosionAnimation(center.x, center.y, radius);
+  DrawCircle(center.x, center.y, radius, YELLOW);
 }
+
 
 
 
