@@ -22,8 +22,14 @@ void drawUserMode(User *user){
   else if(user->mode == PLAYERSPAWN){
     DrawText("PlayerSpawn", SCREENWIDTH - 300, 30, 40, BLUE);
   }
+  else if(user->mode == ENEMYSPAWN){
+    DrawText("EnemySpawn", SCREENWIDTH - 300, 30, 40, RED);
+  }
   else if(user->mode == WEAPONBUY){
     DrawText("WeaponBuy", SCREENWIDTH - 300, 30, 40, BLUE);
+  }
+  else if(user->mode == PERKBUY){
+    DrawText("PerkBuy", SCREENWIDTH - 300, 30, 40, BLUE);
   }
 }
 
@@ -49,7 +55,7 @@ void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
   
   int offset = SCREENHEIGHT - height;
 
-  for(int i = 0; i < AMOUNTOFTILETEXTURES - 1; i++){
+  for(int i = 0; i < AMOUNTOFTILETEXTURES - 2; i++){
     Rectangle source = { 0, 0, CELLSIZE, CELLSIZE };
     Vector2 pos = { i * CELLSIZE, offset };
     DrawTextureRec(tileTextureArr[i], source, pos, WHITE);
@@ -142,29 +148,34 @@ if (user->mode == PERKBUY) {
   }
 }
 
-
 //fixes the bug where when selecting a texture it would instantly paint it under the rectangle 
-void userInteractingWithUI(User *user){
+void userInteractingWithUI(User *user) {
   Vector2 mousePos = GetMousePosition();
+  bool interacting = false;
+  int textureBarHeight = 200;
+  Rectangle textureBar = { 0, SCREENHEIGHT - textureBarHeight, SCREENWIDTH, textureBarHeight };
+  if (CheckCollisionPointRec(mousePos, textureBar)) {
+    interacting = true;
+  }
+  Rectangle exportButton = { 10, 10, 80, 40 };
+  if (CheckCollisionPointRec(mousePos, exportButton)) {
+    interacting = true;
+  }
+  if (user->mode == WEAPONBUY) {
+    Rectangle weaponBuyBox = { SCREENWIDTH - 250, SCREENHEIGHT - 800, 250, 600 };
+    if (CheckCollisionPointRec(mousePos, weaponBuyBox)) {
+      interacting = true;
+    }
+  }
+  if (user->mode == PERKBUY) {
+    Rectangle perkBuyBox = { SCREENWIDTH - 250, SCREENHEIGHT - 800, 250, 600 };
+    if (CheckCollisionPointRec(mousePos, perkBuyBox)) {
+      interacting = true;
+    }
+  }
 
-  // Bottom bar location
-  if(mousePos.y >= SCREENWIDTH - 200){
-    user->interactingWithUI = true;
-  }
-  // Save button location
-  else if(mousePos.y >= 10 && mousePos.y <= 40 && mousePos.x >= 10 && mousePos.x <= 80){
-    user->interactingWithUI = true;
-  }
-  // Weapon buy box area
-  else if(mousePos.x >= SCREENWIDTH - 250 && mousePos.x <= SCREENWIDTH &&
-          mousePos.y >= SCREENHEIGHT - 800 && mousePos.y <= SCREENHEIGHT - 200){
-    user->interactingWithUI = true;
-  }
-  else{
-    user->interactingWithUI = false;
-  }
+  user->interactingWithUI = interacting;
 }
-
 
 void updateUI(Texture2D *tileTextureArr, User *user, Tile *tileArr){
   drawTexturesToSelect(tileTextureArr, user);

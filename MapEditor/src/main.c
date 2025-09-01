@@ -39,6 +39,7 @@ int main(){
   ToggleFullscreen();
 
   while(!WindowShouldClose()){
+
     BeginDrawing();
 
       BeginMode2D(camera);
@@ -50,7 +51,7 @@ int main(){
       EndMode2D();
 
     updateUI(tileTextureArr, &user, tileArr);
-    
+   
     EndDrawing();
   }
   

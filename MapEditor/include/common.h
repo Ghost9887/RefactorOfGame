@@ -13,12 +13,15 @@
 
 //MAP CONSTANTS
 #define CELLSIZE 32 // 32x32
-#define COLUMNCOUNT 100
-#define ROWCOUNT 100
+#define COLUMNCOUNT 150 
+#define ROWCOUNT 150
+
+//ENEMY CONSTANTS
+#define MAXENEMYSPAWNS 10
 
 //TILE CONSTANTS
-#define AMOUNTOFTILETEXTURES 5
-#define MAXTILES 10000
+#define AMOUNTOFTILETEXTURES 17
+#define MAXTILES 22500
 
 //WEAPONBUYS
 #define AMOUNTOFWEAPONS 4
@@ -32,8 +35,9 @@
 #define PAINT 0 // tile can be walked through
 #define SOLID 1 // tile cannot be walked through
 #define PLAYERSPAWN 2
-#define WEAPONBUY 3
-#define PERKBUY 4
+#define ENEMYSPAWN 3
+#define WEAPONBUY 4
+#define PERKBUY 5
 
 typedef struct{
   Texture2D *selectedTexture;
@@ -51,6 +55,8 @@ typedef struct{
   //playerspawn attributes
   bool playerSpawn;
 
+  bool enemySpawn;
+
   //weaponBuy attributes
   bool weaponBuy;
   int weaponIndex;
@@ -65,7 +71,19 @@ typedef struct{
   Texture2D tile2;
   Texture2D tile3;
   Texture2D tile4;
+  Texture2D tile5;
+  Texture2D tile6;
+  Texture2D tile7;
+  Texture2D tile8;
+  Texture2D tile9;
+  Texture2D tile10;
+  Texture2D tile11;
+  Texture2D tile12;
+  Texture2D tile13;
+  Texture2D tile14;
+  Texture2D tile15;
   Texture2D player;
+  Texture2D enemy;
   Texture2D pistol;
   Texture2D ar;
   Texture2D rpg;

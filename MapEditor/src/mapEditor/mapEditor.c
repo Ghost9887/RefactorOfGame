@@ -33,8 +33,8 @@ int tileExists(int x, int y, Tile *tileArr){
   return -1;
 }
 
-//TODO: remove the weapon textuer arr dont need it
-void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, Camera2D *camera, User *user){
+//TODO: refactor
+void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User *user){
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_LEFT_SHIFT)){
     Vector2 mousePos =  GetScreenToWorld2D(GetMousePosition(), *camera);
     //we use the mouse position to determine the tile position
@@ -52,6 +52,7 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextur
           tileArr[i].active = true;
           tileArr[i].solid = (user->mode == SOLID);
           tileArr[i].playerSpawn = false;
+          tileArr[i].enemySpawn = false;
           tileArr[i].weaponBuy = false;
           tileArr[i].weaponIndex = -1;
           tileArr[i].perkBuy = false;
@@ -69,6 +70,18 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextur
         }
         else{
           //flash to warn that you cant place a palyer spawn there
+          DrawRectangle(tileArr[indexOfTile].pos.x, tileArr[indexOfTile].pos.y, CELLSIZE, CELLSIZE, RED);
+        }
+      }
+    }
+    else if(user->mode == ENEMYSPAWN && mousePos.y >= 0 && mousePos.x <= ROWCOUNT * CELLSIZE - CELLSIZE && mousePos.y <= COLUMNCOUNT * CELLSIZE - CELLSIZE && !user->interactingWithUI){
+      int indexOfTile = tileExists(posX, posY, tileArr);
+      if(indexOfTile != -1){
+        if(!tileArr[indexOfTile].solid){
+          tileArr[indexOfTile].enemySpawn = true;
+        }    
+        else{
+          //flash to warn that you cant place a enemy spawn there
           DrawRectangle(tileArr[indexOfTile].pos.x, tileArr[indexOfTile].pos.y, CELLSIZE, CELLSIZE, RED);
         }
       }
@@ -118,7 +131,11 @@ void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTexture
         DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
       }
       if(tileArr[i].playerSpawn){
-        DrawTexture(tileTextureArr[4], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+        DrawTexture(tileTextureArr[15], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+      }
+      if(tileArr[i].enemySpawn){
+        Rectangle rec = { 0, 0, 32, 32 };
+        DrawTextureRec(tileTextureArr[16], rec, tileArr[i].pos, WHITE);
       }
       if(tileArr[i].weaponBuy){
         //have animations so the texture sometimes put all of them
@@ -137,7 +154,7 @@ void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTexture
 void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr,Texture2D *weaponTextureArr, Texture2D *perkTextureArr, User *user){
   cameraMovement(camera);
   drawGrid();
-  placeTile(tileArr, tileTextureArr, weaponTextureArr, camera, user);
+  placeTile(tileArr, tileTextureArr, camera, user);
   deleteTile(tileArr, camera);
   drawTile(tileArr, tileTextureArr, weaponTextureArr, perkTextureArr);
   switchMode(user);

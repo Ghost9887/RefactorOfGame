@@ -13,7 +13,8 @@ void switchMode(User *user){
   if(IsKeyPressed(KEY_ONE)) user->mode = PAINT;
   else if(IsKeyPressed(KEY_TWO)) user->mode = SOLID;
   else if(IsKeyPressed(KEY_THREE)) user->mode = PLAYERSPAWN;
-  else if(IsKeyPressed(KEY_FOUR)) user->mode = WEAPONBUY;
-  else if(IsKeyPressed(KEY_FIVE)) user->mode = PERKBUY;
+  else if(IsKeyPressed(KEY_FOUR)) user->mode = ENEMYSPAWN;
+  else if(IsKeyPressed(KEY_FIVE)) user->mode = WEAPONBUY;
+  else if(IsKeyPressed(KEY_SIX)) user->mode = PERKBUY;
 }
 
