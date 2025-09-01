@@ -21,7 +21,7 @@
 #define MAXTILES 10000
 
 //WEAPONBUYS
-#define AMOUNTOFWEAPONS 3
+#define AMOUNTOFWEAPONS 4
 #define MAXWEAPONSBUYS 100
 
 //PERKBUYS
@@ -69,6 +69,7 @@ typedef struct{
   Texture2D pistol;
   Texture2D ar;
   Texture2D rpg;
+  Texture2D shotgun;
   Texture2D healthPerk;
   Texture2D speedPerk;
 }TextureManager;

@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "projectile.h"
+#include "shotgun.h"
 
   Player createPlayer(TextureManager *textureManager); 
   void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr);

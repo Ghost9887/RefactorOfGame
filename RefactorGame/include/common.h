@@ -20,7 +20,7 @@
 #define MAXPROJECTILES 100
 
 //weapon constants
-#define AMOUNTOFWEAPONS 3
+#define AMOUNTOFWEAPONS 4
 #define MAXWEAPONS 3 //max amount of weapons the player can have on him
 #define MAXWEAPONBUYS 20
 
@@ -43,6 +43,7 @@ typedef struct{
   Texture2D pistolTexture;
   Texture2D arTexture;
   Texture2D rpgTexture;
+  Texture2D shotgunTexture;
   Texture2D tile1;
   Texture2D tile2;
   Texture2D tile3;

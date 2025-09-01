@@ -24,6 +24,7 @@ void initWeaponTextureArr(Texture2D *weaponTextureArr, TextureManager *textureMa
   weaponTextureArr[0] = textureManager->pistol;
   weaponTextureArr[1] = textureManager->ar;
   weaponTextureArr[2] = textureManager->rpg;
+  weaponTextureArr[3] = textureManager->shotgun;
 }
 
 void initPerkTextureArr(Texture2D *perkTextureArr, TextureManager *textureManager){

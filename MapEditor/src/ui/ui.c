@@ -83,7 +83,7 @@ void drawWeaponBuyBar(User *user) {
     int spacing = 50;
 
     Rectangle recArr[AMOUNTOFWEAPONS];
-    const char *weaponNames[AMOUNTOFWEAPONS] = { "pistol", "ar", "rpg" };
+    const char *weaponNames[AMOUNTOFWEAPONS] = { "pistol", "ar", "rpg", "shotgun" };
 
     for (int i = 0; i < AMOUNTOFWEAPONS; i++) {
       int yPos = startY + i * spacing;

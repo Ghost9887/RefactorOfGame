@@ -6,6 +6,7 @@ void loadAllTextures(TextureManager *textureManager){
   textureManager->pistolTexture = LoadTexture("assets/weapons/pistol.png");
   textureManager->arTexture = LoadTexture("assets/weapons/ar.png");
   textureManager->rpgTexture = LoadTexture("assets/weapons/rpg.png");
+  textureManager->shotgunTexture = LoadTexture("assets/weapons/shotgun.png");
   textureManager->tile1 = LoadTexture("assets/tiles/tile1.png");
   textureManager->tile2 = LoadTexture("assets/tiles/tile2.png");
   textureManager->tile3 = LoadTexture("assets/tiles/tile3.png");
