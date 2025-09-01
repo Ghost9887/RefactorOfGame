@@ -36,7 +36,7 @@ bool hasLineOfSight(Vector2 from, Vector2 to, Tile *tileArr) {
   for (int i = 0; i < AMOUNTOFTILES; i++) {
     Rectangle tileRec = { tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE };
     //maybe??
-    Rectangle line = { from.x, from.y, to.x, to.y };
+    Rectangle line = { from.x, from.y, fabs(from.x - to.x), fabs(from.y - to.y) };
     if (tileArr[i].solid && CheckCollisionRecs(line, tileRec)) {
       return false;
     }
