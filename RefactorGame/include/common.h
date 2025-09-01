@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 //game constants
 #define SCREENWIDTH (GetScreenWidth())
@@ -15,6 +16,7 @@
 
 //enemy constants
 #define MAXSPAWNENEMIES 40
+#define MAXENEMYSPAWNS 10
 
 //projectile constants
 #define MAXPROJECTILES 100
@@ -25,8 +27,8 @@
 #define MAXWEAPONBUYS 20
 
 //tile constants
-#define MAXTILES 10000
-#define AMOUNTOFTILETEXTURES 4
+#define MAXTILES 22500
+#define AMOUNTOFTILETEXTURES 14
 #define CELLSIZE 32 // size of a tile 
 
 //pickup constants
@@ -48,6 +50,17 @@ typedef struct{
   Texture2D tile2;
   Texture2D tile3;
   Texture2D tile4;
+  Texture2D tile5;
+  Texture2D tile6;
+  Texture2D tile7;
+  Texture2D tile8;
+  Texture2D tile9;
+  Texture2D tile10;
+  Texture2D tile11;
+  Texture2D tile12;
+  Texture2D tile13;
+  Texture2D tile14;
+  Texture2D tile15;
   Texture2D ammoPickupTexture;
   Texture2D healthPickupTexture;
   Texture2D healthPerkTexture;
@@ -159,6 +172,11 @@ typedef struct{
 }Enemy;
 
 typedef struct{
+  int amount;
+  Vector2 pos;
+}EnemySpawn;
+
+typedef struct{
   Vector2 pos;
   Vector2 previousPos;
   Vector2 dir;
@@ -187,6 +205,7 @@ typedef struct{
   bool active;
   bool solid;
   bool playerSpawn;
+  bool enemySpawn;
   bool weaponBuy;
   int weaponIndex;
   bool perkBuy;

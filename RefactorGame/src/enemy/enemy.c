@@ -2,6 +2,7 @@
 
 extern int ENEMYCOUNT;
 extern int ALIVEENEMIES;
+extern int AMOUNTOFENEMYSPAWNS;
 
 bool checkIfEnemyCanAttack(Enemy *enemy);
 
@@ -24,16 +25,23 @@ void initEnemyArr(Enemy *enemyArr){
   }
 }
 
-void spawnEnemies(Enemy *enemyArr, TextureManager *textureManager, RoundManager *roundManager){
+void spawnEnemies(Enemy *enemyArr, TextureManager *textureManager, RoundManager *roundManager, EnemySpawn *enemySpawnArr){
   if(!roundManager->inBreak && !roundManager->allEnemiesSpawned){
     //create one at a time
     for(int i = 0; i < MAXSPAWNENEMIES; i++){
       if(!enemyArr[i].active){
-        //will change to spawn points later
-        float x = (float)GetRandomValue(0, SCREENWIDTH);
-        float y = (float)GetRandomValue(0, SCREENHEIGHT);
-        enemyArr[i] = createBasicEnemy(textureManager, x, y);
-        ENEMYCOUNT++;
+        //find the enemy spawn with the lowest amount of enemies that have spawned there and spawn a enemy there
+        int temp = INT_MAX;
+        int index = 0;
+        for(int j = 0; j < AMOUNTOFENEMYSPAWNS; j++){
+          if(enemySpawnArr[j].amount < temp){
+          temp = enemySpawnArr[j].amount;
+          index = j;
+          }
+        }
+        enemyArr[i] = createBasicEnemy(textureManager, enemySpawnArr[index].pos.x, enemySpawnArr[index].pos.y);
+        enemySpawnArr[index].amount++;
+        ENEMYCOUNT++; 
         ALIVEENEMIES++;
         break;
       }
@@ -153,7 +161,7 @@ void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile){
   }
 }
 
-void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager, Pickup *pickupArr){
+void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager, Pickup *pickupArr, EnemySpawn *enemySpawnArr){
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(enemyArr[i].active){
       checkIfEnemyIsDead(&enemyArr[i], player, pickupArr, textureManager);
@@ -164,5 +172,5 @@ void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, 
       attackCooldown(&enemyArr[i]);
     }
   }
-  spawnEnemies(enemyArr, textureManager, roundManager);
+  spawnEnemies(enemyArr, textureManager, roundManager, enemySpawnArr);
 }

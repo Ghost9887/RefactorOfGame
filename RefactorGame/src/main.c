@@ -4,6 +4,7 @@
 #include "camera.h"
 #include "ui.h"
 #include "enemy.h"
+#include "enemySpawn.h"
 #include "weapon.h"
 #include "projectile.h"
 #include "roundManager.h"
@@ -19,6 +20,7 @@
 //ENEMY
 int ENEMYCOUNT = 0;
 int ALIVEENEMIES = 0;
+int AMOUNTOFENEMYSPAWNS = 0;
 
 //TILES
 int AMOUNTOFTILES = 0;
@@ -40,7 +42,7 @@ int AMOUNTOFPERKBUYS = 0;
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr);
+                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr, EnemySpawn *enemySpawnArr);
 
 int main(){
   
@@ -54,11 +56,15 @@ int main(){
 
   //GAME OBJECTS
   //****************************************************************************
+  //USING FIXED ARRAYS FOR EVERYTHING EXCEPT TILES NOT SURE IF THIS IS THE BEST WAY IN C
   TextureManager textureManager;
   loadAllTextures(&textureManager);
 
   Enemy enemyArr[MAXSPAWNENEMIES];
   initEnemyArr(enemyArr);
+
+  EnemySpawn enemySpawnArr[MAXENEMYSPAWNS];
+  initEnemySpawnArr(enemySpawnArr);
 
   Weapon weaponArr[AMOUNTOFWEAPONS];
   initWeaponArr(weaponArr, &textureManager);
@@ -98,7 +104,7 @@ int main(){
   //**************************************
   
   //SPAWN OBJECTS*************************
-  spawnObjects(tileArr, &player, weaponArr, weaponBuyArr, perkArr, perkBuyArr);
+  spawnObjects(tileArr, &player, weaponArr, weaponBuyArr, perkArr, perkBuyArr, enemySpawnArr);
   //**************************************
   
   //Toggle Full Screen
@@ -108,13 +114,13 @@ int main(){
 
     BeginDrawing();
 
-      ClearBackground(WHITE);
+      ClearBackground(GREEN);
    
       BeginMode2D(camera);
         
         updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager,
                         &textureManager, tileArr, tileTextureArr, weaponHolster, weaponBuyArr,
-                        weaponArr, pickupArr, perkBuyArr);
+                        weaponArr, pickupArr, perkBuyArr, enemySpawnArr);
       
         updateDebugMode(&player, enemyArr, tileArr, weaponBuyArr, perkBuyArr);
 
@@ -135,12 +141,12 @@ int main(){
 void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr){
+                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr, EnemySpawn *enemySpawnArr){
   
   //in order of drawing / operations
   updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr);
 
-  updateEnemies(enemyArr, player, roundManager, textureManager, pickupArr);
+  updateEnemies(enemyArr, player, roundManager, textureManager, pickupArr, enemySpawnArr);
 
   updateRoundManager(roundManager);
   
