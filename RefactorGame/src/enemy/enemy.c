@@ -116,7 +116,6 @@ void destroyEnemy(Enemy *enemy, Player *player, Pickup *pickupArr, TextureManage
         break;
     }
   }
-
   enemy->active = false;
   enemy->speed = 0.0f;
   player->money += 80;

@@ -50,7 +50,7 @@ void drawPerkBuy(PerkBuy *perkBuy){
   DrawTexturePro(*perkBuy->perk->texture, source, destRec, origin, rotation, WHITE);
 }
 
-//TODO: animation is too fast for some reason fix later
+//TODO: animation is too fast for some reason fix
 void updateAnimationPerkBuy(PerkBuy *perkBuy){
   perkBuy->frameTime += GetFrameTime();
   if (perkBuy->frameTime >= perkBuy->frameSpeed) {
@@ -92,6 +92,7 @@ void consumePerk(PerkBuy *perkBuy, Player *player){
   }
 }
 
+//runs only one for loop per frame
 void updatePerkBuys(PerkBuy *perkBuyArr, Player *player){
   for(int i = 0; i < AMOUNTOFPERKBUYS; i++){
     drawPerkBuy(&perkBuyArr[i]);

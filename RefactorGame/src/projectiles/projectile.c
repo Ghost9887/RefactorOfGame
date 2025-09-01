@@ -85,6 +85,7 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *pl
   }
 }
 
+//TODO: add splashDamage
 void checkProjectileCollisionWithTile(Projectile *projectileArr, Tile *tile){
   Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
   for(int i = 0; i < MAXPROJECTILES; i++){
