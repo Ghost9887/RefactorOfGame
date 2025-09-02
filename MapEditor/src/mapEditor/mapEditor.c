@@ -57,6 +57,7 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
           tileArr[i].weaponIndex = -1;
           tileArr[i].perkBuy = false;
           tileArr[i].perkIndex = -1;
+          printf("Tile Data: id:%d, x: %d, y: %d\n", tileArr[i].id, (int)tileArr[i].pos.x, (int)tileArr[i].pos.y);
         break;      
         }
       }
