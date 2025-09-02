@@ -9,6 +9,7 @@ extern int AMOUNTOFSOLIDTILES;
 extern int AMOUNTOFWEAPONBUYS;
 extern int AMOUNTOFPERKBUYS;
 extern int AMOUNTOFENEMYSPAWNS;
+extern bool DRAWFULLMAP;
 
 void getAmountOfTiles(){
   FILE *file = fopen("../RefactorGame/assets/map1.map", "r");
@@ -103,13 +104,19 @@ void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *w
   } 
 }
 
-void drawTiles(Texture2D *tileTextureArr, Chunk *chunkArr, Camera2D *camera){
-  int visibleChunks[AMOUNTOFCHUNKS];
-  int chunkCount = findChunksInCameraView(visibleChunks, chunkArr, camera);
-  for(int i = 0; i < chunkCount; i++){
-    int chunkId = visibleChunks[i];
-    for(int j = 0; j < chunkArr[chunkId].tileCount; j++){
+void drawTiles(Texture2D *tileTextureArr, Chunk *chunkArr, Camera2D *camera, Tile *tileArr){
+  if(!DRAWFULLMAP){
+    int visibleChunks[AMOUNTOFCHUNKS];
+    int chunkCount = findChunksInCameraView(visibleChunks, chunkArr, camera);
+    for(int i = 0; i < chunkCount; i++){
+      int chunkId = visibleChunks[i];
+      for(int j = 0; j < chunkArr[chunkId].tileCount; j++){
         DrawTexture(tileTextureArr[chunkArr[chunkId].tileArr[j].id], chunkArr[chunkId].tileArr[j].pos.x, chunkArr[chunkId].tileArr[j].pos.y, WHITE);
+      }
+    }
+  }else{
+    for(int i = 0; i < AMOUNTOFTILES; i++){
+      DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
     }
   }
 }
@@ -124,6 +131,6 @@ void checkCollisionWithTiles(Tile *solidTileArr, Player *player, Enemy *enemyArr
   
 
 void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr, Chunk *chunkArr, Camera2D *camera, Tile *solidTileArr){
-  drawTiles(tileTextureArr, chunkArr, camera);
+  drawTiles(tileTextureArr, chunkArr, camera, tileArr);
   checkCollisionWithTiles(solidTileArr, player, enemyArr, tileArr, projectileArr);
 }

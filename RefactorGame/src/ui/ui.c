@@ -9,6 +9,7 @@ extern bool ENABLESOLIDTILEHITBOX;
 extern bool ENABLEWEAPONBUYHITBOX;
 extern bool ENABLEPERKBUYHITBOX;
 extern bool ENABLECHUNKHITBOX;
+extern bool DRAWFULLMAP;
 
 void drawUI(Player *player, RoundManager *roundManager){
   //Draw FPS
@@ -36,7 +37,6 @@ void drawUI(Player *player, RoundManager *roundManager){
   DrawText(TextFormat("%d", roundManager->inBreak), 30, 230, 40, BLACK);
 }
 
-//copilot was here
 void drawUIForDebugMode() {
   if(DEBUGMODE){
     ShowCursor();
@@ -56,6 +56,7 @@ void drawUIForDebugMode() {
     Rectangle weaponBuyButtonRec = { startX, startY + 3 * (buttonHeight + spacing), buttonWidth, buttonHeight };
     Rectangle perkBuyButtonRec = { startX, startY + 4 * (buttonHeight + spacing), buttonWidth, buttonHeight };
     Rectangle chunkButtonrec = { startX, startY + 5 * (buttonHeight + spacing), buttonWidth, buttonHeight };
+    Rectangle drawFullMapButtonRec = { startX, startY + 6 * (buttonHeight + spacing), buttonWidth, buttonHeight };
 
     DrawText("Player Hitbox:", labelX, playerButtonRec.y, 20, BLACK);
     DrawText("Enemy Hitbox:", labelX, enemyButtonRec.y, 20, BLACK);
@@ -63,6 +64,7 @@ void drawUIForDebugMode() {
     DrawText("Weapon buy Hitbox:", labelX, weaponBuyButtonRec.y, 20, BLACK);
     DrawText("Perk Buy Hitbox: ", labelX, perkBuyButtonRec.y, 20, BLACK);
     DrawText("Chunk Hitbox: ", labelX, chunkButtonrec.y, 20, BLACK);
+    DrawText("Draw Full Map: ", labelX, drawFullMapButtonRec.y, 20, BLACK);
 
     DrawRectangleRec(playerButtonRec, ENABLEPLAYERHITBOX ? GREEN : WHITE);
     DrawRectangleRec(enemyButtonRec, ENABLEENEMYHITBOX ? GREEN : WHITE);
@@ -70,6 +72,7 @@ void drawUIForDebugMode() {
     DrawRectangleRec(weaponBuyButtonRec, ENABLEWEAPONBUYHITBOX ? GREEN : WHITE);
     DrawRectangleRec(perkBuyButtonRec, ENABLEPERKBUYHITBOX ? GREEN : WHITE);
     DrawRectangleRec(chunkButtonrec, ENABLECHUNKHITBOX ? GREEN : WHITE);
+    DrawRectangleRec(drawFullMapButtonRec, DRAWFULLMAP ? GREEN : WHITE);
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Vector2 mousePos = GetMousePosition();
@@ -87,6 +90,8 @@ void drawUIForDebugMode() {
           ENABLEPERKBUYHITBOX = !ENABLEPERKBUYHITBOX;
         } else if(CheckCollisionRecs(chunkButtonrec, mouseClick)) {
           ENABLECHUNKHITBOX = !ENABLECHUNKHITBOX;
+        } else if (CheckCollisionRecs(drawFullMapButtonRec, mouseClick)) {
+          DRAWFULLMAP = !DRAWFULLMAP;
         }
     }
   }else{

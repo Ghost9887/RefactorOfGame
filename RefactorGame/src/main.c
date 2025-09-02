@@ -35,6 +35,7 @@ bool ENABLESOLIDTILEHITBOX = false;
 bool ENABLEWEAPONBUYHITBOX = false;
 bool ENABLEPERKBUYHITBOX = false;
 bool ENABLECHUNKHITBOX = false;
+bool DRAWFULLMAP = false;
 
 //weapon buys
 int AMOUNTOFWEAPONBUYS = 0;
