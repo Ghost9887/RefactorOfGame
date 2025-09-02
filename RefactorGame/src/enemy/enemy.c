@@ -134,30 +134,25 @@ void checkIfEnemyIsDead(Enemy *enemy, Player *player, Pickup *pickupArr, Texture
   if(enemy->health <= 0) destroyEnemy(enemy, player, pickupArr, textureManager);
 }
 
-void checkEnemyCollisionWithTile(Enemy *enemyArr, Tile *tile){
+void checkEnemyCollisionWithTile(Enemy *enemy, Tile *tile){
   Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
-  for(int i = 0; i < MAXSPAWNENEMIES; i++){
-    if(enemyArr[i].active){
-      Rectangle futureEnemyXRec = {
-        enemyArr[i].pos.x + enemyArr[i].velocity.x,
-        enemyArr[i].pos.y,
-        enemyArr[i].width,
-        enemyArr[i].height
-      };
-      if (CheckCollisionRecs(futureEnemyXRec, tileRec)){ 
-        enemyArr[i].velocity.x = 0.0f;
-      }
-      Rectangle futureEnemyYRec = {
-        enemyArr[i].pos.x,
-        enemyArr[i].pos.y + enemyArr[i].velocity.y,
-        enemyArr[i].width,
-        enemyArr[i].height
-      };
-      if (CheckCollisionRecs(futureEnemyYRec, tileRec)){ 
-        enemyArr[i].velocity.y = 0.0f;
-      }
-
-    }
+  Rectangle futureEnemyXRec = {
+    enemy->pos.x + enemy->velocity.x,
+    enemy->pos.y,
+    enemy->width,
+    enemy->height
+  };
+  if (CheckCollisionRecs(futureEnemyXRec, tileRec)){ 
+    enemy->velocity.x = 0.0f;
+  }
+  Rectangle futureEnemyYRec = {
+    enemy->pos.x,
+    enemy->pos.y + enemy->velocity.y,
+    enemy->width,
+    enemy->height
+  };
+  if (CheckCollisionRecs(futureEnemyYRec, tileRec)){ 
+    enemy->velocity.y = 0.0f;
   }
 }
 

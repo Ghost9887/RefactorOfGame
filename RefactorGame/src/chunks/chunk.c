@@ -10,17 +10,35 @@ Chunk createChunk(int id, int startX, int endX, int startY, int endY, Tile *tile
   chunk.startY = startY;
   chunk.endY = endY;
   chunk.tileCount = 0;
+  chunk.solidTileCount = 0;
 
   chunk.tileArr = malloc(sizeof(Tile) * CHUNKSIZE * CHUNKSIZE);
+
+  int solidCount = 0;
   //chunk the tile arr into smaller arrays
   for(int i = 0; i < AMOUNTOFTILES; i++){
     if(tileArr[i].pos.x >= startX && tileArr[i].pos.x < endX){
       if(tileArr[i].pos.y >= startY && tileArr[i].pos.y < endY){
         chunk.tileArr[chunk.tileCount] = tileArr[i];
+        if(tileArr[i].solid){
+          solidCount++;
+        }
         chunk.tileCount++;
       }
     }
   }
+
+  chunk.solidTileArr = malloc(sizeof(Tile) * solidCount);
+
+  for(int i = 0; i < AMOUNTOFTILES; i++){
+    if(tileArr[i].pos.x >= startX && tileArr[i].pos.x < endX){
+      if(tileArr[i].pos.y >= startY && tileArr[i].pos.y < endY && tileArr[i].solid){
+        chunk.solidTileArr[chunk.solidTileCount] = tileArr[i];
+        chunk.solidTileCount++;
+      }
+    }
+  }
+  
   return chunk;
 }
 
@@ -38,6 +56,37 @@ void initChunkArr(Chunk *chunkArr, Tile *tileArr){
   }
 }
 
+void freeAllChunks(Chunk *chunkArr){
+  for(int i = 0; i < AMOUNTOFCHUNKS; i++){
+    free(chunkArr[i].tileArr);
+    free(chunkArr[i].solidTileArr);
+  }
+}
+
+int findChunksForEnemy(int *visibleChunks, Chunk *chunkArr, Enemy *enemy){
+  float padding = 30;
+  Rectangle enemyRec = {
+    enemy->pos.x - padding,
+    enemy->pos.y - padding,
+    padding * 2,
+    padding * 2
+  };
+  int count = 0;
+  for(int i = 0; i < AMOUNTOFCHUNKS; i++){
+    Rectangle chunkRec = {
+      chunkArr[i].startX,
+      chunkArr[i].startY,
+      chunkArr[i].endX - chunkArr[i].startX,
+      chunkArr[i].endY - chunkArr[i].startY
+    };
+    if (CheckCollisionRecs(enemyRec, chunkRec)) {
+      visibleChunks[count] = chunkArr[i].id;
+      count++;
+    }
+  }
+  return count;
+}
+
 int findChunksInCameraView(int *visibleChunks, Chunk *chunkArr, Camera2D *camera) {
   float padding = 25;
    Rectangle cameraView = {
@@ -48,24 +97,18 @@ int findChunksInCameraView(int *visibleChunks, Chunk *chunkArr, Camera2D *camera
   };
   int count = 0;
   for (int i = 0; i < AMOUNTOFCHUNKS; i++) {
-    Rectangle chunkRect = {
+    Rectangle chunkRec = {
       chunkArr[i].startX,
       chunkArr[i].startY,
       chunkArr[i].endX - chunkArr[i].startX,
       chunkArr[i].endY - chunkArr[i].startY
     };
-    if (CheckCollisionRecs(cameraView, chunkRect)) {
+    if (CheckCollisionRecs(cameraView, chunkRec)) {
       visibleChunks[count] = chunkArr[i].id;
       count++;
       }
     }
   return count;
 }
-
-
-
-
-
-
 
 

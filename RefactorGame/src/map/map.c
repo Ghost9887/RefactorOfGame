@@ -104,7 +104,7 @@ void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *w
   } 
 }
 
-void drawTiles(Texture2D *tileTextureArr, Chunk *chunkArr, Camera2D *camera, Tile *tileArr){
+void drawTiles(Texture2D *tileTextureArr, Chunk *chunkArr, Camera2D *camera, Tile *tileArr, Player *player, Projectile *projectileArr, Enemy *enemyArr){
   if(!DRAWFULLMAP){
     int visibleChunks[AMOUNTOFCHUNKS];
     int chunkCount = findChunksInCameraView(visibleChunks, chunkArr, camera);
@@ -112,6 +112,10 @@ void drawTiles(Texture2D *tileTextureArr, Chunk *chunkArr, Camera2D *camera, Til
       int chunkId = visibleChunks[i];
       for(int j = 0; j < chunkArr[chunkId].tileCount; j++){
         DrawTexture(tileTextureArr[chunkArr[chunkId].tileArr[j].id], chunkArr[chunkId].tileArr[j].pos.x, chunkArr[chunkId].tileArr[j].pos.y, WHITE);
+        if(chunkArr[chunkId].tileArr[j].solid){
+          checkPlayerCollisionWithTile(player, &chunkArr[chunkId].tileArr[j]);
+          checkProjectileCollisionWithTile(projectileArr, &chunkArr[chunkId].tileArr[j], enemyArr, player, tileArr);
+        }
       }
     }
   }else{
@@ -121,16 +125,23 @@ void drawTiles(Texture2D *tileTextureArr, Chunk *chunkArr, Camera2D *camera, Til
   }
 }
 
-void checkCollisionWithTiles(Tile *solidTileArr, Player *player, Enemy *enemyArr, Tile *tileArr, Projectile *projectileArr){
-  for(int i = 0; i < AMOUNTOFSOLIDTILES; i++){
-    checkPlayerCollisionWithTile(player, &solidTileArr[i]);
-    checkEnemyCollisionWithTile(enemyArr, &solidTileArr[i]);
-    checkProjectileCollisionWithTile(projectileArr, &solidTileArr[i], enemyArr, player, tileArr);
+//the enemies always need to check so they dont go through walls
+//TODO: add tile caching still very slooooow
+void checkCollisionWithTiles(Tile *solidTileArr, Enemy *enemyArr, Chunk *chunkArr){
+  for(int i = 0; i < MAXSPAWNENEMIES; i++){
+    int visibleChunks[AMOUNTOFCHUNKS];
+    int chunkCount = findChunksForEnemy(visibleChunks, chunkArr, &enemyArr[i]);
+    for(int x = 0; x < chunkCount; x++){
+      int chunkId = visibleChunks[x];
+      for(int j = 0; j < chunkArr[chunkId].solidTileCount; j++){
+        checkEnemyCollisionWithTile(&enemyArr[i], &chunkArr[chunkId].solidTileArr[j]);
+      }
+    }
   }
 }
   
 
 void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr, Chunk *chunkArr, Camera2D *camera, Tile *solidTileArr){
-  drawTiles(tileTextureArr, chunkArr, camera, tileArr);
-  checkCollisionWithTiles(solidTileArr, player, enemyArr, tileArr, projectileArr);
+  drawTiles(tileTextureArr, chunkArr, camera, tileArr, player, projectileArr, enemyArr);
+  checkCollisionWithTiles(solidTileArr, enemyArr, chunkArr);
 }

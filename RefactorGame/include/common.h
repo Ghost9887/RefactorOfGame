@@ -221,7 +221,9 @@ typedef struct{
   float startY;
   float endY;
   Tile *tileArr;
+  Tile *solidTileArr;
   int tileCount;
+  int solidTileCount;
 }Chunk;
 
 typedef struct{

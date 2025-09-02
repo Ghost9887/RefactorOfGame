@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Iinclude -O2
+CFLAGS = -Iinclude -O2 -pg
 LDFLAGS = -lraylib -lm -lpthread -ldl -lGL -lrt -lX11
 
 SRC_DIR = src

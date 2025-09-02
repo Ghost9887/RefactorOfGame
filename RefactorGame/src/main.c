@@ -146,7 +146,11 @@ int main(){
   }
   
   CloseWindow();
+
   free(tileArr);
+  free(solidTileArr);
+  freeAllChunks(chunkArr);
+
   return 0;
 }
 
