@@ -44,6 +44,7 @@ bool hasLineOfSight(Vector2 from, Vector2 to, Tile *tileArr) {
   return true;
 }
 
+//TODO: doesnt work properly
 void splashDamage(Projectile *projectile, Enemy *enemyArr, Player *player, Tile *tileArr){
   Vector2 center = { projectile->pos.x + projectile->size / 2.0f, projectile->pos.y + projectile->size / 2.0f };
   float damage = (float)projectile->damage;

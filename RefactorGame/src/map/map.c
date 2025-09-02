@@ -5,23 +5,22 @@
 #include <string.h>
 
 extern int AMOUNTOFTILES;
+extern int AMOUNTOFSOLIDTILES;
 extern int AMOUNTOFWEAPONBUYS;
 extern int AMOUNTOFPERKBUYS;
 extern int AMOUNTOFENEMYSPAWNS;
 
-//TODO: theres a bug where if there arent any tiles around a playerSpawn the playerSpawn doesnt work
-
-int getAmountOfTiles(){
+void getAmountOfTiles(){
   FILE *file = fopen("../RefactorGame/assets/map1.map", "r");
   if(file == NULL){
     printf("Failed to open file");
-    return -1;
+    return;
   }
   char buffer[500000];
   if(fgets(buffer, sizeof(buffer), file) == NULL){
     printf("Failed to read file");
     fclose(file);
-    return -1;
+    return;
   }
   fclose(file);
   char *token = strtok(buffer, ";");
@@ -31,15 +30,17 @@ int getAmountOfTiles(){
     sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d},{%d}{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, 
            &playerSpawn, &enemySpawn, &weaponBuy, &weaponIndex, &perkBuy, &perkIndex);
     if(active == true){
+      AMOUNTOFTILES++;
       index++;
+      if(solid == true){
+        AMOUNTOFSOLIDTILES++;
+      }
     }
     token = strtok(NULL, ";");
   }
-  printf("\n%d\n", index);
-  return index;
 }
 
-void importMap(Tile *tileArr){
+void importMap(Tile *tileArr, Tile *solidTileArr){
  FILE *file = fopen("assets/map1.map", "r");
   if(file == NULL){
     printf("Failed to open map file");
@@ -55,6 +56,7 @@ void importMap(Tile *tileArr){
   fclose(file);
   char *token = strtok(buffer, ";");
   int index = 0;
+  int solidIndex = 0;
   while(token != NULL && index < AMOUNTOFTILES){
     int id, posX, posY, active, solid, playerSpawn, enemySpawn, weaponBuy, weaponIndex, perkBuy, perkIndex;
     sscanf(token, "%d{{%d,%d},{%d},{%d},{%d},{%d},{%d}{%d},{%d}{%d}}", &id, &posX, &posY, &active, &solid, 
@@ -70,6 +72,10 @@ void importMap(Tile *tileArr){
     tileArr[index].weaponIndex = weaponIndex;
     tileArr[index].perkBuy = perkBuy;
     tileArr[index].perkIndex = perkIndex;
+    if(tileArr[index].solid) {
+    solidTileArr[solidIndex] = tileArr[index];
+    solidIndex++;
+    }
     token = strtok(NULL, ";");
     index++;
   }
@@ -97,20 +103,27 @@ void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *w
   } 
 }
 
-void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr){
-for(int i = 0; i < AMOUNTOFTILES; i++){
-    if(tileArr[i].active){
-      DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
-      //check for collision so here so we dont have to iterate through another loop
-      if(tileArr[i].solid){
-        checkPlayerCollisionWithTile(player, &tileArr[i]);
-        checkEnemyCollisionWithTile(enemyArr, &tileArr[i]);
-        checkProjectileCollisionWithTile(projectileArr, &tileArr[i], enemyArr, player, tileArr);
-      }
+void drawTiles(Texture2D *tileTextureArr, Chunk *chunkArr, Camera2D *camera){
+  int visibleChunks[AMOUNTOFCHUNKS];
+  int chunkCount = findChunksInCameraView(visibleChunks, chunkArr, camera);
+  for(int i = 0; i < chunkCount; i++){
+    int chunkId = visibleChunks[i];
+    for(int j = 0; j < chunkArr[chunkId].tileCount; j++){
+        DrawTexture(tileTextureArr[chunkArr[chunkId].tileArr[j].id], chunkArr[chunkId].tileArr[j].pos.x, chunkArr[chunkId].tileArr[j].pos.y, WHITE);
     }
   }
 }
 
-void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr){
-  drawTiles(tileArr, tileTextureArr, player, enemyArr, projectileArr);
+void checkCollisionWithTiles(Tile *solidTileArr, Player *player, Enemy *enemyArr, Tile *tileArr, Projectile *projectileArr){
+  for(int i = 0; i < AMOUNTOFSOLIDTILES; i++){
+    checkPlayerCollisionWithTile(player, &solidTileArr[i]);
+    checkEnemyCollisionWithTile(enemyArr, &solidTileArr[i]);
+    checkProjectileCollisionWithTile(projectileArr, &solidTileArr[i], enemyArr, player, tileArr);
+  }
+}
+  
+
+void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr, Chunk *chunkArr, Camera2D *camera, Tile *solidTileArr){
+  drawTiles(tileTextureArr, chunkArr, camera);
+  checkCollisionWithTiles(solidTileArr, player, enemyArr, tileArr, projectileArr);
 }

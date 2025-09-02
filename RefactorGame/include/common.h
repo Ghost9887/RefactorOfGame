@@ -30,6 +30,8 @@
 #define MAXTILES 22500
 #define AMOUNTOFTILETEXTURES 14
 #define CELLSIZE 32 // size of a tile 
+#define CHUNKSIZE 50 // 50x50 tiles
+#define AMOUNTOFCHUNKS 9
 
 //pickup constants
 #define MAXPICKUPS 15 
@@ -211,6 +213,16 @@ typedef struct{
   bool perkBuy;
   int perkIndex;
 }Tile;
+
+typedef struct{
+  int id;
+  float startX;
+  float endX;
+  float startY;
+  float endY;
+  Tile *tileArr;
+  int tileCount;
+}Chunk;
 
 typedef struct{
   Vector2 pos;

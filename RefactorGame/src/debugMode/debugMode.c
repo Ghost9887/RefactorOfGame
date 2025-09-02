@@ -6,7 +6,9 @@ extern bool ENABLEENEMYHITBOX;
 extern bool ENABLESOLIDTILEHITBOX;
 extern bool ENABLEWEAPONBUYHITBOX;
 extern bool ENABLEPERKBUYHITBOX;
+extern bool ENABLECHUNKHITBOX;
 extern int AMOUNTOFTILES;
+extern int AMOUNTOFSOLIDTILES;
 extern int AMOUNTOFWEAPONBUYS;
 extern int AMOUNTOFPERKBUYS;
 
@@ -16,7 +18,7 @@ void enableDebugMode(){
   }
 }
 
-void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr, PerkBuy *perkBuyArr){
+void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, Tile *solidTileArr, WeaponBuy *weaponBuyArr, PerkBuy *perkBuyArr, Chunk *chunkArr){
   if(ENABLEPLAYERHITBOX){
     DrawRectangleLines(player->pos.x, player->pos.y, player->width, player->height, RED);
   }
@@ -28,10 +30,8 @@ void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *w
     }
   }
   if(ENABLESOLIDTILEHITBOX){
-    for(int i = 0; i < AMOUNTOFTILES; i++){
-      if(tileArr[i].active && tileArr[i].solid){
-        DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
-      }
+    for(int i = 0; i < AMOUNTOFSOLIDTILES; i++){
+      DrawRectangleLines(solidTileArr[i].pos.x, solidTileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
     }
   }
   if(ENABLEWEAPONBUYHITBOX){
@@ -44,9 +44,14 @@ void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *w
       DrawRectangleLines(perkBuyArr[i].pos.x, perkBuyArr[i].pos.y, perkBuyArr[i].width * perkBuyArr[i].scale, perkBuyArr[i].height * perkBuyArr[i].scale, RED);
     }
   }
+  if(ENABLECHUNKHITBOX){
+    for(int i = 0; i < AMOUNTOFCHUNKS; i++){
+      DrawRectangleLines(chunkArr[i].startX, chunkArr[i].startY, 1600, 1600, RED);
+    }
+  }
 }
 
-void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *weaponBuyArr, PerkBuy *perkBuyArr){
+void updateDebugMode(Player *player, Enemy *enemyArr, Tile *tileArr, Tile *solidTileArr, WeaponBuy *weaponBuyArr, PerkBuy *perkBuyArr, Chunk *chunkArr){
   enableDebugMode();
-  drawDebugStuff(player, enemyArr, tileArr, weaponBuyArr, perkBuyArr);
+  drawDebugStuff(player, enemyArr, tileArr, solidTileArr, weaponBuyArr, perkBuyArr, chunkArr);
 }
