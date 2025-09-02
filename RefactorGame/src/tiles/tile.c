@@ -1,7 +1,6 @@
 #include "tile.h"
 
 extern int AMOUNTOFTILES;
-extern int AMOUNTOFSOLIDTILES;
 
 Tile createEmptyTile(){
   Tile tile;
@@ -13,12 +12,6 @@ Tile createEmptyTile(){
 void initTileArr(Tile *tileArr){
   for(int i = 0; i < AMOUNTOFTILES; i++){
     tileArr[i] = createEmptyTile();
-  }
-}
-
-void initSolidTileArr(Tile *solidTileArr){
-  for(int i = 0; i < AMOUNTOFSOLIDTILES; i++){
-    solidTileArr[i] = createEmptyTile();
   }
 }
 
