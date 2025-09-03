@@ -166,6 +166,7 @@ void playerADS(Player *player, Enemy *enemyArr, Chunk *chunkArr, int chunks){
   }
 }
 
+//TODO: doesnt work properly
 void checkPlayerCollisionWithTile(Player *player, Tile *tile){
     Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
     Rectangle futurePlayerXRec = {
