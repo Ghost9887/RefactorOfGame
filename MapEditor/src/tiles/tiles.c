@@ -10,6 +10,7 @@ void initTileArr(Tile *tileArr){
     tileArr[i].playerSpawn = false;
     tileArr[i].weaponBuy = false;
     tileArr[i].weaponIndex = -1;
+    tileArr[i].visited = false;
     tileArr[i].next = NULL;
   }
 }

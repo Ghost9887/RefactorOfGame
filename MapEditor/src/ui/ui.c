@@ -38,6 +38,9 @@ void drawUserMode(User *user){
   else if(user->mode == PERKBUY){
     DrawText("PerkBuy", SCREENWIDTH - 300, 30, 40, BLUE);
   }
+  else if(user->mode == CLEAR){
+    DrawText("CLEAR MAP", SCREENWIDTH - 300, 30, 40, RED);
+  }
 }
 
 void drawExportButton(Tile *tileArr){
@@ -54,6 +57,35 @@ void drawExportButton(Tile *tileArr){
     }
   }
 }
+
+void drawClearButton(User *user, Tile *tileArr){
+  if(user->mode == CLEAR){
+    // Button dimensions and position
+    float buttonWidth = 500;
+    float buttonHeight = 100;
+    float buttonX = (SCREENWIDTH - buttonWidth) / 2;
+    float buttonY = buttonHeight;
+
+    Rectangle button = { buttonX, buttonY, buttonWidth, buttonHeight };
+    Vector2 mousePos = GetMousePosition();
+    bool hovered = CheckCollisionPointRec(mousePos, button);
+    Color buttonColor = hovered ? DARKGRAY : BLACK;
+    Color borderColor = RED;
+    Color textColor = RAYWHITE;
+    DrawRectangleRec(button, buttonColor);
+    DrawRectangleLinesEx(button, 2, borderColor);
+    const char *label = "CONFIRM TO CLEAR EVERYTHING";
+    int fontSize = 20;
+    int textWidth = MeasureText(label, fontSize);
+    int textX = buttonX + (buttonWidth - textWidth) / 2;
+    int textY = buttonY + (buttonHeight - fontSize) / 2;
+    DrawText(label, textX, textY, fontSize, textColor);
+    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && hovered){
+      clearMap(tileArr);
+    }
+  }
+}
+
 
 void drawTexturesToSelect(Texture2D *tileTextureArr, User *user){
   int height = 200;
@@ -191,5 +223,6 @@ void updateUI(Texture2D *tileTextureArr, User *user, Tile *tileArr){
   drawUserMode(user);
   userInteractingWithUI(user);
   drawExportButton(tileArr);
+  drawClearButton(user, tileArr);
   drawFPS();
 }

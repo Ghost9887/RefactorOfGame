@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "export.h"
+#include "mapEditor.h"
   
   void updateUI(Texture2D *tileTextureArr, User *user, Tile *tileArr);
 

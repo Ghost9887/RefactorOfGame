@@ -5,11 +5,12 @@
 #include "raymath.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 //GLOBAL CONSTANTS
 #define SCREENWIDTH (GetScreenWidth())
 #define SCREENHEIGHT (GetScreenHeight())
-#define TARGETFPS 60
+#define TARGETFPS 0
 
 //MAP CONSTANTS
 #define CELLSIZE 32 // 32x32
@@ -39,6 +40,7 @@
 #define ENEMYSPAWN 5
 #define WEAPONBUY 6
 #define PERKBUY 7
+#define CLEAR 8
 
 typedef struct{
   Texture2D *selectedTexture;
@@ -60,6 +62,7 @@ typedef struct Tile{
   bool perkBuy;
   int perkIndex;
   struct Tile *next;
+  bool visited;
 }Tile;
 
 typedef struct{

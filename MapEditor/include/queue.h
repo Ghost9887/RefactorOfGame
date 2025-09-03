@@ -7,6 +7,7 @@
   void enqueue(Queue *q, Tile *tile);
   Tile *dequeue(Queue *q);
   Tile *peek(Queue *q);
+  int getSize(Queue *q);
 
   
 #endif

@@ -47,19 +47,114 @@ int tileExists(int x, int y, Tile *tileArr){
   return -1;
 }
 
-int findThePreviousTile(Tile *tileArr, int index){
-  for(int i = index; i >= 0; i--){
-    if(tileArr[i].active){
-      return i;
+int *findNeigbouringTiles(Tile *tileArr, Tile *originalTile) {
+  int *tiles = malloc(sizeof(int) * 4);
+  int dx[4] = { 0, CELLSIZE, 0, -CELLSIZE };
+  int dy[4] = { -CELLSIZE, 0, CELLSIZE, 0 };
+  for(int i = 0; i < 4; i++){
+    int x = originalTile->pos.x + dx[i];
+    int y = originalTile->pos.y + dy[i];
+    int index = tileExists(x, y, tileArr);
+    if (index == -1) {
+      for (int j = 0; j < MAXTILES; j++) {
+        if (!tileArr[j].active) {
+          tileArr[j] = createTile(x, y);
+          tiles[i] = j;
+          break;
+        }
+      }
+    } 
+    else{
+      tiles[i] = -1;
     }
   }
-  return -1;
+  return tiles;
+}
+
+int *findNeigbouringTilesWithTheSameTexture(Tile *tileArr, Tile *originalTile, int originalTexture){
+  int *tiles = malloc(sizeof(int) * 4);
+  int dx[4] = { 0, CELLSIZE, 0, -CELLSIZE };
+  int dy[4] = { -CELLSIZE, 0, CELLSIZE, 0 };
+  for(int i = 0; i < 4; i++){
+    int x = originalTile->pos.x + dx[i];
+    int y = originalTile->pos.y + dy[i];
+    int index = tileExists(x, y, tileArr);
+    if(index != -1 && tileArr[index].textureId == originalTexture){
+      tiles[i] = index;
+    }
+    else{
+      tiles[i] = -1;
+    }
+  }
+  return tiles;
+}
+
+
+void bucketTool(Tile *tileArr, Camera2D *camera, User *user){
+  if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_LEFT_SHIFT) && !user->interactingWithUI){
+    if(user->mode == BUCKET){
+      Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
+      int posX = ((int)mousePos.x / CELLSIZE) * CELLSIZE;
+      int posY = ((int)mousePos.y / CELLSIZE) * CELLSIZE;
+      int indexOfTile = tileExists(posX, posY, tileArr);
+      Queue q = createQueue();
+      if(indexOfTile == -1){
+        for(int i = 0; i < MAXTILES; i++){
+          if(!tileArr[i].active){
+            tileArr[i] = createTile(posX, posY);
+            enqueue(&q, &tileArr[i]);
+            break;
+          }
+        }
+        while(getSize(&q) > 0){
+          //printf("queue size: %d\n", getSize(&q));
+          Tile *temp = dequeue(&q);
+          temp->textureId = user->textureId;
+          int *tiles = findNeigbouringTiles(tileArr, temp);
+          for(int i = 0; i < 4; i++){
+            if(tiles[i] != -1){
+              printf("%d\n", tiles[i]);
+              enqueue(&q, &tileArr[tiles[i]]);
+            }
+          }
+          free(tiles);
+        }
+      }
+    }
+  }
+  //deletes all tiles with a bounding box with the same texture(inverse of the up function)
+  else if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && !IsKeyDown(KEY_LEFT_SHIFT) && !user->interactingWithUI){
+   if(user->mode == BUCKET){
+      Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
+      int posX = ((int)mousePos.x / CELLSIZE) * CELLSIZE;
+      int posY = ((int)mousePos.y / CELLSIZE) * CELLSIZE;
+      int indexOfTile = tileExists(posX, posY, tileArr);
+      Queue q = createQueue();
+      if(indexOfTile != -1){
+        enqueue(&q, &tileArr[indexOfTile]);
+        while(getSize(&q) > 0){
+          printf("queue size: %d\n", getSize(&q));
+          Tile *temp = dequeue(&q);
+          int *tiles = findNeigbouringTilesWithTheSameTexture(tileArr, temp, temp->textureId);
+          for(int i = 0; i < 4; i++){
+            if(tiles[i] != -1 && !tileArr[tiles[i]].visited){
+              tileArr[tiles[i]].visited = true;
+              enqueue(&q, &tileArr[tiles[i]]);
+            }
+          }
+          temp->active = false;
+          temp->textureId = -1;
+          free(tiles);
+        }
+      }
+    }
+  }
 }
 
 //TODO: refactor
 void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User *user){
   if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsKeyDown(KEY_LEFT_SHIFT)){
-    Vector2 mousePos =  GetScreenToWorld2D(GetMousePosition(), *camera);
+    Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
     //we use the mouse position to determine the tile position
     //bit of a genius
     int posX = ((int)mousePos.x / CELLSIZE) * CELLSIZE;
@@ -73,11 +168,8 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
           tileArr[i].textureId = user->textureId;
           tileArr[i].solid = (user->mode == SOLID);
           tileArr[i].next = NULL;
-          int index = findThePreviousTile(tileArr, i);
-          if(i != -1) tileArr[index].next = &tileArr[i];
-          if(i + 1 == MAXTILES) tileArr[i].next = NULL;
           printf("Tile Data: id:%d, x: %d, y: %d\n", tileArr[i].id, (int)tileArr[i].pos.x, (int)tileArr[i].pos.y);
-        break;      
+          break;      
         }
       }
     }
@@ -131,17 +223,8 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
   }
 }
 
-int findTheNextTile(Tile *tileArr, int index){
-  for(int i = index; i < MAXTILES; i++){
-    if(tileArr[i].active){
-      return i;
-    }
-  }
-  return -1;
-}
-
-void deleteTile(Tile *tileArr, Camera2D *camera){
-  if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)){
+void deleteTile(Tile *tileArr, Camera2D *camera, User *user){
+  if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && user->mode != BUCKET){
     Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
     int posX = ((int)mousePos.x / CELLSIZE) * CELLSIZE;
     int posY = ((int)mousePos.y / CELLSIZE) * CELLSIZE;
@@ -150,19 +233,14 @@ void deleteTile(Tile *tileArr, Camera2D *camera){
       tileArr[index].pos.x = 0;
       tileArr[index].pos.y = 0;
       tileArr[index].active = false;
-      //link the nodes together so we dont get a hole in the linked list
-      int n = findTheNextTile(tileArr, index);
-      int p = findThePreviousTile(tileArr, index);
-      if(n != -1 && p != -1) tileArr[p].next = &tileArr[n];
-      if(n == -1) tileArr[p].next = NULL;
-    }
+   }
   }
 }
 
 void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, Texture2D *perkTextureArr){
   for(int i = 0; i < MAXTILES; i++){
     if(tileArr[i].active){
-      DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+      DrawTexture(tileTextureArr[tileArr[i].textureId], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
       if(tileArr[i].solid){
         //outline solid tiles
         DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
@@ -183,16 +261,21 @@ void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTexture
         Rectangle rec = { 0, 0, 32, 32 };
         DrawTextureRec(perkTextureArr[tileArr[i].perkIndex], rec, tileArr[i].pos, WHITE);
       }
-      DrawText(TextFormat("%d", tileArr[i].id), tileArr[i].pos.x + CELLSIZE / 2, tileArr[i].pos.y + CELLSIZE / 2, 5, BLUE);
+      DrawText(TextFormat("%d", tileArr[i].textureId), tileArr[i].pos.x + CELLSIZE / 2, tileArr[i].pos.y + CELLSIZE / 2, 5, BLUE);
     }
   }
+}
+
+void clearMap(Tile *tileArr){
+  initTileArr(tileArr);
 }
 
 void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr,Texture2D *weaponTextureArr, Texture2D *perkTextureArr, User *user){
   cameraMovement(camera);
   drawGrid();
   placeTile(tileArr, tileTextureArr, camera, user);
-  deleteTile(tileArr, camera);
+  bucketTool(tileArr, camera, user);
+  deleteTile(tileArr, camera, user);
   drawTile(tileArr, tileTextureArr, weaponTextureArr, perkTextureArr);
   switchMode(user);
 }
