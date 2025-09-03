@@ -2,13 +2,15 @@
 
 void initTileArr(Tile *tileArr){
   for(int i = 0; i < MAXTILES; i++){
-    tileArr[i].id = -1;
+    tileArr[i].id = i;
+    tileArr[i].textureId = -1;
     tileArr[i].pos = (Vector2){ 0, 0 };
     tileArr[i].active = false;
     tileArr[i].solid = false;
     tileArr[i].playerSpawn = false;
     tileArr[i].weaponBuy = false;
     tileArr[i].weaponIndex = -1;
+    tileArr[i].next = NULL;
   }
 }
 

@@ -32,12 +32,13 @@
 #define MAXPERKBUYS 20
 
 //PLAYER CONSTANTS/ENUM
-#define PAINT 0 // tile can be walked through
-#define SOLID 1 // tile cannot be walked through
-#define PLAYERSPAWN 2
-#define ENEMYSPAWN 3
-#define WEAPONBUY 4
-#define PERKBUY 5
+#define PAINT 1 // tile can be walked through
+#define SOLID 2 // tile cannot be walked through
+#define BUCKET 3
+#define PLAYERSPAWN 4
+#define ENEMYSPAWN 5
+#define WEAPONBUY 6
+#define PERKBUY 7
 
 typedef struct{
   Texture2D *selectedTexture;
@@ -46,25 +47,26 @@ typedef struct{
   int mode; //determine what type of tile to place
 }User;
 
-typedef struct{
-  int id; 
+typedef struct Tile{
+  int id;
+  int textureId; 
   Vector2 pos;
   bool active;
-  bool solid; //cant walk through
-  
-  //playerspawn attributes
+  bool solid;
   bool playerSpawn;
-
   bool enemySpawn;
-
-  //weaponBuy attributes
   bool weaponBuy;
   int weaponIndex;
-
-  //perkBuy attributes
   bool perkBuy;
   int perkIndex;
+  struct Tile *next;
 }Tile;
+
+typedef struct{
+  Tile *front;
+  Tile *rear;
+  int size;
+}Queue;
 
 typedef struct{
   Texture2D tile1;

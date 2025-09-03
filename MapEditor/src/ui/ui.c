@@ -12,12 +12,19 @@ void selectTexture(User *user, Rectangle *textureRec, int id, Texture2D *tileTex
   }
 }
 
+void drawFPS(){
+  DrawText(TextFormat("%d", GetFPS()), 120, 20, 20, RED);
+}
+
 void drawUserMode(User *user){
   if(user->mode == PAINT){
     DrawText("Paint", SCREENWIDTH - 150, 30, 40, BLUE);
   }
   else if(user->mode == SOLID){
     DrawText("Solid", SCREENWIDTH - 150, 30, 40, BLUE);
+  }
+  else if(user->mode == BUCKET){
+    DrawText("Bucket", SCREENWIDTH - 150, 30, 40, BLUE);
   }
   else if(user->mode == PLAYERSPAWN){
     DrawText("PlayerSpawn", SCREENWIDTH - 300, 30, 40, BLUE);
@@ -184,4 +191,5 @@ void updateUI(Texture2D *tileTextureArr, User *user, Tile *tileArr){
   drawUserMode(user);
   userInteractingWithUI(user);
   drawExportButton(tileArr);
+  drawFPS();
 }
