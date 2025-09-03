@@ -8,8 +8,7 @@ extern int AMOUNTOFTILES;
 extern int AMOUNTOFWEAPONBUYS;
 extern int AMOUNTOFPERKBUYS;
 extern int AMOUNTOFENEMYSPAWNS;
-
-//TODO: theres a bug where if there arent any tiles around a playerSpawn the playerSpawn doesnt work
+extern bool DRAWFULLMAP;
 
 int getAmountOfTiles(){
   FILE *file = fopen("../RefactorGame/assets/map1.map", "r");
@@ -97,20 +96,44 @@ void spawnObjects(Tile *tileArr, Player *player, Weapon *weaponArr, WeaponBuy *w
   } 
 }
 
-void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr){
-for(int i = 0; i < AMOUNTOFTILES; i++){
-    if(tileArr[i].active){
-      DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
-      //check for collision so here so we dont have to iterate through another loop
-      if(tileArr[i].solid){
-        checkPlayerCollisionWithTile(player, &tileArr[i]);
-        checkEnemyCollisionWithTile(enemyArr, &tileArr[i]);
-        checkProjectileCollisionWithTile(projectileArr, &tileArr[i], enemyArr, player, tileArr);
+void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr, Chunk *chunkArr, Camera2D *camera){ 
+  if(!DRAWFULLMAP){
+    int arr[AMOUNTOFCHUNKS];
+    int chunkCount = findChunksInCameraView(arr, chunkArr, camera);
+    for(int i = 0; i < chunkCount; i++){
+      int chunkIndex = arr[i];
+      for(int j = 0; j < chunkArr[chunkIndex].tileCount; j++){
+        DrawTexture(tileTextureArr[chunkArr[chunkIndex].tileArr[j].id], chunkArr[chunkIndex].tileArr[j].pos.x, chunkArr[chunkIndex].tileArr[j].pos.y, WHITE);
+        //check for collision so here so we dont have to iterate through another loop
+        if(chunkArr[chunkIndex].tileArr[j].solid){
+          checkPlayerCollisionWithTile(player, &chunkArr[chunkIndex].solidTileArr[j]);
+          checkEnemyCollisionWithTile(enemyArr, &chunkArr[chunkIndex].solidTileArr[j]);
+          checkProjectileCollisionWithTile(projectileArr, &chunkArr[chunkIndex].solidTileArr[j], enemyArr, player, tileArr);
+        }
+      }
+    }
+    playerADS(player, enemyArr, chunkArr, chunkCount);
+  }else{
+    for(int i = 0; i < AMOUNTOFTILES; i++){
+      DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);  
+    }
+  }
+}
+
+void checkCollisionWithTiles(Enemy *enemyArr, Chunk *chunkArr){
+  int arr[AMOUNTOFCHUNKS];
+  for(int i = 0; i < MAXSPAWNENEMIES; i++){
+    int chunkCount = findChunksForEnemy(arr, chunkArr, &enemyArr[i]);
+    for(int j = 0; j < chunkCount; j++){
+      int chunkIndex = arr[j];
+      for(int k = 0; k < chunkArr[chunkIndex].solidTileCount; k++){
+        checkEnemyCollisionWithTile(&enemyArr[i], &chunkArr[chunkIndex].solidTileArr[k]);
       }
     }
   }
 }
 
-void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr){
-  drawTiles(tileArr, tileTextureArr, player, enemyArr, projectileArr);
+void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr, Chunk *chunkArr, Camera2D *camera){
+  drawTiles(tileArr, tileTextureArr, player, enemyArr, projectileArr, chunkArr, camera);
+  checkCollisionWithTiles(enemyArr, chunkArr);
 }

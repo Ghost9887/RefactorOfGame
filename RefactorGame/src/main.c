@@ -9,6 +9,7 @@
 #include "projectile.h"
 #include "roundManager.h"
 #include "tile.h"
+#include "chunk.h"
 #include "map.h"
 #include "debugMode.h"
 #include "weaponBuy.h"
@@ -32,6 +33,8 @@ bool ENABLEENEMYHITBOX = false;
 bool ENABLESOLIDTILEHITBOX = false;
 bool ENABLEWEAPONBUYHITBOX = false;
 bool ENABLEPERKBUYHITBOX = false;
+bool ENABLECHUNKHITBOX = false;
+bool DRAWFULLMAP = false;
 
 //weapon buys
 int AMOUNTOFWEAPONBUYS = 0;
@@ -42,7 +45,7 @@ int AMOUNTOFPERKBUYS = 0;
 void updateGameState(Player *player, Camera2D *camera, Enemy* enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr, EnemySpawn *enemySpawnArr);
+                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr, EnemySpawn *enemySpawnArr, Chunk *chunkArr);
 
 int main(){
   
@@ -85,6 +88,8 @@ int main(){
   Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
   initTileArr(tileArr);
   initTileTextureArr(tileTextureArr, &textureManager);
+  
+  Chunk chunkArr[AMOUNTOFCHUNKS];
 
   Pickup pickupArr[MAXPICKUPS];
   initPickupArr(pickupArr);
@@ -102,7 +107,11 @@ int main(){
   //LOAD MAP******************************
   importMap(tileArr);
   //**************************************
-  
+
+  //POPULATE THE CHUNKS*******************
+  initChunkArr(chunkArr, tileArr);
+  //**************************************
+
   //SPAWN OBJECTS*************************
   spawnObjects(tileArr, &player, weaponArr, weaponBuyArr, perkArr, perkBuyArr, enemySpawnArr);
   //**************************************
@@ -120,9 +129,9 @@ int main(){
         
         updateGameState(&player, &camera, enemyArr, projectileArr, &roundManager,
                         &textureManager, tileArr, tileTextureArr, weaponHolster, weaponBuyArr,
-                        weaponArr, pickupArr, perkBuyArr, enemySpawnArr);
+                        weaponArr, pickupArr, perkBuyArr, enemySpawnArr, chunkArr);
       
-        updateDebugMode(&player, enemyArr, tileArr, weaponBuyArr, perkBuyArr);
+        updateDebugMode(&player, enemyArr, tileArr, weaponBuyArr, perkBuyArr, chunkArr);
 
       EndMode2D();
           
@@ -141,10 +150,10 @@ int main(){
 void updateGameState(Player *player, Camera2D *camera, Enemy *enemyArr, 
                      Projectile *projectileArr, RoundManager *roundManager, TextureManager *textureManager,
                      Tile *tileArr, Texture2D *tileTextureArr, Weapon *weaponHolster, WeaponBuy *weaponBuyArr,
-                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr, EnemySpawn *enemySpawnArr){
+                     Weapon *weaponArr, Pickup *pickupArr, PerkBuy *perkBuyArr, EnemySpawn *enemySpawnArr, Chunk *chunkArr){
   
   //in order of drawing / operations
-  updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr);
+  updateMap(tileArr, tileTextureArr, player, enemyArr, projectileArr, chunkArr, camera);
 
   updateEnemies(enemyArr, player, roundManager, textureManager, pickupArr, enemySpawnArr);
 

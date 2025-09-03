@@ -96,8 +96,7 @@ void playerShoot(Player *player, Projectile *projectileArr){
   }
 }
 
-//TODO: optimize this halves the FPS
-void playerADS(Player *player, Enemy *enemyArr, Tile *tileArr){
+void playerADS(Player *player, Enemy *enemyArr, Chunk *chunkArr, int chunks){
   if (IsMouseButtonDown(MOUSE_RIGHT_BUTTON)) {
     if (!player->ads) {
         player->speed -= 80;
@@ -123,9 +122,14 @@ void playerADS(Player *player, Enemy *enemyArr, Tile *tileArr){
         origin.x + direction.x * t,
         origin.y + direction.y * t
       };
-      for (int j = 0; j < AMOUNTOFTILES; j++) {
-        if (tileArr[j].solid) {
-          Rectangle tileHitbox = { tileArr[j].pos.x, tileArr[j].pos.y, CELLSIZE, CELLSIZE };
+      for (int j = 0; j < chunks; j++) {
+        for (int k = 0; k < chunkArr[j].solidTileCount; k++) {
+          Rectangle tileHitbox = {
+            chunkArr[j].solidTileArr[k].pos.x,
+            chunkArr[j].solidTileArr[k].pos.y,
+            CELLSIZE,
+            CELLSIZE
+          };
           if (CheckCollisionPointRec(point, tileHitbox)) {
             hitPoint = point;
             t = range;
@@ -185,5 +189,4 @@ void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, E
   updatePlayerAnimation(player);
   playerMovement(player);
   playerShoot(player, projectileArr);
-  playerADS(player, enemyArr, tileArr);
 }
