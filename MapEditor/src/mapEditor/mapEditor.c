@@ -72,11 +72,10 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
           tileArr[i] = createTile(posX, posY);
           tileArr[i].textureId = user->textureId;
           tileArr[i].solid = (user->mode == SOLID);
+          tileArr[i].next = NULL;
           int index = findThePreviousTile(tileArr, i);
           if(i != -1) tileArr[index].next = &tileArr[i];
-          tileArr[i].next = NULL;
           if(i + 1 == MAXTILES) tileArr[i].next = NULL;
-
           printf("Tile Data: id:%d, x: %d, y: %d\n", tileArr[i].id, (int)tileArr[i].pos.x, (int)tileArr[i].pos.y);
         break;      
         }
