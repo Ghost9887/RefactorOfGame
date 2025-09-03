@@ -202,7 +202,7 @@ typedef struct{
   bool allEnemiesSpawned;
 }RoundManager;
 
-typedef struct{
+typedef struct Tile{
   int id;
   Vector2 pos;
   bool active;
@@ -213,7 +213,19 @@ typedef struct{
   int weaponIndex;
   bool perkBuy;
   int perkIndex;
+  //ASTAR ALGO
+  int gCost;
+  int hCost;
+  int fCost;
+  struct Tile *parent;
+  struct Tile *next;
 }Tile;
+
+typedef struct{
+  Tile *front;
+  Tile *rear;
+  int size;
+}PriorityQueue;
 
 typedef struct{
   int id;

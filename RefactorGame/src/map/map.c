@@ -69,6 +69,11 @@ void importMap(Tile *tileArr){
     tileArr[index].weaponIndex = weaponIndex;
     tileArr[index].perkBuy = perkBuy;
     tileArr[index].perkIndex = perkIndex;
+    tileArr[index].gCost = INT_MAX;
+    tileArr[index].hCost = 0;
+    tileArr[index].fCost = INT_MAX;
+    tileArr[index].parent = NULL;
+    tileArr[index].next = NULL;
     token = strtok(NULL, ";");
     index++;
   }
