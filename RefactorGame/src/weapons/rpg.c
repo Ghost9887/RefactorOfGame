@@ -32,6 +32,7 @@ Weapon createRPG(TextureManager *textureManager){
 }
 
 //defenitely not effecient but works for now
+//TODO: doesnt work at all
 bool hasLineOfSight(Vector2 from, Vector2 to, Tile *tileArr) {
   for (int i = 0; i < AMOUNTOFTILES; i++) {
     Rectangle tileRec = { tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE };

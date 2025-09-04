@@ -24,7 +24,7 @@ void createPerkBuy(PerkBuy *perkBuyArr, Perk *perkArr, int id, float x, float y)
   perkBuy.pos = (Vector2){ x, y };
   perkBuy.width = 32;
   perkBuy.height = 32;
-  perkBuy.scale = 2.0f;
+  perkBuy.scale = 3.0f;
   perkBuy.perk = findPerkById(id, perkArr);
   perkBuy.cost = perkBuy.perk->cost;
   perkBuy.amountOfFrames = 6;

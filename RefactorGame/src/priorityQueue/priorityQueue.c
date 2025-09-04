@@ -9,7 +9,6 @@ PriorityQueue createPriorityQueue(){
 }
 
 void enqueue(PriorityQueue *pq, Tile *tile){
-  
   if(pq->front == NULL){
     pq->front = pq->rear = tile;
     return;

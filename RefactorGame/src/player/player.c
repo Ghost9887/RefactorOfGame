@@ -166,7 +166,6 @@ void playerADS(Player *player, Enemy *enemyArr, Chunk *chunkArr, int chunks){
   }
 }
 
-//TODO: doesnt work properly
 void checkPlayerCollisionWithTile(Player *player, Tile *tile){
     Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
     Rectangle futurePlayerXRec = {
@@ -182,7 +181,8 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tile){
       player->width,
       player->height
     };
-    if (CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
+    if(CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
+    if(CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
 }
 
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){
