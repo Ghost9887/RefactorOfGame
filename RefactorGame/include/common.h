@@ -129,8 +129,8 @@ typedef struct{
   Perk *perk;
   int amountOfFrames;
   int currentFrame;
-  int frameTime;
-  int frameSpeed;
+  float frameTime;
+  float frameSpeed;
   Rectangle frameRec;
   bool consumed;
 }PerkBuy;

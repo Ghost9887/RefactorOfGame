@@ -22,15 +22,15 @@ void createPerkBuy(PerkBuy *perkBuyArr, Perk *perkArr, int id, float x, float y)
   PerkBuy perkBuy;
   perkBuy.id = id;
   perkBuy.pos = (Vector2){ x, y };
-  perkBuy.width = 32;
-  perkBuy.height = 32;
+  perkBuy.width = 32.0f;
+  perkBuy.height = 32.0f;
   perkBuy.scale = 3.0f;
   perkBuy.perk = findPerkById(id, perkArr);
   perkBuy.cost = perkBuy.perk->cost;
   perkBuy.amountOfFrames = 6;
   perkBuy.currentFrame = 0;
   perkBuy.frameTime = 0.0f;
-  perkBuy.frameSpeed = 0.3f;
+  perkBuy.frameSpeed = 0.5f;
   perkBuy.frameRec = (Rectangle) { 0, 0, perkBuy.width, perkBuy.height };
   perkBuy.consumed = false;
   perkBuyArr[AMOUNTOFPERKBUYS] = perkBuy;
@@ -50,14 +50,13 @@ void drawPerkBuy(PerkBuy *perkBuy){
   DrawTexturePro(*perkBuy->perk->texture, source, destRec, origin, rotation, WHITE);
 }
 
-//TODO: animation is too fast for some reason fix
 void updateAnimationPerkBuy(PerkBuy *perkBuy){
   perkBuy->frameTime += GetFrameTime();
   if (perkBuy->frameTime >= perkBuy->frameSpeed) {
     perkBuy->frameTime = 0.0f;
     perkBuy->currentFrame++;
     if (perkBuy->currentFrame > perkBuy->amountOfFrames) perkBuy->currentFrame = 0;
-    perkBuy->frameRec.y = (float)perkBuy->currentFrame * perkBuy->height;
+    perkBuy->frameRec.y = (float)perkBuy->currentFrame * perkBuy->frameRec.height;
   } 
 }
 
