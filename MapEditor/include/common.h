@@ -62,7 +62,6 @@ typedef struct Tile{
   bool perkBuy;
   int perkIndex;
   struct Tile *next;
-  bool visited;
 }Tile;
 
 typedef struct{

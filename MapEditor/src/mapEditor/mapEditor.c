@@ -71,7 +71,7 @@ int *findNeigbouringTiles(Tile *tileArr, Tile *originalTile) {
   return tiles;
 }
 
-int *findNeigbouringTilesWithTheSameTexture(Tile *tileArr, Tile *originalTile, int originalTexture){
+int *findNeigbouringTilesWithTheSameTexture(Tile *tileArr, Tile *originalTile){
   int *tiles = malloc(sizeof(int) * 4);
   int dx[4] = { 0, CELLSIZE, 0, -CELLSIZE };
   int dy[4] = { -CELLSIZE, 0, CELLSIZE, 0 };
@@ -79,7 +79,7 @@ int *findNeigbouringTilesWithTheSameTexture(Tile *tileArr, Tile *originalTile, i
     int x = originalTile->pos.x + dx[i];
     int y = originalTile->pos.y + dy[i];
     int index = tileExists(x, y, tileArr);
-    if(index != -1 && tileArr[index].textureId == originalTexture){
+    if(index > -1 && tileArr[index].textureId == originalTile->textureId){
       tiles[i] = index;
     }
     else{
@@ -107,13 +107,12 @@ void bucketTool(Tile *tileArr, Camera2D *camera, User *user){
           }
         }
         while(getSize(&q) > 0){
-          //printf("queue size: %d\n", getSize(&q));
+          printf("queue size: %d\n", getSize(&q));
           Tile *temp = dequeue(&q);
           temp->textureId = user->textureId;
           int *tiles = findNeigbouringTiles(tileArr, temp);
           for(int i = 0; i < 4; i++){
             if(tiles[i] != -1){
-              printf("%d\n", tiles[i]);
               enqueue(&q, &tileArr[tiles[i]]);
             }
           }
@@ -122,7 +121,7 @@ void bucketTool(Tile *tileArr, Camera2D *camera, User *user){
       }
     }
   }
-  //deletes all tiles with a bounding box with the same texture(inverse of the up function)
+  //deletes all tiles with the same texture(inverse of the up function)
   else if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && !IsKeyDown(KEY_LEFT_SHIFT) && !user->interactingWithUI){
    if(user->mode == BUCKET){
       Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), *camera);
@@ -133,12 +132,10 @@ void bucketTool(Tile *tileArr, Camera2D *camera, User *user){
       if(indexOfTile != -1){
         enqueue(&q, &tileArr[indexOfTile]);
         while(getSize(&q) > 0){
-          printf("queue size: %d\n", getSize(&q));
           Tile *temp = dequeue(&q);
-          int *tiles = findNeigbouringTilesWithTheSameTexture(tileArr, temp, temp->textureId);
+          int *tiles = findNeigbouringTilesWithTheSameTexture(tileArr, temp);
           for(int i = 0; i < 4; i++){
-            if(tiles[i] != -1 && !tileArr[tiles[i]].visited){
-              tileArr[tiles[i]].visited = true;
+            if(tiles[i] != -1){
               enqueue(&q, &tileArr[tiles[i]]);
             }
           }
@@ -217,6 +214,8 @@ void placeTile(Tile *tileArr, Texture2D *tileTextureArr, Camera2D *camera, User 
         if(!tileArr[indexOfTile].solid && !tileArr[indexOfTile].playerSpawn && !tileArr[indexOfTile].weaponBuy){
           tileArr[indexOfTile].perkBuy = true;
           tileArr[indexOfTile].perkIndex = user->textureId;
+        }else{
+          DrawRectangle(tileArr[indexOfTile].pos.x, tileArr[indexOfTile].pos.y, CELLSIZE, CELLSIZE, RED);
         }
       }
     }
@@ -233,6 +232,7 @@ void deleteTile(Tile *tileArr, Camera2D *camera, User *user){
       tileArr[index].pos.x = 0;
       tileArr[index].pos.y = 0;
       tileArr[index].active = false;
+      tileArr[index].textureId = -1;
    }
   }
 }
