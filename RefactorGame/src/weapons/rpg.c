@@ -31,44 +31,22 @@ Weapon createRPG(TextureManager *textureManager){
   return rpg;
 }
 
-//defenitely not effecient but works for now
-//TODO: doesnt work at all
-bool hasLineOfSight(Vector2 from, Vector2 to, Tile *tileArr) {
-  for (int i = 0; i < AMOUNTOFTILES; i++) {
-    Rectangle tileRec = { tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE };
-    //maybe??
-    Rectangle line = { from.x, from.y, to.x, to.y };
-    if (tileArr[i].solid && CheckCollisionRecs(line, tileRec)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-void splashDamage(Projectile *projectile, Enemy *enemyArr, Player *player, Tile *tileArr){
-  Vector2 center = { projectile->pos.x + projectile->size / 2.0f, projectile->pos.y + projectile->size / 2.0f };
+void splashDamage(Projectile *projectile, Enemy *enemyArr, Player *player, Enemy *enemy){
+  float posX = enemy->pos.x + enemy->width / 2.0f;
+  float posY = enemy->pos.y + enemy->height / 2.0f;
   float damage = (float)projectile->damage;
   float radius = 200.0f;
   for (int i = 0; i < MAXSPAWNENEMIES; i++) {
-    Vector2 enemyPos = enemyArr[i].pos;
-    float dx = center.x - enemyPos.x;
-    float dy = center.y - enemyPos.y;
-    float dist = sqrtf(dx * dx + dy * dy);
-    if (dist <= radius && hasLineOfSight(center, enemyPos, tileArr)) {
-      float actualDamage = damage * (1.0f - (dist / radius));
+    float dx = posX - enemyArr[i].pos.x;
+    float dy = posY - enemyArr[i].pos.y;
+    float length = fabs(sqrtf(dx * dx + dy * dy));
+    if (length <= radius) {
+      float actualDamage = damage * (1.0f - (length / radius));
       enemyArr[i].health -= actualDamage;
-      if (enemyArr[i].health > 0) {
-        player->money += 10;
-      } else {
-        player->money += 80;
-      }
     }
   }
-  
-  //explosionAnimation(center.x, center.y, radius);
-  DrawCircle(center.x, center.y, radius, YELLOW);
+  DrawCircle(posX, posY, radius, YELLOW);
 }
-
 
 
 

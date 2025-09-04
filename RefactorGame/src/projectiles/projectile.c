@@ -76,7 +76,7 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *pl
           break;
         }
         else if(strcmp(projectile->type, "explosive") == 0){
-          splashDamage(projectile, enemyArr, player, tileArr);
+          splashDamage(projectile, enemyArr, player, &enemyArr[i]);
           destroyProjectile(projectile);
           break;
         }
@@ -93,9 +93,10 @@ void checkProjectileCollisionWithTile(Projectile *projectileArr, Chunk *chunk, E
       if(projectileArr[i].active){
         if(CheckCollisionPointRec(projectileArr[i].pos, tileRec)){
           if(strcmp(projectileArr[i].type, "explosive") == 0){
-            splashDamage(&projectileArr[i], enemyArr, player, tileArr);
+          //  splashDamage(&projectileArr[i], enemyArr, player);
             destroyProjectile(&projectileArr[i]);
           }
+          
           destroyProjectile(&projectileArr[i]);
         }
       }

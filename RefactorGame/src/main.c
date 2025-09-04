@@ -80,19 +80,13 @@ int main(){
   Weapon weaponHolster[MAXWEAPONS];
   initWeaponHolster(weaponHolster, weaponArr);
 
-  printf("main 1: %d\n", weaponHolster[0].id);
-
   WeaponBuy weaponBuyArr[MAXWEAPONBUYS];
   initWeaponBuyArr(weaponBuyArr);
 
-  printf("main 2: %d\n", weaponHolster[0].id);
-  
   Projectile projectileArr[MAXPROJECTILES];
   initProjectileArr(projectileArr);
 
   RoundManager roundManager = createRoundManager();
-
-  printf("main 4: %d\n", weaponHolster[0].id);
 
   Chunk chunkArr[AMOUNTOFCHUNKS];
 
@@ -105,7 +99,6 @@ int main(){
   PerkBuy perkBuyArr[MAXPERKBUYS];
   initPerkBuyArr(perkBuyArr);
 
-  printf("main : %d", weaponHolster[0].id);
   Player player = createPlayer(&textureManager);
   player.weapon = &weaponHolster[0];
   //****************************************************************************

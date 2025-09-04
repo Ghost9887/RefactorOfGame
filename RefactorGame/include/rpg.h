@@ -4,6 +4,6 @@
 #include "common.h"
 
   Weapon createRPG(TextureManager *textureManager);
-  void splashDamage(Projectile *projectile, Enemy *enemyArr, Player *player, Tile *tileArr);
+  void splashDamage(Projectile *projectile, Enemy *enemyArr, Player *player, Enemy *enemy);
 
 #endif
