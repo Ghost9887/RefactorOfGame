@@ -7,7 +7,7 @@
 
   Player createPlayer(TextureManager *textureManager); 
   void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr);
-  void checkPlayerCollisionWithTile(Player *player, Tile *tile);
+  void checkPlayerCollisionWithTile(Player *player, Chunk *chunk);
   void playerADS(Player *player, Enemy *enemyArr, Chunk *chunkArr, int chunks);
   
 #endif

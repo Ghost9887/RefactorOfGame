@@ -56,12 +56,17 @@ int main(){
   Camera2D camera;
   initCamera(&camera);
 
-
   //GAME OBJECTS
   //****************************************************************************
   //USING FIXED ARRAYS FOR EVERYTHING EXCEPT TILES NOT SURE IF THIS IS THE BEST WAY IN C
   TextureManager textureManager;
   loadAllTextures(&textureManager);
+
+  AMOUNTOFTILES = getAmountOfTiles();
+  Tile *tileArr = (Tile*)malloc(sizeof(Tile) * AMOUNTOFTILES);
+  Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
+  initTileArr(tileArr);
+  initTileTextureArr(tileTextureArr, &textureManager);
 
   Enemy enemyArr[MAXSPAWNENEMIES];
   initEnemyArr(enemyArr);
@@ -75,20 +80,20 @@ int main(){
   Weapon weaponHolster[MAXWEAPONS];
   initWeaponHolster(weaponHolster, weaponArr);
 
+  printf("main 1: %d\n", weaponHolster[0].id);
+
   WeaponBuy weaponBuyArr[MAXWEAPONBUYS];
   initWeaponBuyArr(weaponBuyArr);
+
+  printf("main 2: %d\n", weaponHolster[0].id);
   
   Projectile projectileArr[MAXPROJECTILES];
   initProjectileArr(projectileArr);
 
   RoundManager roundManager = createRoundManager();
 
-  AMOUNTOFTILES = getAmountOfTiles();
-  Tile *tileArr = (Tile*)malloc(sizeof(Tile) * AMOUNTOFTILES);
-  Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
-  initTileArr(tileArr);
-  initTileTextureArr(tileTextureArr, &textureManager);
-  
+  printf("main 4: %d\n", weaponHolster[0].id);
+
   Chunk chunkArr[AMOUNTOFCHUNKS];
 
   Pickup pickupArr[MAXPICKUPS];
@@ -100,6 +105,7 @@ int main(){
   PerkBuy perkBuyArr[MAXPERKBUYS];
   initPerkBuyArr(perkBuyArr);
 
+  printf("main : %d", weaponHolster[0].id);
   Player player = createPlayer(&textureManager);
   player.weapon = &weaponHolster[0];
   //****************************************************************************

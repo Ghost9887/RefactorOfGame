@@ -31,6 +31,7 @@ void initWeaponArr(Weapon *weaponArr, TextureManager *textureManager){
 
 void initWeaponHolster(Weapon *weaponHolster, Weapon *weaponArr){
   weaponHolster[0] = weaponArr[0];
+  printf("%d\n", weaponHolster[0].id);
   weaponHolster[1] = createEmptyWeapon();
   weaponHolster[2] = createEmptyWeapon();
 }

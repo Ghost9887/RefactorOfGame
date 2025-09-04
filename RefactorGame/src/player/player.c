@@ -166,23 +166,25 @@ void playerADS(Player *player, Enemy *enemyArr, Chunk *chunkArr, int chunks){
   }
 }
 
-void checkPlayerCollisionWithTile(Player *player, Tile *tile){
-    Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
-    Rectangle futurePlayerXRec = {
-      player->pos.x + player->velocity.x,
-      player->pos.y,
-      player->width,
-      player->height
-    };
-    if (CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
-    Rectangle futurePlayerYRec = {
-      player->pos.x,
-      player->pos.y + player->velocity.y,
-      player->width,
-      player->height
-    };
-    if(CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
-    if(CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
+void checkPlayerCollisionWithTile(Player *player, Chunk *chunk){
+  for(int i = 0; i < chunk->solidTileCount; i++){
+      Rectangle tileRec = { chunk->solidTileArr[i].pos.x, chunk->solidTileArr[i].pos.y, CELLSIZE, CELLSIZE };
+      Rectangle futurePlayerXRec = {
+        player->pos.x + player->velocity.x,
+        player->pos.y,
+        player->width,
+        player->height
+      };
+      if (CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
+      Rectangle futurePlayerYRec = {
+        player->pos.x,
+        player->pos.y + player->velocity.y,
+        player->width,
+        player->height
+      };
+      if(CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
+      if(CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
+    }
 }
 
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){

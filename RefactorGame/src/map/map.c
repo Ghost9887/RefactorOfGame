@@ -109,15 +109,12 @@ void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *
       int chunkIndex = arr[i];
       for(int j = 0; j < chunkArr[chunkIndex].tileCount; j++){
         DrawTexture(tileTextureArr[chunkArr[chunkIndex].tileArr[j].id], chunkArr[chunkIndex].tileArr[j].pos.x, chunkArr[chunkIndex].tileArr[j].pos.y, WHITE);
-        //check for collision so here so we dont have to iterate through another loop
-        if(chunkArr[chunkIndex].tileArr[j].solid){
-          checkPlayerCollisionWithTile(player, &chunkArr[chunkIndex].solidTileArr[j]);
-          checkEnemyCollisionWithTile(enemyArr, &chunkArr[chunkIndex].solidTileArr[j]);
-          checkProjectileCollisionWithTile(projectileArr, &chunkArr[chunkIndex].solidTileArr[j], enemyArr, player, tileArr);
-        }
       }
+      checkPlayerCollisionWithTile(player, &chunkArr[chunkIndex]);
+      checkProjectileCollisionWithTile(projectileArr, &chunkArr[chunkIndex], enemyArr, player, tileArr);
     }
     playerADS(player, enemyArr, chunkArr, chunkCount);
+
   }else{
     for(int i = 0; i < AMOUNTOFTILES; i++){
       DrawTexture(tileTextureArr[tileArr[i].id], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);  
@@ -125,6 +122,7 @@ void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *
   }
 }
 
+//only enemies now other ones aren't worth it
 void checkCollisionWithTiles(Enemy *enemyArr, Chunk *chunkArr){
   int arr[AMOUNTOFCHUNKS];
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
