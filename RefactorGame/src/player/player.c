@@ -214,7 +214,9 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tileArr){
 
 int findTile(Tile *tileArr, Player *player){
   for(int i = 0; i < MAXTILES; i++){
-    if(tileArr[i].pos.x == player->pos.x && tileArr[i].pos.y == player->pos.y){
+    int posX = ((int) player->pos.x / CELLSIZE) * CELLSIZE;
+    int posY = ((int) player->pos.y / CELLSIZE) * CELLSIZE;
+    if(tileArr[i].pos.x == posX && tileArr[i].pos.y == posY){
       printf("index of tile player is standing on: %d\n", i);
       return i;
     }
@@ -223,9 +225,9 @@ int findTile(Tile *tileArr, Player *player){
 }
 
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){
- drawPlayer(player, camera);
-    updatePlayerAnimation(player);
+  drawPlayer(player, camera);
+  updatePlayerAnimation(player);
   playerMovement(player);
   playerShoot(player, projectileArr);
-   DrawRectangleLines(tileArr[findTile(tileArr, player)].pos.x, tileArr[findTile(tileArr, player)].pos.y, CELLSIZE, CELLSIZE, BLACK);
+  DrawRectangleLines(tileArr[findTile(tileArr, player)].pos.x, tileArr[findTile(tileArr, player)].pos.y, CELLSIZE, CELLSIZE, BLACK);
 }
