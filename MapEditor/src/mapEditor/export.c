@@ -29,7 +29,6 @@ void exportMap(Tile *tileArr){
     }
   }
   fclose(file);
-  CloseWindow();
 }
 
 void importMap(Tile *tileArr){
@@ -38,10 +37,11 @@ void importMap(Tile *tileArr){
     printf("Failed to open map file");
   }
 
-  char buffer[500000];
-  if(fgets(buffer, sizeof(buffer), file) == NULL){
+  char *buffer = malloc(sizeof(char) * 1100000);
+  if(fgets(buffer, 1100000, file) == NULL){
     printf("Failed to read file");
     fclose(file);
+    free(buffer);
     return;
   }
   fclose(file);
@@ -66,5 +66,6 @@ void importMap(Tile *tileArr){
     index++;
   }
   printf("Imported Map successfully");
+  free(buffer);
 }
 
