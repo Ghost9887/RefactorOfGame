@@ -30,6 +30,8 @@
 #define MAXTILES 22500
 #define AMOUNTOFTILETEXTURES 14
 #define CELLSIZE 32 // size of a tile 
+#define ROWCOUNT 150
+#define COLUMNCOUNT 150
 
 #define AMOUNTOFCHUNKS 9
 #define CHUNKSIZE 50

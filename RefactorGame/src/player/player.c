@@ -166,9 +166,33 @@ void playerADS(Player *player, Enemy *enemyArr, Chunk *chunkArr, int chunks){
   }
 }
 
-void checkPlayerCollisionWithTile(Player *player, Chunk *chunk){
-  for(int i = 0; i < chunk->solidTileCount; i++){
-      Rectangle tileRec = { chunk->solidTileArr[i].pos.x, chunk->solidTileArr[i].pos.y, CELLSIZE, CELLSIZE };
+int *findTileNearPlayer(Player *player, Tile *tileArr){
+  int *tiles = malloc(sizeof(int) * 4);
+  int dx[4] = { 0, CELLSIZE, 0, -CELLSIZE };
+  int dy[4] = { -CELLSIZE, 0, CELLSIZE, 0 };
+  for(int i = 0; i < 4; i++){
+    int x = ((int)(player->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
+    int y = ((int)(player->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
+    printf("x: %d, y: %d\n", x, y);
+    int tileIndex = (int)(x / CELLSIZE) + ((y / CELLSIZE) * ROWCOUNT);
+    printf("tile index: %d\n", tileIndex);
+    if(tileArr[tileIndex].active){
+      tiles[i] = tileIndex;
+    }
+    else{
+      tiles[i] = -1;
+      printf("not found\n");
+    }
+  }
+  return tiles;
+}
+
+void checkPlayerCollisionWithTile(Player *player, Tile *tileArr){
+  int *tiles = findTileNearPlayer(player, tileArr);
+  for(int i = 0; i < 4; i++){
+    if(tiles[i] != -1){
+      Rectangle tileRec = { tileArr[tiles[i]].pos.x, tileArr[tiles[i]].pos.y, CELLSIZE, CELLSIZE };
+      DrawRectangleLines(tileArr[tiles[i]].pos.x, tileArr[tiles[i]].pos.y, CELLSIZE, CELLSIZE, RED);
       Rectangle futurePlayerXRec = {
         player->pos.x + player->velocity.x,
         player->pos.y,
@@ -185,6 +209,7 @@ void checkPlayerCollisionWithTile(Player *player, Chunk *chunk){
       if(CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
       if(CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
     }
+  }
 }
 
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){
