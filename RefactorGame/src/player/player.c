@@ -173,15 +173,12 @@ int *findTileNearPlayer(Player *player, Tile *tileArr){
   for(int i = 0; i < 4; i++){
     int x = ((int)(player->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
     int y = ((int)(player->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
-    printf("x: %d, y: %d\n", (int)player->pos.x, (int)player->pos.y);
     int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE);
-    printf("tile index: %d\n", tileIndex);
     if(tileArr[tileIndex].active){
       tiles[i] = tileIndex;
     }
     else{
       tiles[i] = -1;
-      printf("not found\n");
     }
   }
   return tiles;
@@ -208,6 +205,7 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tileArr){
       };
       if(CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
       if(CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
+      free(tiles);
     }
   }
 }
