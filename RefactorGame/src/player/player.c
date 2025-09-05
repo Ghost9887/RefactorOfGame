@@ -173,8 +173,8 @@ int *findTileNearPlayer(Player *player, Tile *tileArr){
   for(int i = 0; i < 4; i++){
     int x = ((int)(player->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
     int y = ((int)(player->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
-    printf("x: %d, y: %d\n", x, y);
-    int tileIndex = (int)(x / CELLSIZE) + ((y / CELLSIZE) * ROWCOUNT);
+    printf("x: %d, y: %d\n", (int)player->pos.x, (int)player->pos.y);
+    int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE);
     printf("tile index: %d\n", tileIndex);
     if(tileArr[tileIndex].active){
       tiles[i] = tileIndex;
@@ -212,9 +212,20 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tileArr){
   }
 }
 
+int findTile(Tile *tileArr, Player *player){
+  for(int i = 0; i < MAXTILES; i++){
+    if(tileArr[i].pos.x == player->pos.x && tileArr[i].pos.y == player->pos.y){
+      printf("index of tile player is standing on: %d\n", i);
+      return i;
+    }
+  } 
+  return -1;
+}
+
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){
-  drawPlayer(player, camera);
-  updatePlayerAnimation(player);
+ drawPlayer(player, camera);
+    updatePlayerAnimation(player);
   playerMovement(player);
   playerShoot(player, projectileArr);
+   DrawRectangleLines(tileArr[findTile(tileArr, player)].pos.x, tileArr[findTile(tileArr, player)].pos.y, CELLSIZE, CELLSIZE, BLACK);
 }
