@@ -1,17 +1,19 @@
 #include "tile.h"
 
-extern int AMOUNTOFTILES;
-
-Tile createEmptyTile(){
+Tile createEmptyTile(int id){
   Tile tile;
-  tile.pos = (Vector2){ 0, 0 };
+  tile.id = id;
+  tile.pos = (Vector2){ -1, -1 };
   tile.active = false;
   tile.solid = false;
+  tile.enemySpawn = false;
+  tile.weaponBuy = false;
+  tile.perkBuy = false;
 }
 
 void initTileArr(Tile *tileArr){
-  for(int i = 0; i < AMOUNTOFTILES; i++){
-    tileArr[i] = createEmptyTile();
+  for(int i = 0; i < MAXTILES; i++){
+    tileArr[i] = createEmptyTile(i);
   }
 }
 

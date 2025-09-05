@@ -14,7 +14,7 @@ void initCamera(Camera2D *camera){
 void followPlayer(Camera2D *camera, Player *player){ 
   if(!DEBUGMODE){
     camera->offset = (Vector2){ SCREENWIDTH / 2, SCREENHEIGHT / 2 };
-    camera->zoom = 2.0f;
+    camera->zoom = 1.0f;
     camera->target = (Vector2){ player->pos.x + player->width / 2, player->pos.y + player->height / 2 }; 
   }
 }

@@ -16,10 +16,11 @@ Chunk createChunk(int id, int startX, int endX, int startY, int endY, Tile *tile
 
   int solidCount = 0;
   //chunk the tile arr into smaller arrays
-  for(int i = 0; i < AMOUNTOFTILES; i++){
-    if(tileArr[i].pos.x >= startX && tileArr[i].pos.x < endX){
-      if(tileArr[i].pos.y >= startY && tileArr[i].pos.y < endY){
+  for(int i = 0; i < MAXTILES; i++){
+    if((int)tileArr[i].pos.x >= startX && (int)tileArr[i].pos.x < endX){
+      if((int)tileArr[i].pos.y >= startY && (int)tileArr[i].pos.y < endY && tileArr[i].active){
         chunk.tileArr[chunk.tileCount] = tileArr[i];
+        printf("x: %d, y: %d\n", (int)chunk.tileArr[chunk.tileCount].pos.x, (int)chunk.tileArr[chunk.tileCount].pos.y);
         if(tileArr[i].solid){
           solidCount++;
         }
@@ -27,18 +28,18 @@ Chunk createChunk(int id, int startX, int endX, int startY, int endY, Tile *tile
       }
     }
   }
-
+  printf("tile count: %d, chunk id: %d\n", chunk.tileCount, chunk.id);
+  printf("solid tile count: %d\n", solidCount);
   chunk.solidTileArr = malloc(sizeof(Tile) * solidCount);
 
-  for(int i = 0; i < AMOUNTOFTILES; i++){
-    if(tileArr[i].pos.x >= startX && tileArr[i].pos.x < endX){
-      if(tileArr[i].pos.y >= startY && tileArr[i].pos.y < endY && tileArr[i].solid){
-        chunk.solidTileArr[chunk.solidTileCount] = tileArr[i];
-        chunk.solidTileCount++;
-      }
-    }
+  for (int i = 0; i < MAXTILES; i++) {
+  if ((int)tileArr[i].pos.x >= startX && (int)tileArr[i].pos.x < endX &&
+      (int)tileArr[i].pos.y >= startY && (int)tileArr[i].pos.y < endY &&
+      tileArr[i].solid && tileArr[i].active) {
+    chunk.solidTileArr[chunk.solidTileCount++] = tileArr[i];
   }
-  
+}
+
   return chunk;
 }
 
@@ -46,10 +47,12 @@ void initChunkArr(Chunk *chunkArr, Tile *tileArr){
   int id = 0;
   for (int y = 0; y < 3; y++) {
     for (int x = 0; x < 3; x++) {
-      float startX = x * (CHUNKSIZE * CELLSIZE);
-      float endX = (x + 1) * (CHUNKSIZE * CELLSIZE);
-      float startY = y * (CHUNKSIZE * CELLSIZE);
-      float endY = (y + 1) * (CHUNKSIZE * CELLSIZE);
+      int startX = x * (CHUNKSIZE * CELLSIZE);
+      int endX = (x + 1) * (CHUNKSIZE * CELLSIZE);
+      printf("startX: %d, endX: %d\n", startX, endX);
+      int startY = y * (CHUNKSIZE * CELLSIZE);
+      int endY = (y + 1) * (CHUNKSIZE * CELLSIZE);
+      printf("startY: %d, endY: %d\n", startY, endY);
       chunkArr[id] = createChunk(id, startX, endX, startY, endY, tileArr);
       id++;
     }

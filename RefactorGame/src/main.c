@@ -23,9 +23,6 @@ int ENEMYCOUNT = 0;
 int ALIVEENEMIES = 0;
 int AMOUNTOFENEMYSPAWNS = 0;
 
-//TILES
-int AMOUNTOFTILES = 0;
-
 //debug mode
 bool DEBUGMODE = false;
 bool ENABLEPLAYERHITBOX = false;
@@ -62,11 +59,13 @@ int main(){
   TextureManager textureManager;
   loadAllTextures(&textureManager);
 
-  AMOUNTOFTILES = getAmountOfTiles();
-  Tile *tileArr = (Tile*)malloc(sizeof(Tile) * AMOUNTOFTILES);
+  printf("before tileArr\n");
+  Tile *tileArr = (Tile*)malloc(sizeof(Tile) * MAXTILES);
   Texture2D tileTextureArr[AMOUNTOFTILETEXTURES];
   initTileArr(tileArr);
   initTileTextureArr(tileTextureArr, &textureManager);
+
+  printf("after init all tiels/textures arr\n");
 
   Enemy enemyArr[MAXSPAWNENEMIES];
   initEnemyArr(enemyArr);
@@ -104,16 +103,23 @@ int main(){
   //****************************************************************************
 
   //LOAD MAP******************************
+  printf("before import map\n");
   importMap(tileArr);
+  printf("after import map\n");
   //**************************************
 
   //POPULATE THE CHUNKS*******************
+  printf("before init chunk\n");
   initChunkArr(chunkArr, tileArr);
+  printf("after init chunkn\n");
   //**************************************
 
   //SPAWN OBJECTS*************************
   spawnObjects(tileArr, &player, weaponArr, weaponBuyArr, perkArr, perkBuyArr, enemySpawnArr);
   //**************************************
+  
+  printf("perkBuy count: %d\n", AMOUNTOFPERKBUYS);
+  printf("enemyspawn count: %d\n", AMOUNTOFENEMYSPAWNS);
   
   //Toggle Full Screen
   ToggleFullscreen();

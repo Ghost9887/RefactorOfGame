@@ -7,7 +7,6 @@ extern bool ENABLESOLIDTILEHITBOX;
 extern bool ENABLEWEAPONBUYHITBOX;
 extern bool ENABLEPERKBUYHITBOX;
 extern bool ENABLECHUNKHITBOX;
-extern int AMOUNTOFTILES;
 extern int AMOUNTOFWEAPONBUYS;
 extern int AMOUNTOFPERKBUYS;
 
@@ -29,7 +28,7 @@ void drawDebugStuff(Player *player, Enemy *enemyArr, Tile *tileArr, WeaponBuy *w
     }
   }
   if(ENABLESOLIDTILEHITBOX){
-    for(int i = 0; i < AMOUNTOFTILES; i++){
+    for(int i = 0; i < MAXTILES; i++){
       if(tileArr[i].active && tileArr[i].solid){
         DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
       }

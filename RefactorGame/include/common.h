@@ -204,6 +204,7 @@ typedef struct{
 
 typedef struct Tile{
   int id;
+  int textureId;
   Vector2 pos;
   bool active;
   bool solid;
