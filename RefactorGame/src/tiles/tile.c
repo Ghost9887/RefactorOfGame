@@ -9,11 +9,13 @@ Tile createEmptyTile(int id){
   tile.enemySpawn = false;
   tile.weaponBuy = false;
   tile.perkBuy = false;
+  return tile;
 }
 
 void initTileArr(Tile *tileArr){
   for(int i = 0; i < MAXTILES; i++){
     tileArr[i] = createEmptyTile(i);
+    printf("tile id: %d\n", tileArr[i].id);
   }
 }
 

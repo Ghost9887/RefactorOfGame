@@ -173,7 +173,7 @@ int *findTileNearPlayer(Player *player, Tile *tileArr){
   for(int i = 0; i < 4; i++){
     int x = ((int)(player->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
     int y = ((int)(player->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
-    int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE);
+    int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE) + 1;
     if(tileArr[tileIndex].active){
       tiles[i] = tileIndex;
     }
@@ -205,7 +205,7 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tileArr){
       };
       if(CheckCollisionRecs(futurePlayerYRec, tileRec)) player->velocity.y = 0.0f;
       if(CheckCollisionRecs(futurePlayerXRec, tileRec)) player->velocity.x = 0.0f;
-      free(tiles);
+      //free(tiles);
     }
   }
 }
@@ -215,7 +215,6 @@ int findTile(Tile *tileArr, Player *player){
     int posX = ((int) player->pos.x / CELLSIZE) * CELLSIZE;
     int posY = ((int) player->pos.y / CELLSIZE) * CELLSIZE;
     if(tileArr[i].pos.x == posX && tileArr[i].pos.y == posY){
-      printf("index of tile player is standing on: %d\n", i);
       return i;
     }
   } 
@@ -228,4 +227,5 @@ void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, E
   playerMovement(player);
   playerShoot(player, projectileArr);
   DrawRectangleLines(tileArr[findTile(tileArr, player)].pos.x, tileArr[findTile(tileArr, player)].pos.y, CELLSIZE, CELLSIZE, BLACK);
+  DrawText(TextFormat("tile id: %d\n", tileArr[findTile(tileArr, player)].id), tileArr[findTile(tileArr, player)].pos.x, tileArr[findTile(tileArr, player)].pos.y, 10, BLACK);
 }

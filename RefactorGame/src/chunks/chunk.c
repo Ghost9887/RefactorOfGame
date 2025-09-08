@@ -11,16 +11,13 @@ Chunk createChunk(int id, int startX, int endX, int startY, int endY, Tile *tile
   chunk.endY = endY;
   chunk.tileCount = 0;
   chunk.solidTileCount = 0;
-
   chunk.tileArr = malloc(sizeof(Tile) * CHUNKSIZE * CHUNKSIZE);
-
   int solidCount = 0;
   //chunk the tile arr into smaller arrays
   for(int i = 0; i < MAXTILES; i++){
     if((int)tileArr[i].pos.x >= startX && (int)tileArr[i].pos.x < endX){
       if((int)tileArr[i].pos.y >= startY && (int)tileArr[i].pos.y < endY && tileArr[i].active){
         chunk.tileArr[chunk.tileCount] = tileArr[i];
-        printf("x: %d, y: %d\n", (int)chunk.tileArr[chunk.tileCount].pos.x, (int)chunk.tileArr[chunk.tileCount].pos.y);
         if(tileArr[i].solid){
           solidCount++;
         }
@@ -28,10 +25,7 @@ Chunk createChunk(int id, int startX, int endX, int startY, int endY, Tile *tile
       }
     }
   }
-  printf("tile count: %d, chunk id: %d\n", chunk.tileCount, chunk.id);
-  printf("solid tile count: %d\n", solidCount);
   chunk.solidTileArr = malloc(sizeof(Tile) * solidCount);
-
   for (int i = 0; i < MAXTILES; i++) {
   if ((int)tileArr[i].pos.x >= startX && (int)tileArr[i].pos.x < endX &&
       (int)tileArr[i].pos.y >= startY && (int)tileArr[i].pos.y < endY &&
@@ -49,10 +43,8 @@ void initChunkArr(Chunk *chunkArr, Tile *tileArr){
     for (int x = 0; x < 3; x++) {
       int startX = x * (CHUNKSIZE * CELLSIZE);
       int endX = (x + 1) * (CHUNKSIZE * CELLSIZE);
-      printf("startX: %d, endX: %d\n", startX, endX);
       int startY = y * (CHUNKSIZE * CELLSIZE);
       int endY = (y + 1) * (CHUNKSIZE * CELLSIZE);
-      printf("startY: %d, endY: %d\n", startY, endY);
       chunkArr[id] = createChunk(id, startX, endX, startY, endY, tileArr);
       id++;
     }
