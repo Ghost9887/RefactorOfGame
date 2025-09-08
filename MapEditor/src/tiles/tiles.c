@@ -2,7 +2,7 @@
 
 void initTileArr(Tile *tileArr){
   for(int i = 0; i < MAXTILES; i++){
-    tileArr[i].id = i;
+    tileArr[i].id = i + 1;
     tileArr[i].textureId = -1;
     tileArr[i].pos = (Vector2){ -1, -1 };
     tileArr[i].active = false;

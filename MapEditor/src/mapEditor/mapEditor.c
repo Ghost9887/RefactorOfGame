@@ -2,6 +2,7 @@
 
 Tile createTile(float x, float y){
   Tile tile;
+  tile.id = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE) + 1;
   tile.pos = (Vector2){ x, y };
   tile.active = true;
   tile.solid = false;
@@ -263,6 +264,7 @@ void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTexture
       }
       DrawText(TextFormat("%d", tileArr[i].textureId), tileArr[i].pos.x + CELLSIZE / 2, tileArr[i].pos.y + CELLSIZE / 2, 5, BLUE);
     }
+    DrawText(TextFormat("%d", tileArr[i].id), tileArr[i].pos.x, tileArr[i].pos.y, 5, BLACK);
   }
 }
 
