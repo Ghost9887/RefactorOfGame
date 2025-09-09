@@ -30,6 +30,7 @@ void importMap(Tile *tileArr){
     int id, textureId, posX, posY, active, solid, playerSpawn, enemySpawn, weaponBuy, weaponIndex, perkBuy, perkIndex;
     sscanf(token, "{%d}{%d}{{%d,%d},{%d},{%d},{%d},{%d},{%d}{%d},{%d}{%d}}", &id, &textureId, &posX, &posY, &active, &solid, 
            &playerSpawn, &enemySpawn, &weaponBuy, &weaponIndex, &perkBuy, &perkIndex);
+    index = id;
     tileArr[index].id = id;
     tileArr[index].textureId = textureId;
     tileArr[index].pos.x = posX;

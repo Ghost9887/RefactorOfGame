@@ -187,7 +187,7 @@ int *findTileNearPlayer(Player *player, Tile *tileArr){
 void checkPlayerCollisionWithTile(Player *player, Tile *tileArr){
   int *tiles = findTileNearPlayer(player, tileArr);
   for(int i = 0; i < 4; i++){
-    if(tiles[i] != -1){
+    if(tiles[i] != -1 && tileArr[tiles[i]].solid){
       Rectangle tileRec = { tileArr[tiles[i]].pos.x, tileArr[tiles[i]].pos.y, CELLSIZE, CELLSIZE };
       DrawRectangleLines(tileArr[tiles[i]].pos.x, tileArr[tiles[i]].pos.y, CELLSIZE, CELLSIZE, RED);
       Rectangle futurePlayerXRec = {

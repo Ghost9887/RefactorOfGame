@@ -15,7 +15,6 @@ Tile createEmptyTile(int id){
 void initTileArr(Tile *tileArr){
   for(int i = 0; i < MAXTILES; i++){
     tileArr[i] = createEmptyTile(i);
-    printf("tile id: %d\n", tileArr[i].id);
   }
 }
 
