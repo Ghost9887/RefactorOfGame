@@ -168,8 +168,8 @@ void playerADS(Player *player, Enemy *enemyArr, Chunk *chunkArr, int chunks){
 
 int *findTileNearPlayer(Player *player, Tile *tileArr){
   int *tiles = malloc(sizeof(int) * 4);
-  int dx[4] = { 0, CELLSIZE, 0, -CELLSIZE };
-  int dy[4] = { -CELLSIZE, 0, CELLSIZE, 0 };
+  int dx[4] = { 0, CELLSIZE * 2, CELLSIZE, -CELLSIZE };
+  int dy[4] = { -CELLSIZE, 0, CELLSIZE * 2 };
   for(int i = 0; i < 4; i++){
     int x = ((int)(player->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
     int y = ((int)(player->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
@@ -210,22 +210,9 @@ void checkPlayerCollisionWithTile(Player *player, Tile *tileArr){
   }
 }
 
-int findTile(Tile *tileArr, Player *player){
-  for(int i = 0; i < MAXTILES; i++){
-    int posX = ((int) player->pos.x / CELLSIZE) * CELLSIZE;
-    int posY = ((int) player->pos.y / CELLSIZE) * CELLSIZE;
-    if(tileArr[i].pos.x == posX && tileArr[i].pos.y == posY){
-      return i;
-    }
-  } 
-  return -1;
-}
-
 void updatePlayer(Player *player, Camera2D *camera, Projectile *projectileArr, Enemy *enemyArr, Tile *tileArr){
   drawPlayer(player, camera);
   updatePlayerAnimation(player);
   playerMovement(player);
   playerShoot(player, projectileArr);
-  DrawRectangleLines(tileArr[findTile(tileArr, player)].pos.x, tileArr[findTile(tileArr, player)].pos.y, CELLSIZE, CELLSIZE, BLACK);
-  DrawText(TextFormat("tile id: %d\n", tileArr[findTile(tileArr, player)].id), tileArr[findTile(tileArr, player)].pos.x, tileArr[findTile(tileArr, player)].pos.y, 10, BLACK);
 }
