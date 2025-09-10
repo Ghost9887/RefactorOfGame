@@ -21,13 +21,14 @@ void loadAllTextures(TextureManager *textureManager){
   textureManager->tile14 = LoadTexture("../RefactorGame/assets/tiles/tile14.png");
   textureManager->tile15 = LoadTexture("../RefactorGame/assets/tiles/tile15.png");
 
-  textureManager->player = LoadTexture("../RefactorGame/assets/tiles/player.png");
-  textureManager->enemy = LoadTexture("../RefactorGame/assets/tiles/enemy.png");
-  textureManager->pistol = LoadTexture("../RefactorGame/assets/tiles/pistol.png");
-  textureManager->ar = LoadTexture("../RefactorGame/assets/tiles/ar.png");
-  textureManager->rpg = LoadTexture("../RefactorGame/assets/tiles/rpg.png");
-  textureManager->shotgun = LoadTexture("../RefactorGame/assets/tiles/shotgun.png");
-  textureManager->healthPerk = LoadTexture("../RefactorGame/assets/tiles/health.png");
-  textureManager->speedPerk = LoadTexture("../RefactorGame/assets/tiles/speed.png");
+  textureManager->player = LoadTexture("../RefactorGame/assets/player/player.png");
+  textureManager->enemy = LoadTexture("../RefactorGame/assets/enemy/basic_enemy.png");
+  textureManager->pistol = LoadTexture("../RefactorGame/assets/weapons/pistol.png");
+  textureManager->ar = LoadTexture("../RefactorGame/assets/weapons/ar.png");
+  textureManager->rpg = LoadTexture("../RefactorGame/assets/weapons/rpg.png");
+  textureManager->shotgun = LoadTexture("../RefactorGame/assets/weapons/shotgun.png");
+  textureManager->healthPerk = LoadTexture("../RefactorGame/assets/perkmachines/health.png");
+  textureManager->speedPerk = LoadTexture("../RefactorGame/assets/perkmachines/speed.png");
+  textureManager->generator = LoadTexture("../RefactorGame/assets/generator/generator.png");
 }
 

@@ -29,7 +29,7 @@
 #define MAXWEAPONSBUYS 100
 
 //PERKBUYS
-#define AMOUNTOFPERKS 2
+#define AMOUNTOFPERKS 3
 #define MAXPERKBUYS 20
 
 //PLAYER CONSTANTS/ENUM
@@ -94,6 +94,7 @@ typedef struct{
   Texture2D shotgun;
   Texture2D healthPerk;
   Texture2D speedPerk;
+  Texture2D generator;
 }TextureManager;
 
 #endif

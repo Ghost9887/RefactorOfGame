@@ -162,7 +162,7 @@ if (user->mode == PERKBUY) {
     int spacing = 50;
 
     Rectangle recArr[AMOUNTOFPERKS];
-    const char *perkNames[AMOUNTOFPERKS] = { "health", "speed"};
+    const char *perkNames[AMOUNTOFPERKS] = { "health", "speed", "generator"};
 
     for (int i = 0; i < AMOUNTOFPERKS; i++) {
       int yPos = startY + i * spacing;
