@@ -3,6 +3,7 @@
 #include "enemy.h"
 
 extern int AMOUNTOFTILES;
+extern bool ENABLEPLAYERCOLLISIONWITHTILEBOX;
 
 float getRotationOfPlayer(Player *player, Camera2D *camera);
 
@@ -175,6 +176,9 @@ int *findTileNearPlayer(Player *player, Tile *tileArr){
     int x = ((int)(player->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
     int y = ((int)(player->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
     int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE) + 1;
+    if(ENABLEPLAYERCOLLISIONWITHTILEBOX && tileArr[tileIndex].active){
+      DrawRectangleLines(tileArr[tileIndex].pos.x, tileArr[tileIndex].pos.y, CELLSIZE, CELLSIZE, RED);
+    }
     if(tileArr[tileIndex].active){
       tiles[i] = tileIndex;
     }

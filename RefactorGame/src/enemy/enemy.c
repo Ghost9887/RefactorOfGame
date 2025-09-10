@@ -3,6 +3,7 @@
 extern int ENEMYCOUNT;
 extern int ALIVEENEMIES;
 extern int AMOUNTOFENEMYSPAWNS;
+extern bool ENABLEENEMYCOLLISIONWITHTILEBOX;
 
 bool checkIfEnemyCanAttack(Enemy *enemy);
 
@@ -143,6 +144,9 @@ int *findTileNearEnemy(Enemy *enemy, Tile *tileArr){
     int x = ((int)(enemy->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
     int y = ((int)(enemy->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
     int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE) + 1;
+    if(ENABLEENEMYCOLLISIONWITHTILEBOX && tileArr[tileIndex].active){
+      DrawRectangleLines(tileArr[tileIndex].pos.x, tileArr[tileIndex].pos.y, CELLSIZE, CELLSIZE, RED);
+    }
     if(tileArr[tileIndex].active){
       tiles[i] = tileIndex;
     }

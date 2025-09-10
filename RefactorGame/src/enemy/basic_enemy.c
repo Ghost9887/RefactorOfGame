@@ -3,8 +3,8 @@
 Enemy createBasicEnemy(TextureManager *textureManager, float x, float y){
   Enemy enemy;
   enemy.pos = (Vector2){ x, y };
-  enemy.width = 64;
-  enemy.height = 64;
+  enemy.width = 60;
+  enemy.height = 60;
   enemy.speed = 100.0f;
   enemy.damage = 25;
   enemy.health = 100;

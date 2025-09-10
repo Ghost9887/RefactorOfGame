@@ -4,7 +4,9 @@ extern int ENEMYCOUNT;
 extern int ALIVEENEMIES;
 extern bool DEBUGMODE;
 extern bool ENABLEPLAYERHITBOX;
+extern bool ENABLEPLAYERCOLLISIONWITHTILEBOX;
 extern bool ENABLEENEMYHITBOX;
+extern bool ENABLEENEMYCOLLISIONWITHTILEBOX;
 extern bool ENABLESOLIDTILEHITBOX;
 extern bool ENABLEWEAPONBUYHITBOX;
 extern bool ENABLEPERKBUYHITBOX;
@@ -58,6 +60,8 @@ void drawUIForDebugMode() {
     Rectangle perkBuyButtonRec = { startX, startY + 4 * (buttonHeight + spacing), buttonWidth, buttonHeight };
     Rectangle chunkButtonRec = { startX, startY + 5 * (buttonHeight + spacing), buttonWidth, buttonHeight };
     Rectangle drawFullMapButtonRec = { startX, startY + 6 * (buttonHeight + spacing), buttonWidth, buttonHeight };
+    Rectangle playerTileCollisionButtonRec = { startX, startY + 7 * (buttonHeight + spacing), buttonWidth, buttonHeight };
+    Rectangle enemyTileCollisionButtonRec = { startX, startY + 8 * (buttonHeight + spacing), buttonWidth, buttonHeight };
 
     DrawText("Player Hitbox:", labelX, playerButtonRec.y, 20, BLACK);
     DrawText("Enemy Hitbox:", labelX, enemyButtonRec.y, 20, BLACK);
@@ -66,6 +70,8 @@ void drawUIForDebugMode() {
     DrawText("Perk Buy Hitbox: ", labelX, perkBuyButtonRec.y, 20, BLACK);
     DrawText("Chunk Hitbox:", labelX, chunkButtonRec.y, 20, BLACK);
     DrawText("Draw Full Map:", labelX, drawFullMapButtonRec.y, 20, BLACK);
+    DrawText("Player Tile Hitbox:", labelX, playerTileCollisionButtonRec.y, 20, BLACK);
+    DrawText("Enemy Tile Hitbox:", labelX, enemyTileCollisionButtonRec.y, 20, BLACK);
 
     DrawRectangleRec(playerButtonRec, ENABLEPLAYERHITBOX ? GREEN : WHITE);
     DrawRectangleRec(enemyButtonRec, ENABLEENEMYHITBOX ? GREEN : WHITE);
@@ -74,6 +80,8 @@ void drawUIForDebugMode() {
     DrawRectangleRec(perkBuyButtonRec, ENABLEPERKBUYHITBOX ? GREEN : WHITE);
     DrawRectangleRec(chunkButtonRec, ENABLECHUNKHITBOX ? GREEN : WHITE);
     DrawRectangleRec(drawFullMapButtonRec, DRAWFULLMAP ? GREEN : WHITE);
+    DrawRectangleRec(playerTileCollisionButtonRec, ENABLEPLAYERCOLLISIONWITHTILEBOX ? GREEN : WHITE);
+    DrawRectangleRec(enemyTileCollisionButtonRec, ENABLEENEMYCOLLISIONWITHTILEBOX ? GREEN : WHITE);
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Vector2 mousePos = GetMousePosition();
@@ -93,6 +101,10 @@ void drawUIForDebugMode() {
           ENABLECHUNKHITBOX = !ENABLECHUNKHITBOX;
         } else if(CheckCollisionRecs(drawFullMapButtonRec, mouseClick)) {
           DRAWFULLMAP = !DRAWFULLMAP;
+        } else if(CheckCollisionRecs(playerTileCollisionButtonRec, mouseClick)){
+          ENABLEPLAYERCOLLISIONWITHTILEBOX = !ENABLEPLAYERCOLLISIONWITHTILEBOX;
+        } else if(CheckCollisionRecs(enemyTileCollisionButtonRec, mouseClick)){
+          ENABLEENEMYCOLLISIONWITHTILEBOX = !ENABLEENEMYCOLLISIONWITHTILEBOX;
         }
 
     }
