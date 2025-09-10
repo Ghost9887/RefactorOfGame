@@ -134,31 +134,57 @@ void checkIfEnemyIsDead(Enemy *enemy, Player *player, Pickup *pickupArr, Texture
   if(enemy->health <= 0) destroyEnemy(enemy, player, pickupArr, textureManager);
 }
 
-void checkEnemyCollisionWithTile(Enemy *enemy, Tile *tile){
-  Rectangle tileRec = { tile->pos.x, tile->pos.y, CELLSIZE, CELLSIZE };
+int *findTileNearEnemy(Enemy *enemy, Tile *tileArr){
+  int *tiles = malloc(sizeof(int) * 12);
+  //forgot that the player->width is smaller to make the hitbox smaller
+  int dx[12] = { 0, CELLSIZE, enemy->frameRec.width, enemy->frameRec.width, enemy->frameRec.width, enemy->frameRec.width, CELLSIZE, 0, -CELLSIZE, -CELLSIZE, -CELLSIZE, -CELLSIZE };
+  int dy[12] = { -CELLSIZE, -CELLSIZE, -CELLSIZE, 0, CELLSIZE, enemy->frameRec.height, enemy->frameRec.height, enemy->frameRec.height, enemy->frameRec.height, CELLSIZE, 0, -CELLSIZE };
+  for(int i = 0; i < 12; i++){
+    int x = ((int)(enemy->pos.x + dx[i]) / CELLSIZE) * CELLSIZE;
+    int y = ((int)(enemy->pos.y + dy[i]) / CELLSIZE) * CELLSIZE;
+    int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE) + 1;
+    if(tileArr[tileIndex].active){
+      tiles[i] = tileIndex;
+    }
+    else{
+      tiles[i] = -1;
+    }
+    DrawRectangleLines(tileArr[tiles[i]].pos.x, tileArr[tiles[i]].pos.y, CELLSIZE, CELLSIZE, RED);
+  }
+  return tiles;
+}
+
+void checkEnemyCollisionWithTile(Enemy *enemy, Tile *tileArr){
   if(enemy->active){
-    Rectangle futureEnemyXRec = {
-      enemy->pos.x + enemy->velocity.x,
-      enemy->pos.y,
-      enemy->width,
-      enemy->height
-    };
-    if (CheckCollisionRecs(futureEnemyXRec, tileRec)){ 
-      enemy->velocity.x = 0.0f;
+    int *tiles = findTileNearEnemy(enemy, tileArr);
+    for(int i = 0; i < 12; i++){
+      if(tiles[i] != -1 && tileArr[tiles[i]].solid){
+        Rectangle tileRec = { tileArr[tiles[i]].pos.x, tileArr[tiles[i]].pos.y, CELLSIZE, CELLSIZE };
+        Rectangle futureEnemyXRec = {
+          enemy->pos.x + enemy->velocity.x,
+          enemy->pos.y,
+          enemy->width,
+          enemy->height
+        };
+        if(CheckCollisionRecs(futureEnemyXRec, tileRec)){ 
+          enemy->velocity.x = 0.0f;
+        }
+        Rectangle futureEnemyYRec = {
+          enemy->pos.x,
+          enemy->pos.y + enemy->velocity.y,
+          enemy->width,
+          enemy->height
+        };
+        if(CheckCollisionRecs(futureEnemyYRec, tileRec)){ 
+          enemy->velocity.y = 0.0f;
+        }
+      }
     }
-    Rectangle futureEnemyYRec = {
-      enemy->pos.x,
-      enemy->pos.y + enemy->velocity.y,
-      enemy->width,
-      enemy->height
-    };
-    if (CheckCollisionRecs(futureEnemyYRec, tileRec)){ 
-      enemy->velocity.y = 0.0f;
-    }
+    free(tiles);
   }
 }
 
-void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager, Pickup *pickupArr, EnemySpawn *enemySpawnArr){
+void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, TextureManager *textureManager, Pickup *pickupArr, EnemySpawn *enemySpawnArr, Tile *tileArr){
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(enemyArr[i].active){
       checkIfEnemyIsDead(&enemyArr[i], player, pickupArr, textureManager);
@@ -166,6 +192,7 @@ void updateEnemies(Enemy *enemyArr, Player *player, RoundManager *roundManager, 
       drawEnemy(&enemyArr[i]);
       updateAnimation(&enemyArr[i]);
       checkCollisionWithPlayer(&enemyArr[i], player);
+      checkEnemyCollisionWithTile(&enemyArr[i], tileArr);
       attackCooldown(&enemyArr[i]);
     }
   }

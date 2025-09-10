@@ -30,6 +30,7 @@ void importMap(Tile *tileArr){
     int id, textureId, posX, posY, active, solid, playerSpawn, enemySpawn, weaponBuy, weaponIndex, perkBuy, perkIndex;
     sscanf(token, "{%d}{%d}{{%d,%d},{%d},{%d},{%d},{%d},{%d}{%d},{%d}{%d}}", &id, &textureId, &posX, &posY, &active, &solid, 
            &playerSpawn, &enemySpawn, &weaponBuy, &weaponIndex, &perkBuy, &perkIndex);
+    //not sure how the index doesnt automatically equal the id but i guess this is a fix for that
     index = id;
     tileArr[index].id = id;
     tileArr[index].textureId = textureId;
@@ -87,7 +88,6 @@ void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *
       for(int j = 0; j < chunkArr[chunkIndex].tileCount; j++){
         DrawTexture(tileTextureArr[chunkArr[chunkIndex].tileArr[j].textureId], chunkArr[chunkIndex].tileArr[j].pos.x, chunkArr[chunkIndex].tileArr[j].pos.y, WHITE);
       }
-      checkPlayerCollisionWithTile(player, tileArr);
       checkProjectileCollisionWithTile(projectileArr, &chunkArr[chunkIndex], enemyArr, player, tileArr);
     }
     playerADS(player, enemyArr, chunkArr, chunkCount);
@@ -99,21 +99,6 @@ void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *
   }
 }
 
-//only enemies now other ones aren't worth it
-void checkCollisionWithTiles(Enemy *enemyArr, Chunk *chunkArr){
-  int arr[AMOUNTOFCHUNKS];
-  for(int i = 0; i < MAXSPAWNENEMIES; i++){
-    int chunkCount = findChunksForEnemy(arr, chunkArr, &enemyArr[i]);
-    for(int j = 0; j < chunkCount; j++){
-      int chunkIndex = arr[j];
-      for(int k = 0; k < chunkArr[chunkIndex].solidTileCount; k++){
-        checkEnemyCollisionWithTile(&enemyArr[i], &chunkArr[chunkIndex].solidTileArr[k]);
-      }
-    }
-  }
-}
-
 void updateMap(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *enemyArr, Projectile *projectileArr, Chunk *chunkArr, Camera2D *camera){
   drawTiles(tileArr, tileTextureArr, player, enemyArr, projectileArr, chunkArr, camera);
-  checkCollisionWithTiles(enemyArr, chunkArr);
 }
