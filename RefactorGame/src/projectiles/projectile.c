@@ -10,24 +10,24 @@ void addProjectileToArr(Projectile *projectileArr, Projectile *projectile){
 }
 
 void createProjectile(Projectile *projectileArr, Player *player, float offset, char *type){
-    Projectile projectile;
+  Projectile projectile;
 
-    float angleDeg = player->weapon->rotation + offset;
-    float angleRad = angleDeg * (3.14159265f / 180.0f);
-    float muzzleDistance = player->width * 0.4f;
+  float angleDeg = player->weapon->rotation + offset;
+  float angleRad = angleDeg * (3.14159265f / 180.0f);
+  float muzzleDistance = player->width * 0.4f;
 
-    projectile.pos = (Vector2) { player->pos.x + player->width / 2 + cosf(angleRad) * muzzleDistance, player->pos.y + player->height / 2 + sinf(angleRad) * muzzleDistance };
-    projectile.previousPos;
-    projectile.dir = (Vector2) { cosf(angleRad), sinf(angleRad) };
-    projectile.length = 20.0f;
-    projectile.damage = player->weapon->damage;
-    projectile.speed = player->weapon->projectileSpeed;
-    projectile.size = 5.0f;
-    projectile.range = player->weapon->range;
-    projectile.distanceTraveled = 0.0f + projectile.length;
-    projectile.active = true;
-    projectile.type = type;
-    addProjectileToArr(projectileArr, &projectile);
+  projectile.pos = (Vector2) { player->pos.x + player->width / 2 + cosf(angleRad) * muzzleDistance, player->pos.y + player->height / 2 + sinf(angleRad) * muzzleDistance };
+  projectile.previousPos;
+  projectile.dir = (Vector2) { cosf(angleRad), sinf(angleRad) };
+  projectile.length = 20.0f;
+  projectile.damage = player->weapon->damage;
+  projectile.speed = player->weapon->projectileSpeed;
+  projectile.size = 5.0f;
+  projectile.range = player->weapon->range;
+  projectile.distanceTraveled = 0.0f + projectile.length;
+  projectile.active = true;
+  projectile.type = type;
+  addProjectileToArr(projectileArr, &projectile);
 }
 
 void initProjectileArr(Projectile *projectileArr){
@@ -86,21 +86,19 @@ void checkCollisionWithEnemy(Projectile *projectile, Enemy *enemyArr, Player *pl
 }
 
 //TODO: add splashDamage
-void checkProjectileCollisionWithTile(Projectile *projectileArr, Chunk *chunk, Enemy *enemyArr, Player *player, Tile *tileArr){
-  for(int i = 0; i < MAXPROJECTILES; i++){
-    for(int j = 0; j < chunk->solidTileCount; j++){
-      Rectangle tileRec = { chunk->solidTileArr[j].pos.x, chunk->solidTileArr[j].pos.y, CELLSIZE, CELLSIZE };
-      if(projectileArr[i].active){
-        if(CheckCollisionPointRec(projectileArr[i].pos, tileRec)){
-          if(strcmp(projectileArr[i].type, "explosive") == 0){
-          //  splashDamage(&projectileArr[i], enemyArr, player);
-            destroyProjectile(&projectileArr[i]);
-          }
-          
-          destroyProjectile(&projectileArr[i]);
-        }
-      }
+void checkProjectileCollisionWithTile(Projectile *projectile, Enemy *enemyArr, Player *player, Tile *tileArr){
+  int x = ((int)(projectile->pos.x) / CELLSIZE) * CELLSIZE;
+  int y = ((int)(projectile->pos.y) / CELLSIZE) * CELLSIZE;
+  int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE) + 1;
+  DrawRectangleLines(x, y, CELLSIZE, CELLSIZE, RED);
+  if(tileArr[tileIndex].solid){
+    /*
+    if(strcmp(projectile->type, "explosive") == 0){
+      //  splashDamage(&projectileArr[i], enemyArr, player);
+      destroyProjectile(projectile);
     }
+    */
+    destroyProjectile(projectile);
   }
 }
 
@@ -113,6 +111,7 @@ void updateProjectile(Projectile *projectileArr, Enemy *enemyArr, Player *player
       drawProjectile(&projectileArr[i]);
       moveProjectile(&projectileArr[i]);
       checkCollisionWithEnemy(&projectileArr[i], enemyArr, player, tileArr);
+      checkProjectileCollisionWithTile(&projectileArr[i], enemyArr, player, tileArr);
     }
   }
 }

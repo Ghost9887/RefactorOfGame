@@ -88,7 +88,6 @@ void drawTiles(Tile *tileArr, Texture2D *tileTextureArr, Player *player, Enemy *
       for(int j = 0; j < chunkArr[chunkIndex].tileCount; j++){
         DrawTexture(tileTextureArr[chunkArr[chunkIndex].tileArr[j].textureId], chunkArr[chunkIndex].tileArr[j].pos.x, chunkArr[chunkIndex].tileArr[j].pos.y, WHITE);
       }
-      checkProjectileCollisionWithTile(projectileArr, &chunkArr[chunkIndex], enemyArr, player, tileArr);
     }
     playerADS(player, enemyArr, chunkArr, chunkCount);
 
