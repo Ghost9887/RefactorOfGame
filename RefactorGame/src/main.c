@@ -18,6 +18,9 @@
 #include "perkBuy.h"
 
 //GLOBAL VARIABLES
+
+bool POWER = false;
+
 //ENEMY
 int ENEMYCOUNT = 0;
 int ALIVEENEMIES = 0;
