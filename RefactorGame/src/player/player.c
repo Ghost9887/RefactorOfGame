@@ -181,7 +181,6 @@ int *findTileNearPlayer(Player *player, Tile *tileArr){
     else{
       tiles[i] = -1;
     }
-    DrawRectangleLines(tileArr[tiles[i]].pos.x, tileArr[tiles[i]].pos.y, CELLSIZE, CELLSIZE, RED);
   }
   return tiles;
 }

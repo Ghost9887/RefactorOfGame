@@ -90,7 +90,6 @@ void checkProjectileCollisionWithTile(Projectile *projectile, Enemy *enemyArr, P
   int x = ((int)(projectile->pos.x) / CELLSIZE) * CELLSIZE;
   int y = ((int)(projectile->pos.y) / CELLSIZE) * CELLSIZE;
   int tileIndex = (y / CELLSIZE) * COLUMNCOUNT + (x / CELLSIZE) + 1;
-  DrawRectangleLines(x, y, CELLSIZE, CELLSIZE, RED);
   if(tileArr[tileIndex].solid){
     /*
     if(strcmp(projectile->type, "explosive") == 0){
