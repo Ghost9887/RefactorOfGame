@@ -238,35 +238,53 @@ void deleteTile(Tile *tileArr, Camera2D *camera, User *user){
   }
 }
 
-void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, Texture2D *perkTextureArr){
+void drawTile(Tile *tileArr, Texture2D *tileTextureArr, Texture2D *weaponTextureArr, Texture2D *perkTextureArr, Camera2D *camera) {
+  Vector2 camPos = camera->target;
+  float zoom = camera->zoom;
+  float viewWidth = SCREENWIDTH / zoom * 1.5; 
+  float viewHeight = SCREENHEIGHT / zoom * 1.5;
+  Rectangle viewRect = {
+    camPos.x - viewWidth / 2,
+    camPos.y - viewHeight / 2,
+    viewWidth,
+    viewHeight
+  };
   for(int i = 0; i < MAXTILES; i++){
-    if(tileArr[i].active){
-      DrawTexture(tileTextureArr[tileArr[i].textureId], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
-      if(tileArr[i].solid){
-        //outline solid tiles
-        DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
-      }
-      if(tileArr[i].playerSpawn){
-        DrawTexture(tileTextureArr[15], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
-      }
-      if(tileArr[i].enemySpawn){
-        Rectangle rec = { 0, 0, 32, 32 };
-        DrawTextureRec(tileTextureArr[16], rec, tileArr[i].pos, WHITE);
-      }
-      if(tileArr[i].weaponBuy){
-        //have animations so the texture sometimes put all of them
-        Rectangle rec = { 0, 0, 32, 32 };
-        DrawTextureRec(weaponTextureArr[tileArr[i].weaponIndex], rec, tileArr[i].pos, WHITE);
-      }
-      if(tileArr[i].perkBuy){
-        Rectangle rec = { 0, 0, 32, 32 };
-        DrawTextureRec(perkTextureArr[tileArr[i].perkIndex], rec, tileArr[i].pos, WHITE);
-      }
-      DrawText(TextFormat("%d", tileArr[i].textureId), tileArr[i].pos.x + CELLSIZE / 2, tileArr[i].pos.y + CELLSIZE / 2, 5, BLUE);
+    if(!tileArr[i].active) continue;
+      Rectangle tileRect = {
+        tileArr[i].pos.x,
+        tileArr[i].pos.y,
+        CELLSIZE,
+        CELLSIZE
+      };
+      if(CheckCollisionRecs(viewRect, tileRect)){
+        DrawTexture(tileTextureArr[tileArr[i].textureId], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+        if(tileArr[i].solid){
+          DrawRectangleLines(tileArr[i].pos.x, tileArr[i].pos.y, CELLSIZE, CELLSIZE, RED);
+        }
+        if (tileArr[i].playerSpawn) {
+          DrawTexture(tileTextureArr[15], tileArr[i].pos.x, tileArr[i].pos.y, WHITE);
+        }
+        if (tileArr[i].enemySpawn) {
+          Rectangle rec = { 0, 0, 32, 32 };
+          DrawTextureRec(tileTextureArr[16], rec, tileArr[i].pos, WHITE);
+        }
+        if (tileArr[i].weaponBuy) {
+          Rectangle rec = { 0, 0, 32, 32 };
+          DrawTextureRec(weaponTextureArr[tileArr[i].weaponIndex], rec, tileArr[i].pos, WHITE);
+        }
+        if (tileArr[i].perkBuy) {
+          Rectangle rec = { 0, 0, 32, 32 };
+          DrawTextureRec(perkTextureArr[tileArr[i].perkIndex], rec, tileArr[i].pos, WHITE);
+        }
+        DrawText(TextFormat("%d", tileArr[i].textureId),
+          tileArr[i].pos.x + CELLSIZE / 2,
+          tileArr[i].pos.y + CELLSIZE / 2,
+          5, BLUE); 
     }
-    DrawText(TextFormat("%d", tileArr[i].id), tileArr[i].pos.x, tileArr[i].pos.y, 5, BLACK);
   }
 }
+
 
 void clearMap(Tile *tileArr){
   initTileArr(tileArr);
@@ -278,7 +296,7 @@ void updateMapEditor(Camera2D *camera, Tile *tileArr, Texture2D *tileTextureArr,
   placeTile(tileArr, tileTextureArr, camera, user);
   bucketTool(tileArr, camera, user);
   deleteTile(tileArr, camera, user);
-  drawTile(tileArr, tileTextureArr, weaponTextureArr, perkTextureArr);
+  drawTile(tileArr, tileTextureArr, weaponTextureArr, perkTextureArr, camera);
   switchMode(user);
 }
 

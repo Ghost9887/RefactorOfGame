@@ -38,8 +38,8 @@ void importMap(Tile *tileArr){
     printf("Failed to open map file");
   }
 
-  char *buffer = malloc(sizeof(char) * 1100000);
-  if(fgets(buffer, 1100000, file) == NULL){
+  char *buffer = malloc(sizeof(char) * 2000000);
+  if(fgets(buffer, 2000000, file) == NULL){
     printf("Failed to read file");
     fclose(file);
     free(buffer);
